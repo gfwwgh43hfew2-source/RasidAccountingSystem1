@@ -1,0 +1,120 @@
+<Window x:Class="RasidAccountingSystem.Views.DesignPreviewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:RasidAccountingSystem.Views"
+        Title="معاينة هوية &quot;الورشة&quot; — Carbon &amp; Ignition"
+        Height="820" Width="1180"
+        WindowStartupLocation="CenterScreen"
+        FlowDirection="RightToLeft">
+
+    <!--
+        نافذة معاينة مستقلة تمامًا — الغرض منها فقط عرض هوية "الورشة" حية
+        قبل تطبيقها على أي شاشة إنتاجية حقيقية (MainWindow أو غيرها).
+        كل الموارد مأخوذة حصريًا من Styles/WorkshopTheme.xaml، ومدموجة هنا
+        فقط داخل Window.Resources — لا يوجد أي تعديل على App.xaml، فلا يوجد
+        أي تأثير على باقي شاشات البرنامج الحالية.
+
+        طريقة التشغيل للمعاينة فقط (بدون أي تعديل دائم في المشروع):
+        من App.xaml.cs، في المكان اللي بيفتح فيه LoginView حاليًا، شغّل
+        مؤقتًا: new Views.DesignPreviewWindow().Show(); بدل السطر الحالي،
+        وارجعها زي ما كانت بعد المعاينة. ملف PROJECT_PROGRESS.txt فيه
+        نفس الشرح.
+    -->
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/WorkshopTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="32" Background="{StaticResource AppBackgroundBrush}">
+        <StackPanel MaxWidth="1080" HorizontalAlignment="Stretch">
+
+            <!-- ===================== الهيدر ===================== -->
+            <StackPanel Margin="0,0,0,28">
+                <TextBlock Text="الورشة" Style="{StaticResource TextDisplayStyle}" Foreground="{StaticResource AccentBrush}"/>
+                <TextBlock Text="معاينة هوية Carbon &amp; Ignition — توكينز وأنماط المرحلة 2 (لسه غير مطبَّقة على أي شاشة حقيقية)"
+                           Style="{StaticResource TextMutedStyle}" Margin="0,4,0,0"/>
+            </StackPanel>
+
+            <!-- ===================== 1) الألوان الأساسية ===================== -->
+            <TextBlock Text="1) الألوان الأساسية" Style="{StaticResource TextH2Style}" Margin="0,0,0,12"/>
+            <UniformGrid Columns="4" Margin="0,0,0,28">
+                <Border Background="{StaticResource PrimaryDarkBrush}" CornerRadius="{StaticResource RadiusMedium}" Height="90" Margin="0,0,12,12">
+                    <TextBlock Text="Primary Dark&#10;#1C2126" Foreground="White" Style="{StaticResource TextCaptionStyle}" Margin="12"/>
+                </Border>
+                <Border Background="{StaticResource AccentBrush}" CornerRadius="{StaticResource RadiusMedium}" Height="90" Margin="0,0,12,12">
+                    <TextBlock Text="Accent (Ignition)&#10;#FF6B35" Foreground="White" Style="{StaticResource TextCaptionStyle}" Margin="12"/>
+                </Border>
+                <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderStrongBrush}" BorderThickness="1" CornerRadius="{StaticResource RadiusMedium}" Height="90" Margin="0,0,12,12">
+                    <TextBlock Text="Surface&#10;#FFFFFF" Style="{StaticResource TextCaptionStyle}" Margin="12"/>
+                </Border>
+                <Border Background="{StaticResource AppBackgroundBrush}" BorderBrush="{StaticResource BorderStrongBrush}" BorderThickness="1" CornerRadius="{StaticResource RadiusMedium}" Height="90" Margin="0,0,0,12">
+                    <TextBlock Text="App Background&#10;#F5F6F8" Style="{StaticResource TextCaptionStyle}" Margin="12"/>
+                </Border>
+            </UniformGrid>
+
+            <!-- ===================== 2) شارات حالة أمر الشغل ===================== -->
+            <TextBlock Text="2) شارات حالة أمر الشغل (Status Badges)" Style="{StaticResource TextH2Style}" Margin="0,0,0,12"/>
+            <WrapPanel Margin="0,0,0,28">
+                <Border Style="{StaticResource StatusBadgeBaseStyle}" Background="{StaticResource StatusNewBrush}" Margin="0,0,10,10">
+                    <TextBlock Text="جديد" Style="{StaticResource StatusBadgeTextStyle}" Foreground="White"/>
+                </Border>
+                <Border Style="{StaticResource StatusBadgeBaseStyle}" Background="{StaticResource StatusInspectionBrush}" Margin="0,0,10,10">
+                    <TextBlock Text="قيد الفحص" Style="{StaticResource StatusBadgeTextStyle}" Foreground="White"/>
+                </Border>
+                <Border Style="{StaticResource StatusBadgeBaseStyle}" Background="{StaticResource StatusInProgressBrush}" Margin="0,0,10,10">
+                    <TextBlock Text="قيد التنفيذ" Style="{StaticResource StatusBadgeTextStyle}" Foreground="White"/>
+                </Border>
+                <Border Style="{StaticResource StatusBadgeBaseStyle}" Background="{StaticResource StatusWaitingPartsBrush}" Margin="0,0,10,10">
+                    <TextBlock Text="انتظار قطع غيار" Style="{StaticResource StatusBadgeTextStyle}" Foreground="White"/>
+                </Border>
+                <Border Style="{StaticResource StatusBadgeBaseStyle}" Background="{StaticResource StatusReadyBrush}" Margin="0,0,10,10">
+                    <TextBlock Text="جاهز للتسليم" Style="{StaticResource StatusBadgeTextStyle}" Foreground="White"/>
+                </Border>
+                <Border Style="{StaticResource StatusBadgeBaseStyle}" Background="{StaticResource StatusDeliveredBrush}" Margin="0,0,10,10">
+                    <TextBlock Text="تم التسليم" Style="{StaticResource StatusBadgeTextStyle}" Foreground="White"/>
+                </Border>
+                <Border Style="{StaticResource StatusBadgeBaseStyle}" Background="{StaticResource StatusCancelledBrush}" Margin="0,0,10,10">
+                    <TextBlock Text="ملغي" Style="{StaticResource StatusBadgeTextStyle}" Foreground="White"/>
+                </Border>
+            </WrapPanel>
+
+            <!-- ===================== 3) الأزرار ===================== -->
+            <TextBlock Text="3) الأزرار" Style="{StaticResource TextH2Style}" Margin="0,0,0,12"/>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,28">
+                <Button Content="إنشاء أمر شغل" Style="{StaticResource PrimaryButtonStyle}" Margin="0,0,12,0"/>
+                <Button Content="إلغاء" Style="{StaticResource SecondaryButtonStyle}" Margin="0,0,12,0"/>
+                <Button Content="زرار معطّل" Style="{StaticResource PrimaryButtonStyle}" IsEnabled="False"/>
+            </StackPanel>
+
+            <!-- ===================== 4) الطباعة ===================== -->
+            <TextBlock Text="4) مقياس الطباعة" Style="{StaticResource TextH2Style}" Margin="0,0,0,12"/>
+            <Border Background="{StaticResource SurfaceBrush}" CornerRadius="{StaticResource RadiusMedium}" Padding="20" Margin="0,0,0,28">
+                <StackPanel>
+                    <TextBlock Text="عنوان رئيسي — Display 28" Style="{StaticResource TextDisplayStyle}" Margin="0,0,0,8"/>
+                    <TextBlock Text="عنوان H1 — أمر شغل رقم 1042" Style="{StaticResource TextH1Style}" Margin="0,0,0,8"/>
+                    <TextBlock Text="عنوان H2 — بيانات العميل والسيارة" Style="{StaticResource TextH2Style}" Margin="0,0,0,8"/>
+                    <TextBlock Text="عنوان H3 — الأعمال المطلوبة" Style="{StaticResource TextH3Style}" Margin="0,0,0,8"/>
+                    <TextBlock Text="نص أساسي — تم استلام السيارة بحالة جيدة، يوجد خدش بسيط في الباب الأمامي." Style="{StaticResource TextBodyStyle}" Margin="0,0,0,8"/>
+                    <TextBlock Text="نص ثانوي مصغّر — آخر تحديث منذ 5 دقائق" Style="{StaticResource TextMutedStyle}" Margin="0,0,0,4"/>
+                    <TextBlock Text="نص Caption — رقم اللوحة: أ ب ج 1234" Style="{StaticResource TextCaptionStyle}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- ===================== 5) القائمة الجانبية الجديدة (خطوة 4) ===================== -->
+            <TextBlock Text="5) القائمة الجانبية (Sidebar) — هيكل الأقسام النهائي" Style="{StaticResource TextH2Style}" Margin="0,28,0,12"/>
+            <TextBlock Text="معاينة فقط — لسه غير مربوطة بأي تنقّل فعلي بين الشاشات" Style="{StaticResource TextMutedStyle}" Margin="0,0,0,12"/>
+            <Button Content="معاينة القائمة الجانبية كاملة" Style="{StaticResource SecondaryButtonStyle}"
+                    HorizontalAlignment="Right" Margin="0,0,0,20" Click="OpenSidebarPreview_Click"/>
+
+            <TextBlock Text="6) الهيكل العام الكامل (Sidebar + Header) — خطوة 5" Style="{StaticResource TextH2Style}" Margin="0,0,0,12"/>
+            <TextBlock Text="نافذة كاملة منفصلة تجمع كل حاجة سبق عرضها — اضغط الزرار عشان تفتحها بحجمها الكامل" Style="{StaticResource TextMutedStyle}" Margin="0,0,0,12"/>
+            <Button Content="فتح الهيكل العام الكامل (WorkshopMainWindow)" Style="{StaticResource PrimaryButtonStyle}"
+                    HorizontalAlignment="Right" Margin="0,0,0,20" Click="OpenMainWindow_Click"/>
+
+        </StackPanel>
+    </ScrollViewer>
+</Window>

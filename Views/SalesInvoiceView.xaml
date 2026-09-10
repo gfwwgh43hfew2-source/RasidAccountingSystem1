@@ -1,0 +1,1212 @@
+﻿<UserControl x:Class="RasidAccountingSystem.Views.SalesInvoiceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:RasidAccountingSystem.Views"
+             FlowDirection="RightToLeft"
+             Background="#F2EEE6">
+
+    <UserControl.Resources>
+
+        <!-- ============================================ -->
+        <!-- الألوان الأساسية - هوية "الخزينة الحديثة"      -->
+        <!-- ============================================ -->
+        <SolidColorBrush x:Key="PrimaryColor" Color="#0F5C46"/>
+        <SolidColorBrush x:Key="PrimaryDark" Color="#0A3D2F"/>
+        <SolidColorBrush x:Key="PrimaryLight" Color="#E6F3EE"/>
+        <SolidColorBrush x:Key="SuccessColor" Color="#1E8E5A"/>
+        <SolidColorBrush x:Key="SuccessDark" Color="#146B48"/>
+        <SolidColorBrush x:Key="WarningColor" Color="#D97706"/>
+        <SolidColorBrush x:Key="WarningLight" Color="#FBEEDC"/>
+        <SolidColorBrush x:Key="DangerColor" Color="#DC2626"/>
+        <SolidColorBrush x:Key="DangerLight" Color="#FBE2E0"/>
+        <SolidColorBrush x:Key="PurpleColor" Color="#C9972C"/>
+        <SolidColorBrush x:Key="PurpleDark" Color="#A87A1E"/>
+        <SolidColorBrush x:Key="OrangeColor" Color="#A8672A"/>
+        <SolidColorBrush x:Key="OrangeDark" Color="#8A5220"/>
+        <SolidColorBrush x:Key="Gray50" Color="#FAF8F4"/>
+        <SolidColorBrush x:Key="Gray100" Color="#F2EEE6"/>
+        <SolidColorBrush x:Key="Gray200" Color="#E7E0D2"/>
+        <SolidColorBrush x:Key="Gray300" Color="#D8CDB8"/>
+        <SolidColorBrush x:Key="Gray400" Color="#B8AC94"/>
+        <SolidColorBrush x:Key="Gray500" Color="#97896F"/>
+        <SolidColorBrush x:Key="Gray600" Color="#6B6156"/>
+        <SolidColorBrush x:Key="Gray700" Color="#564C3D"/>
+        <SolidColorBrush x:Key="Gray800" Color="#3A332A"/>
+        <SolidColorBrush x:Key="BgWhite" Color="#FFFFFF"/>
+
+        <LinearGradientBrush x:Key="SuccessGradient" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#1E8E5A" Offset="0"/>
+            <GradientStop Color="#146B48" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="PurpleGradient" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#C9972C" Offset="0"/>
+            <GradientStop Color="#A87A1E" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="OrangeGradient" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#A8672A" Offset="0"/>
+            <GradientStop Color="#8A5220" Offset="1"/>
+        </LinearGradientBrush>
+
+        <DropShadowEffect x:Key="CardShadow" BlurRadius="8" ShadowDepth="1" Opacity="0.06" Color="#000000"/>
+
+        <!-- ============================================ -->
+        <!-- أنماط الأزرار                                 -->
+        <!-- ============================================ -->
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="MinWidth" Value="70"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryDark}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="NewButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PurpleGradient}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="MinWidth" Value="70"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PurpleDark}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SearchButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource OrangeGradient}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="MinWidth" Value="70"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource OrangeDark}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="OutlineButton" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource Gray600}"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Gray300}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="MinWidth" Value="70"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryLight}"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SuccessButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource SuccessGradient}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="MinWidth" Value="70"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource SuccessDark}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="IconButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource Gray500}"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Width" Value="28"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource Gray100}"/>
+                                <Setter Property="Foreground" Value="{StaticResource DangerColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ============================================ -->
+        <!-- أنماط حقول الإدخال                            -->
+        <!-- ============================================ -->
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Foreground" Value="{StaticResource Gray800}"/>
+            <Setter Property="Background" Value="{StaticResource BgWhite}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Gray300}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CustomerSearchTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Foreground" Value="{StaticResource Gray800}"/>
+            <Setter Property="Background" Value="{StaticResource BgWhite}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Gray300}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ProductSearchTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Foreground" Value="{StaticResource Gray800}"/>
+            <Setter Property="Background" Value="{StaticResource BgWhite}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Gray300}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ProductCodeTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Foreground" Value="{StaticResource Gray800}"/>
+            <Setter Property="Background" Value="{StaticResource BgWhite}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Gray300}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Foreground" Value="{StaticResource Gray800}"/>
+            <Setter Property="Background" Value="{StaticResource BgWhite}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Gray300}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton x:Name="ToggleButton" Grid.ColumnSpan="2" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" Focusable="False" IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border x:Name="toggleBorder" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="6">
+                                            <Path x:Name="Arrow" Data="M0,0 L4,4 L8,0" Fill="{StaticResource Gray400}" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="toggleBorder" Property="Background" Value="{StaticResource Gray50}"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <ContentPresenter x:Name="ContentPresenter" Content="{TemplateBinding SelectionBoxItem}" HorizontalAlignment="Stretch" IsHitTestVisible="False" Margin="10,0,28,0" VerticalAlignment="Center"/>
+                            <Popup x:Name="Popup" AllowsTransparency="True" IsOpen="{TemplateBinding IsDropDownOpen}" Placement="Bottom" PlacementTarget="{Binding ElementName=ToggleButton}" PopupAnimation="Fade">
+                                <Border Background="{StaticResource BgWhite}" BorderBrush="{StaticResource Gray200}" BorderThickness="1" CornerRadius="6" MinWidth="{TemplateBinding ActualWidth}" MaxWidth="350" Effect="{StaticResource CardShadow}">
+                                    <ScrollViewer MaxHeight="250" VerticalScrollBarVisibility="Auto">
+                                        <ItemsPresenter/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="ToggleButton" Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+                                <Setter TargetName="ToggleButton" Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ComboBoxItem">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Foreground" Value="{StaticResource Gray700}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBoxItem">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryLight}"/>
+                                <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryColor}"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="DatePicker">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Foreground" Value="{StaticResource Gray800}"/>
+            <Setter Property="Background" Value="{StaticResource BgWhite}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Gray300}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DatePicker">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="6">
+                            <DatePickerTextBox x:Name="PART_TextBox" HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+                                <Setter Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="LabelStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource Gray600}"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+
+        <Style TargetType="DataGrid">
+            <Setter Property="Background" Value="{StaticResource BgWhite}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Gray200}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+            <Setter Property="RowBackground" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="{StaticResource Gray50}"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{StaticResource Gray50}"/>
+            <Setter Property="Foreground" Value="{StaticResource Gray600}"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Gray200}"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Setter Property="BorderBrush" Value="{StaticResource Gray100}"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource PrimaryLight}"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{StaticResource PrimaryLight}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="6,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="{StaticResource Gray700}"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource BgWhite}"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Effect" Value="{StaticResource CardShadow}"/>
+        </Style>
+
+        <!-- ============================================ -->
+        <!-- نمط قائمة الاقتراحات للعملاء (AutoComplete)   -->
+        <!-- ============================================ -->
+        <Style x:Key="CustomerSuggestionListBox" TargetType="ListBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="{StaticResource Gray700}"/>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Height" Value="36"/>
+                        <Setter Property="Padding" Value="10,0"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Focusable" Value="True"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border x:Name="border" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryLight}"/>
+                                            <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryLight}"/>
+                                            <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ============================================ -->
+        <!-- نمط قائمة الاقتراحات للمنتجات (AutoComplete)  -->
+        <!-- ============================================ -->
+        <Style x:Key="ProductSuggestionListBox" TargetType="ListBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="{StaticResource Gray700}"/>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Height" Value="36"/>
+                        <Setter Property="Padding" Value="10,0"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Focusable" Value="True"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border x:Name="border" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center"/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryLight}"/>
+                                            <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="border" Property="Background" Value="{StaticResource PrimaryLight}"/>
+                                            <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+
+    <!-- ============================================ -->
+    <!-- التخطيط الرئيسي                               -->
+    <!-- ============================================ -->
+    <Grid Background="{StaticResource Gray100}">
+        <Grid Margin="16">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- الصف الأول: الهيدر -->
+            <Border Grid.Row="0" Style="{StaticResource Card}" Margin="0,0,0,12" Padding="16,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Background="{StaticResource PrimaryLight}" Width="36" Height="36" CornerRadius="8" Margin="0,0,10,0">
+                            <TextBlock Text="💰" FontSize="18" Foreground="{StaticResource PrimaryColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel>
+                            <TextBlock Text="فاتورة بيع" FontSize="14" FontWeight="Bold" Foreground="{StaticResource Gray800}"/>
+                            <TextBlock Text="إدارة فواتير البيع" FontSize="10" Foreground="{StaticResource Gray500}"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <Border Grid.Column="1" Background="{StaticResource PrimaryLight}" CornerRadius="16" Padding="12,4" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="رقم الفاتورة:" FontSize="11" Foreground="{StaticResource Gray600}" Margin="0,0,6,0"/>
+                            <TextBlock x:Name="lblInvoiceNumber" Text="SIN-000001" FontSize="12" FontWeight="Bold" Foreground="{StaticResource PrimaryColor}" FontFamily="Segoe UI Mono"/>
+                        </StackPanel>
+                    </Border>
+                    <StackPanel Grid.Column="2" Orientation="Horizontal">
+                        <Button x:Name="btnNewInvoice" Style="{StaticResource NewButtonStyle}" Content="جديد" Margin="0,0,6,0"/>
+                        <Button x:Name="btnSaveInvoice" Style="{StaticResource SuccessButton}" Content="حفظ" Margin="0,0,6,0"/>
+                        <Button x:Name="btnPrintInvoice" Style="{StaticResource PrimaryButton}" Content="طباعة" Margin="0,0,6,0"/>
+                        <Button x:Name="btnOpenSearchDialog" Style="{StaticResource SearchButtonStyle}" Content="بحث"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- الصف الثاني: معلومات الفاتورة -->
+            <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,0,12" Padding="16,14">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="0.8*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="0.7*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- العمود الأول: العميل (مع AutoComplete) -->
+                    <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                        <TextBlock Text="العميل" Style="{StaticResource LabelStyle}"/>
+                        <Grid>
+                            <TextBox x:Name="txtCustomerSearch" 
+                                     Style="{StaticResource CustomerSearchTextBox}"
+                                     GotFocus="TxtCustomerSearch_GotFocus"
+                                     LostFocus="TxtCustomerSearch_LostFocus"
+                                     TextChanged="TxtCustomerSearch_TextChanged"
+                                     PreviewKeyDown="TxtCustomerSearch_PreviewKeyDown"/>
+
+                            <TextBlock x:Name="txtCustomerPlaceholder" 
+                                       Text="🔍 ابحث عن عميل..." 
+                                       FontSize="12" 
+                                       Foreground="{StaticResource Gray400}"
+                                       VerticalAlignment="Center"
+                                       Margin="10,0,0,0"
+                                       IsHitTestVisible="False"/>
+
+                            <Popup x:Name="popupCustomers" 
+                                   PlacementTarget="{Binding ElementName=txtCustomerSearch}" 
+                                   Placement="Bottom" 
+                                   StaysOpen="True" 
+                                   AllowsTransparency="True"
+                                   Width="{Binding ActualWidth, ElementName=txtCustomerSearch}">
+                                <Border Background="White" 
+                                        BorderBrush="{StaticResource Gray200}" 
+                                        BorderThickness="1" 
+                                        CornerRadius="6" 
+                                        MaxHeight="200"
+                                        Effect="{StaticResource CardShadow}">
+                                    <ListBox x:Name="lstCustomers" 
+                                             Style="{StaticResource CustomerSuggestionListBox}"
+                                             MouseDoubleClick="LstCustomers_MouseDoubleClick"
+                                             PreviewKeyDown="LstCustomers_PreviewKeyDown"
+                                             SelectionChanged="LstCustomers_SelectionChanged"/>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Margin="0,0,12,0">
+                        <TextBlock Text="المخزن" Style="{StaticResource LabelStyle}"/>
+                        <local:SmartSearchComboBox x:Name="cmbStores" DisplayMemberPath="Name" SelectedValuePath="Id" Placeholder="اكتب اسم المخزن..."/>
+                    </StackPanel>
+
+                    <!-- ✅ تم إزالة SelectedDate -->
+                    <StackPanel Grid.Column="2" Margin="0,0,12,0">
+                        <TextBlock Text="التاريخ" Style="{StaticResource LabelStyle}"/>
+                        <DatePicker x:Name="dpInvoiceDate"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="3" Margin="0,0,12,0">
+                        <TextBlock Text="طريقة الدفع" Style="{StaticResource LabelStyle}"/>
+                        <ComboBox x:Name="cmbPaymentMethod" SelectedIndex="0">
+                            <ComboBoxItem Tag="Cash">نقدي</ComboBoxItem>
+                            <ComboBoxItem Tag="Transfer">تحويل بنكي</ComboBoxItem>
+                            <ComboBoxItem Tag="Check">شيك</ComboBoxItem>
+                            <ComboBoxItem Tag="Credit">آجل</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="4">
+                        <TextBlock Text="الضريبة %" Style="{StaticResource LabelStyle}"/>
+                        <TextBox x:Name="txtTaxPercent" Text="0" TextAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- الصف الثالث: خيارات الدفع -->
+            <Border Grid.Row="2" Style="{StaticResource Card}" Margin="0,0,0,12" Padding="16,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                        <RadioButton x:Name="rbCash" Content="💰 بيع نقدي" IsChecked="True" GroupName="PaymentType" Margin="0,0,20,0" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource Gray700}" Checked="RbPaymentType_Checked"/>
+                        <RadioButton x:Name="rbInstallment" Content="📋 بيع بالأقساط" GroupName="PaymentType" Margin="0,0,0,0" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource Gray700}" Checked="RbPaymentType_Checked"/>
+                    </StackPanel>
+                    <Border x:Name="pnlInstallments" Grid.Column="1" Visibility="Collapsed" Background="#FBF1DC" CornerRadius="8" Padding="12,8" Margin="20,0,0,0" BorderBrush="#C9972C" BorderThickness="1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Background="White" CornerRadius="6" Padding="8,4" Margin="0,0,8,0">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="المتبقي" FontSize="9" Foreground="#97896F"/>
+                                    <TextBlock x:Name="lblInstallmentRemaining" Text="0.00 ر.س" FontSize="14" FontWeight="Bold" Foreground="#D97706"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Column="1" Background="White" CornerRadius="6" Padding="8,4" Margin="0,0,8,0">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="عدد الأقساط" FontSize="9" Foreground="#97896F"/>
+                                    <TextBlock x:Name="lblInstallmentCount" Text="0" FontSize="14" FontWeight="Bold" Foreground="#0F5C46"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Grid.Column="2" Background="White" CornerRadius="6" Padding="8,4" Margin="0,0,8,0">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="إجمالي الأقساط" FontSize="9" Foreground="#97896F"/>
+                                    <TextBlock x:Name="lblTotalInstallments" Text="0.00 ر.س" FontSize="14" FontWeight="Bold" Foreground="#C9972C"/>
+                                </StackPanel>
+                            </Border>
+                            <Button x:Name="btnManageInstallments" Grid.Column="3" Content="📝 إدارة" Style="{StaticResource PrimaryButton}" Width="80" Height="30" Padding="8,0" Click="BtnManageInstallments_Click"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- الصف الرابع: المدفوعات -->
+            <Border Grid.Row="3" Style="{StaticResource Card}" Margin="0,0,0,12" Padding="16,14">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel x:Name="pnlTreasury" Grid.Row="0" Grid.Column="0" Margin="0,0,16,0" Visibility="Collapsed">
+                        <TextBlock Text="🏦 الخزينة المستلمة" Style="{StaticResource LabelStyle}"/>
+                        <local:SmartSearchComboBox x:Name="cmbTreasury" SelectedValuePath="Id" Placeholder="اكتب اسم الخزينة..."/>
+                    </StackPanel>
+                    <StackPanel x:Name="pnlBank" Grid.Row="0" Grid.Column="0" Margin="0,0,16,0" Visibility="Collapsed">
+                        <TextBlock Text="🏦 الحساب البنكي" Style="{StaticResource LabelStyle}"/>
+                        <local:SmartSearchComboBox x:Name="cmbBankAccount" SelectedValuePath="BankAccountID" Placeholder="اكتب اسم البنك..."/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,16,0">
+                        <TextBlock Text="💰 المبلغ المدفوع" Style="{StaticResource LabelStyle}"/>
+                        <TextBox x:Name="txtPaidAmount" Text="0.00" TextAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Grid.Row="0" Grid.Column="2">
+                        <TextBlock Text="📊 المبلغ المتبقي" Style="{StaticResource LabelStyle}"/>
+                        <Border Background="{StaticResource DangerLight}" CornerRadius="6" Padding="12,6">
+                            <TextBlock x:Name="lblRemainingAmount" Text="0.00" FontSize="18" FontWeight="Bold" Foreground="{StaticResource DangerColor}" TextAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+                    <Border x:Name="pnlCheckDetails" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Visibility="Collapsed" Background="{StaticResource Gray50}" CornerRadius="6" Padding="12,10" Margin="0,10,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,12,10">
+                                <TextBlock Text="رقم الشيك" Style="{StaticResource LabelStyle}"/>
+                                <TextBox x:Name="txtCheckNumber" Height="32"/>
+                            </StackPanel>
+                            <!-- ✅ تم إزالة SelectedDate -->
+                            <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,0,10">
+                                <TextBlock Text="تاريخ الشيك" Style="{StaticResource LabelStyle}"/>
+                                <DatePicker x:Name="dpCheckDate" Height="32"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,12,0">
+                                <TextBlock Text="اسم البنك" Style="{StaticResource LabelStyle}"/>
+                                <TextBox x:Name="txtCheckBankName" Height="32"/>
+                            </StackPanel>
+                            <StackPanel Grid.Row="1" Grid.Column="1">
+                                <TextBlock Text="اسم الدافع" Style="{StaticResource LabelStyle}"/>
+                                <TextBox x:Name="txtCheckPayerName" Height="32"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <Border x:Name="pnlCreditMessage" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Background="{StaticResource WarningLight}" CornerRadius="6" Padding="12,8" Margin="0,10,0,0" Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="⚠️" FontSize="12" Margin="0,0,6,0"/>
+                            <TextBlock Text="سيتم إضافة المبلغ إلى رصيد العميل (حساب آجل)" FontSize="11" Foreground="{StaticResource Gray700}"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+
+            <!-- الصف الخامس: رقم مرجعي وملاحظات -->
+            <Border Grid.Row="4" Style="{StaticResource Card}" Margin="0,0,0,12" Padding="16,14">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                        <TextBlock Text="📌 رقم مرجعي" Style="{StaticResource LabelStyle}"/>
+                        <TextBox x:Name="txtReferenceNumber"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="📝 ملاحظات" Style="{StaticResource LabelStyle}"/>
+                        <TextBox x:Name="txtNotes"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- الصف السادس: إضافة منتج (مع AutoComplete ودعم الوحدات) -->
+            <Border Grid.Row="5" Style="{StaticResource Card}" Margin="0,0,0,12" Padding="16,14">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="0.6*"/>
+                        <ColumnDefinition Width="0.6*"/>
+                        <ColumnDefinition Width="0.7*"/>
+                        <ColumnDefinition Width="0.7*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- عمود المنتج مع AutoComplete -->
+                    <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0" Margin="0,0,0,4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="🛍️ المنتج" Style="{StaticResource LabelStyle}" Margin="0,0,0,0"/>
+                                <TextBlock x:Name="lblProductStock" Grid.Column="1" Text="" FontSize="10" Foreground="{StaticResource SuccessColor}" FontWeight="SemiBold" Margin="10,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Left" Visibility="Collapsed"/>
+                            </Grid>
+
+                            <Grid Grid.Row="1">
+                                <TextBox x:Name="txtProductSearch" 
+                                         Style="{StaticResource ProductSearchTextBox}"
+                                         GotFocus="TxtProductSearch_GotFocus"
+                                         LostFocus="TxtProductSearch_LostFocus"
+                                         TextChanged="TxtProductSearch_TextChanged"
+                                         PreviewKeyDown="TxtProductSearch_PreviewKeyDown"/>
+
+                                <TextBlock x:Name="txtProductPlaceholder" 
+                                           Text="🔍 ابحث عن منتج..." 
+                                           FontSize="12" 
+                                           Foreground="{StaticResource Gray400}"
+                                           VerticalAlignment="Center"
+                                           Margin="10,0,0,0"
+                                           IsHitTestVisible="False"/>
+
+                                <!-- ✅ حقل كود المنتج المخفي للبحث بالكود أو الباركود -->
+                                <TextBox x:Name="txtProductCode" 
+                                         Style="{StaticResource ProductCodeTextBox}"/>
+
+                                <Popup x:Name="popupProducts" 
+                                       PlacementTarget="{Binding ElementName=txtProductSearch}" 
+                                       Placement="Bottom" 
+                                       StaysOpen="True" 
+                                       AllowsTransparency="True"
+                                       Width="{Binding ActualWidth, ElementName=txtProductSearch}">
+                                    <Border Background="White" 
+                                            BorderBrush="{StaticResource Gray200}" 
+                                            BorderThickness="1" 
+                                            CornerRadius="6" 
+                                            MaxHeight="200"
+                                            Effect="{StaticResource CardShadow}">
+                                        <ListBox x:Name="lstProducts" 
+                                                 Style="{StaticResource ProductSuggestionListBox}"
+                                                 MouseDoubleClick="LstProducts_MouseDoubleClick"
+                                                 PreviewKeyDown="LstProducts_PreviewKeyDown"
+                                                 SelectionChanged="LstProducts_SelectionChanged"/>
+                                    </Border>
+                                </Popup>
+                            </Grid>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- ✅ عمود الوحدة -->
+                    <StackPanel Grid.Column="1" Margin="0,0,10,0">
+                        <TextBlock Text="📦 الوحدة" Style="{StaticResource LabelStyle}"/>
+                        <ComboBox x:Name="cmbUnit" Height="34" FontSize="12" SelectedIndex="0" SelectionChanged="CmbUnit_SelectionChanged" MinWidth="70" MaxWidth="90"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Margin="0,0,10,0">
+                        <TextBlock Text="🔢 الكمية" Style="{StaticResource LabelStyle}"/>
+                        <TextBox x:Name="txtQuantity" Text="1" TextAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="3" Margin="0,0,10,0">
+                        <TextBlock Text="💲 سعر البيع" Style="{StaticResource LabelStyle}"/>
+                        <TextBox x:Name="txtUnitPrice" Text="0" TextAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="4" Margin="0,0,10,0">
+                        <TextBlock Text="🎯 الخصم %" Style="{StaticResource LabelStyle}"/>
+                        <TextBox x:Name="txtDiscountPercent" Text="0" TextAlignment="Center"/>
+                    </StackPanel>
+
+                    <Button x:Name="btnAddProduct" Grid.Column="5" Content="➕ إضافة" Width="60" Height="32" Margin="0,20,0,0" Style="{StaticResource PrimaryButton}"/>
+                </Grid>
+            </Border>
+
+            <!-- الصف السابع: الجدول -->
+            <Border Grid.Row="6" Style="{StaticResource Card}" Margin="0,0,0,12" Padding="0">
+                <DataGrid x:Name="dgInvoiceItems" AutoGenerateColumns="False" HeadersVisibility="Column" RowHeaderWidth="0" CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single" IsReadOnly="False" GridLinesVisibility="None" BorderThickness="0" CellEditEnding="dgInvoiceItems_CellEditEnding" BeginningEdit="dgInvoiceItems_BeginningEdit">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#" Binding="{Binding SerialNumber}" IsReadOnly="True" Width="40">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Gray500}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="المنتج" Binding="{Binding ProductName}" IsReadOnly="True" Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                                    <Setter Property="Padding" Value="8,0"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Gray800}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <!-- ✅ عمود الوحدة -->
+                        <DataGridTextColumn Header="الوحدة" Binding="{Binding UnitName}" IsReadOnly="True" Width="70">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="FontSize" Value="10"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Gray500}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="الكمية" Binding="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" Width="70">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.EditingElementStyle>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="TextAlignment" Value="Center"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+                                </Style>
+                            </DataGridTextColumn.EditingElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="سعر البيع" Binding="{Binding UnitPrice, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:N2}}" Width="90">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Gray600}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.EditingElementStyle>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="TextAlignment" Value="Center"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Gray600}"/>
+                                </Style>
+                            </DataGridTextColumn.EditingElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="الخصم %" Binding="{Binding DiscountPercent, UpdateSourceTrigger=PropertyChanged}" Width="70">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="Foreground" Value="{StaticResource WarningColor}"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.EditingElementStyle>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="TextAlignment" Value="Center"/>
+                                    <Setter Property="Foreground" Value="{StaticResource WarningColor}"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                </Style>
+                            </DataGridTextColumn.EditingElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="مبلغ الخصم" Binding="{Binding DiscountAmount, StringFormat={}{0:N2}}" IsReadOnly="True" Width="90">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="Foreground" Value="{StaticResource WarningColor}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="الإجمالي" Binding="{Binding TotalAmount, StringFormat={}{0:N2}}" IsReadOnly="True" Width="100">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="Foreground" Value="{StaticResource SuccessColor}"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTemplateColumn Header="" Width="40">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource IconButton}" Tag="{Binding}" Click="DeleteItem_Click" ToolTip="حذف">
+                                        <TextBlock Text="🗑️" FontSize="12"/>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+
+            <!-- الصف الثامن: الإجماليات -->
+            <Border Grid.Row="7" Style="{StaticResource Card}" Padding="16,14">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.7*"/>
+                        <ColumnDefinition Width="0.7*"/>
+                        <ColumnDefinition Width="0.7*"/>
+                        <ColumnDefinition Width="1.4*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Background="{StaticResource Gray50}" CornerRadius="6" Padding="10,6" Margin="0,0,8,0">
+                        <StackPanel HorizontalAlignment="Center">
+                            <TextBlock Text="المجموع الفرعي" FontSize="10" Foreground="{StaticResource Gray500}" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="lblSubTotal" Text="0.00" FontSize="14" FontWeight="Bold" Foreground="{StaticResource Gray800}" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Column="1" Background="{StaticResource WarningLight}" CornerRadius="6" Padding="10,6" Margin="0,0,8,0">
+                        <StackPanel HorizontalAlignment="Center">
+                            <TextBlock Text="إجمالي الخصم" FontSize="10" Foreground="{StaticResource Gray500}" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="lblTotalDiscount" Text="0.00" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource WarningColor}" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Column="2" Background="{StaticResource PrimaryLight}" CornerRadius="6" Padding="10,6" Margin="0,0,8,0">
+                        <StackPanel HorizontalAlignment="Center">
+                            <TextBlock Text="قيمة الضريبة" FontSize="10" Foreground="{StaticResource Gray500}" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="lblTaxAmount" Text="0.00" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource PrimaryColor}" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    <Border Grid.Column="3" Background="{StaticResource SuccessGradient}" CornerRadius="8" Padding="24,10">
+                        <StackPanel HorizontalAlignment="Center">
+                            <TextBlock Text="الإجمالي" FontSize="11" FontWeight="Bold" Foreground="White" Opacity="0.9" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="lblGrandTotal" Text="0.00" FontSize="22" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- نافذة البحث -->
+        <Border x:Name="SearchDialogOverlay" Background="#80000000" Visibility="Collapsed" Panel.ZIndex="1000">
+            <Border Background="White" Width="900" Height="520" CornerRadius="12" VerticalAlignment="Center" HorizontalAlignment="Center" Effect="{StaticResource CardShadow}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Background="{StaticResource PrimaryColor}" CornerRadius="12,12,0,0" Padding="14,12">
+                        <Grid>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                <TextBlock Text="🔍" FontSize="14" Foreground="White" Margin="0,0,6,0"/>
+                                <TextBlock Text="البحث عن فواتير البيع" FontSize="13" FontWeight="Bold" Foreground="White"/>
+                            </StackPanel>
+                            <Button x:Name="btnCloseSearchDialog" Content="✕" Width="28" Height="28" Style="{StaticResource IconButton}" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12" Foreground="White"/>
+                        </Grid>
+                    </Border>
+                    <Border Grid.Row="1" Background="{StaticResource Gray50}" Padding="14,12" BorderBrush="{StaticResource Gray200}" BorderThickness="0,0,0,1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                                <TextBlock Text="رقم الفاتورة" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource Gray600}" Margin="0,0,0,4"/>
+                                <TextBox x:Name="txtSearchInvoiceNumber" Height="32"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="0,0,10,0">
+                                <TextBlock Text="اسم العميل" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource Gray600}" Margin="0,0,0,4"/>
+                                <TextBox x:Name="txtSearchCustomerName" Height="32"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" Margin="0,0,10,0">
+                                <TextBlock Text="من تاريخ" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource Gray600}" Margin="0,0,0,4"/>
+                                <DatePicker x:Name="dpFromDateSearch" Height="32"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="3" Margin="0,0,10,0">
+                                <TextBlock Text="إلى تاريخ" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource Gray600}" Margin="0,0,0,4"/>
+                                <DatePicker x:Name="dpToDateSearch" Height="32"/>
+                            </StackPanel>
+                            <Button x:Name="btnSearchInvoices" Grid.Column="4" Content="بحث" Width="70" Height="32" Style="{StaticResource SearchButtonStyle}" VerticalAlignment="Bottom"/>
+                        </Grid>
+                    </Border>
+                    <Grid Grid.Row="2" Margin="14,12">
+                        <DataGrid x:Name="dgSearchResults" AutoGenerateColumns="False" HeadersVisibility="Column" RowHeaderWidth="0" CanUserAddRows="False" SelectionMode="Single" GridLinesVisibility="Horizontal" BorderThickness="0" RowHeight="38" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                            <DataGrid.Resources>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#E6F3EE"/>
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="#0F5C46"/>
+                            </DataGrid.Resources>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="رقم الفاتورة" Binding="{Binding InvoiceNumber}" Width="120"/>
+                                <DataGridTextColumn Header="التاريخ" Binding="{Binding InvoiceDate, StringFormat=yyyy/MM/dd}" Width="95"/>
+                                <DataGridTextColumn Header="العميل" Binding="{Binding CustomerName}" Width="200"/>
+                                <DataGridTextColumn Header="طريقة الدفع" Binding="{Binding PaymentMethod}" Width="95"/>
+                                <DataGridTextColumn Header="الحالة" Binding="{Binding PaymentStatus}" Width="95"/>
+                                <DataGridTextColumn Header="الإجمالي" Binding="{Binding TotalAmount, StringFormat={}{0:N2}}" Width="120"/>
+                                <DataGridTemplateColumn Header="" Width="110">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <Button Width="48" Height="28" Style="{StaticResource PrimaryButton}" Tag="{Binding InvoiceID}" Click="ViewSelectedInvoice_Click" Margin="0,0,6,0">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="👁️" FontSize="10" Margin="0,0,3,0"/>
+                                                        <TextBlock Text="عرض" FontSize="10"/>
+                                                    </StackPanel>
+                                                </Button>
+                                                <Button Width="48" Height="28" Style="{StaticResource OutlineButton}" Tag="{Binding InvoiceID}" Click="DeleteInvoice_Click">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="🗑️" FontSize="10" Margin="0,0,3,0"/>
+                                                        <TextBlock Text="حذف" FontSize="10"/>
+                                                    </StackPanel>
+                                                </Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <TextBlock x:Name="lblNoSearchResults" Text="لا توجد نتائج" FontSize="12" Foreground="{StaticResource Gray500}" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+                    </Grid>
+                    <Border Grid.Row="3" Background="{StaticResource Gray50}" Padding="12,8" CornerRadius="0,0,12,12" BorderBrush="{StaticResource Gray200}" BorderThickness="0,1,0,0">
+                        <TextBlock x:Name="lblSearchStatus" Text="أدخل معايير البحث" FontSize="10" Foreground="{StaticResource Gray500}"/>
+                    </Border>
+                </Grid>
+            </Border>
+        </Border>
+    </Grid>
+</UserControl>

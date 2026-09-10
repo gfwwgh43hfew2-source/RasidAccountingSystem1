@@ -1,0 +1,179 @@
+﻿<UserControl x:Class="RasidAccountingSystem.Views.OpeningInventoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:RasidAccountingSystem.Views"
+             FlowDirection="RightToLeft"
+             Background="{StaticResource BackgroundColor}">
+
+    <UserControl.Resources>
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#4F46E5"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#4338CA"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SuccessButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#10B981"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#059669"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DangerButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#EF4444"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="10,6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#DC2626"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- رأس الصفحة -->
+        <Border Grid.Row="0" Background="{StaticResource SurfaceColor}" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1" Padding="20">
+            <StackPanel>
+                <TextBlock Text="الأرصدة الافتتاحية للمخزون" FontSize="20" FontWeight="Bold" Foreground="{StaticResource TextPrimaryColor}" Margin="0,0,0,8"/>
+                <TextBlock Text="إدارة الأرصدة الأولية للمنتجات قبل بدء التشغيل" FontSize="13" Foreground="{StaticResource TextSecondaryColor}"/>
+            </StackPanel>
+        </Border>
+
+        <!-- المحتوى الرئيسي -->
+        <Border Grid.Row="1" Background="{StaticResource BackgroundColor}" Padding="20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- شريط الأدوات -->
+                <Border Grid.Row="0" Background="{StaticResource SurfaceColor}" CornerRadius="12" Padding="15" Margin="0,0,0,20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- تم إزالة Spacing وإضافة Margin للعناصر -->
+                        <StackPanel Orientation="Horizontal" Grid.Column="1">
+                            <local:SmartSearchComboBox x:Name="cmbStores" Width="200" Height="35" DisplayMemberPath="Name" SelectedValuePath="Id" Placeholder="اكتب اسم المخزن..." Margin="0,0,10,0"/>
+                            <DatePicker x:Name="dtpOpeningDate" Width="150" Height="35" SelectedDate="{Binding SelectedDate, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,10,0"/>
+                            <Button x:Name="btnAddOpening" Content="+ إضافة رصيد افتتاحي" Style="{StaticResource PrimaryButtonStyle}" Click="BtnAddOpening_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- جدول الأرصدة الافتتاحية -->
+                <DataGrid x:Name="dgOpeningInventory" Grid.Row="1" AutoGenerateColumns="False" 
+                          SelectionMode="Single" SelectionUnit="FullRow"
+                          CanUserAddRows="False" CanUserDeleteRows="False"
+                          HeadersVisibility="Column" RowHeaderWidth="0"
+                          Background="White" BorderBrush="#E2E8F0" BorderThickness="1"
+                          GridLinesVisibility="Horizontal" RowHeight="45"
+                          Margin="0,0,0,15">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="رقم الإذن" Binding="{Binding OpeningNumber}" Width="120"/>
+                        <DataGridTextColumn Header="التاريخ" Binding="{Binding OpeningDate, StringFormat=yyyy-MM-dd}" Width="100"/>
+                        <DataGridTextColumn Header="المخزن" Binding="{Binding StoreName}" Width="150"/>
+                        <DataGridTextColumn Header="عدد المنتجات" Binding="{Binding ProductsCount}" Width="100"/>
+                        <DataGridTextColumn Header="القيمة الإجمالية" Binding="{Binding TotalAmount, StringFormat=N2}" Width="120"/>
+                        <DataGridTemplateColumn Header="الحالة" Width="80">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Background="{Binding StatusColor}" CornerRadius="6" Padding="8,4" HorizontalAlignment="Center">
+                                        <TextBlock Text="{Binding StatusText}" Foreground="White" FontSize="11" FontWeight="Bold"/>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="إجراءات" Width="130">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                        <Button Content="ترحيل" Style="{StaticResource SuccessButtonStyle}" 
+                                                Tag="{Binding OpeningID}" Click="BtnPost_Click" Margin="0,0,5,0"/>
+                                        <Button Content="حذف" Style="{StaticResource DangerButtonStyle}" 
+                                                Tag="{Binding OpeningID}" Click="BtnDelete_Click"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- رسالة عدم وجود بيانات -->
+                <Border Grid.Row="1" x:Name="lblNoData" Background="White" CornerRadius="12" Visibility="Collapsed">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Path Fill="#CBD5E1" Data="M12,2L2,7L12,12L22,7L12,2M2,9V19L12,24V14L2,9M22,9L12,14V24L22,19V9Z" Width="64" Height="64" Margin="0,0,0,15"/>
+                        <TextBlock Text="لا توجد أرصدة افتتاحية مسجلة" FontSize="16" FontWeight="SemiBold" Foreground="#475569"/>
+                        <TextBlock Text="اضغط على إضافة رصيد افتتاحي للبدء" FontSize="13" Foreground="#94A3B8" Margin="0,5,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- شريط المعلومات -->
+                <Border Grid.Row="2" Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="0,1,0,0" CornerRadius="0,0,12,12" Padding="15">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock x:Name="lblInfo" Text="" Foreground="#64748B" FontSize="12"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

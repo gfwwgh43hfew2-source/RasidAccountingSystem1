@@ -1,0 +1,950 @@
+﻿<UserControl x:Class="RasidAccountingSystem.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="900"
+             Background="#F5F7FA">
+
+    <UserControl.Resources>
+
+        <!-- ==================== ألوان الرسائل ==================== -->
+        <SolidColorBrush x:Key="SuccessColor" Color="#27AE60"/>
+        <SolidColorBrush x:Key="DangerButtonColor" Color="#E74C3C"/>
+        <SolidColorBrush x:Key="PrimaryColor" Color="#1A2980"/>
+        <SolidColorBrush x:Key="SecondaryColor" Color="#26D0CE"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#1E293B"/>
+        <SolidColorBrush x:Key="TextSecondary" Color="#64748B"/>
+        <SolidColorBrush x:Key="BorderLight" Color="#E2E8F0"/>
+        <SolidColorBrush x:Key="BackgroundLight" Color="#F8FAFC"/>
+
+        <!-- ==================== الظلال ==================== -->
+        <DropShadowEffect x:Key="SoftShadow" 
+                          BlurRadius="8" 
+                          ShadowDepth="1" 
+                          Opacity="0.1" 
+                          Color="#000000"/>
+
+        <!-- ==================== أنماط الحقول ==================== -->
+
+        <Style x:Key="SettingsLabel" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="SettingsTextBox" TargetType="TextBox">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLight}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+                                <Setter Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                            <Trigger Property="IsReadOnly" Value="True">
+                                <Setter Property="Background" Value="#F1F5F9"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SettingsPasswordBox" TargetType="PasswordBox">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLight}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+                                <Setter Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SettingsComboBox" TargetType="ComboBox">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLight}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <ToggleButton x:Name="ToggleButton"
+                                          Grid.ColumnSpan="2"
+                                          Background="{TemplateBinding Background}"
+                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                          Focusable="False"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="ToggleButton">
+                                        <Border x:Name="border"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                CornerRadius="8">
+                                            <Grid>
+                                                <ContentPresenter HorizontalAlignment="Stretch" 
+                                                                  VerticalAlignment="Center"
+                                                                  Margin="10,0,30,0"/>
+                                                <Path x:Name="Arrow"
+                                                      Fill="#7F8C8D"
+                                                      HorizontalAlignment="Right"
+                                                      VerticalAlignment="Center"
+                                                      Margin="0,0,12,0"
+                                                      Data="M 0 0 L 4 4 L 8 0 Z"/>
+                                            </Grid>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="{StaticResource BackgroundLight}"/>
+                                            </Trigger>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter TargetName="Arrow" Property="Data" Value="M 0 4 L 4 0 L 8 4 Z"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+                            </ToggleButton>
+                            <Popup x:Name="Popup"
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                <Grid x:Name="DropDown"
+                                      SnapsToDevicePixels="True"
+                                      MinWidth="{TemplateBinding ActualWidth}"
+                                      MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border x:Name="DropDownBorder"
+                                            Background="White"
+                                            BorderBrush="{StaticResource BorderLight}"
+                                            BorderThickness="1"
+                                            CornerRadius="8"
+                                            Margin="0,2,0,0"
+                                            Effect="{StaticResource SoftShadow}"/>
+                                    <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+                                <Setter Property="BorderThickness" Value="2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SettingsCheckBox" TargetType="CheckBox">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="CheckBox">
+                        <StackPanel Orientation="Horizontal">
+                            <Border x:Name="checkBorder"
+                                    Width="20"
+                                    Height="20"
+                                    CornerRadius="4"
+                                    BorderBrush="{StaticResource BorderLight}"
+                                    BorderThickness="2"
+                                    Background="White"
+                                    Margin="0,0,10,0">
+                                <Path x:Name="checkMark"
+                                      Data="M 0 5 L 5 10 L 12 0"
+                                      Stroke="White"
+                                      StrokeThickness="3"
+                                      StrokeEndLineCap="Round"
+                                      StrokeLineJoin="Round"
+                                      Visibility="Collapsed"
+                                      Margin="2"/>
+                            </Border>
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="checkBorder" Property="Background" Value="{StaticResource PrimaryColor}"/>
+                                <Setter TargetName="checkBorder" Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+                                <Setter TargetName="checkMark" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="checkBorder" Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="#94A3B8"/>
+                                <Setter TargetName="checkBorder" Property="Background" Value="#F1F5F9"/>
+                                <Setter TargetName="checkBorder" Property="BorderBrush" Value="#CBD5E1"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="MinWidth" Value="140"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="8"
+                                Effect="{StaticResource SoftShadow}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#2D3A8C"/>
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.02" ScaleY="1.02"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Background" Value="#94A3B8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SecondaryButton" TargetType="Button">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="MinWidth" Value="140"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#EBF5FF"/>
+                                <Setter Property="BorderBrush" Value="#2D3A8C"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SuccessButton" TargetType="Button">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource SuccessColor}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="MinWidth" Value="160"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="8"
+                                Effect="{StaticResource SoftShadow}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#219A52"/>
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1.02" ScaleY="1.02"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Background" Value="#94A3B8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SmallButton" TargetType="Button">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="MinWidth" Value="80"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#2D3A8C"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Background" Value="#94A3B8"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ==================== Style للـ Border القسم ==================== -->
+        <Style x:Key="SectionBorder" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="0,0,0,20"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLight}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Effect" Value="{StaticResource SoftShadow}"/>
+        </Style>
+
+        <Style x:Key="SectionTitle" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
+
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="20">
+
+            <!-- ==================== عنوان الصفحة ==================== -->
+            <TextBlock Text="⚙️ الإعدادات العامة"
+                       FontSize="24" 
+                       FontWeight="Bold"
+                       Foreground="{StaticResource TextPrimary}"
+                       FontFamily="Cairo"
+                       Margin="0,0,0,25"/>
+
+            <!-- ================================================================ -->
+            <!-- ==================== قسم شعار الشركة ==================== -->
+            <!-- ================================================================ -->
+            <Border Style="{StaticResource SectionBorder}">
+                <StackPanel>
+                    <TextBlock Text="🖼️ شعار الشركة" Style="{StaticResource SectionTitle}"/>
+
+                    <!-- معاينة الصورة الحالية -->
+                    <Border Background="{StaticResource BackgroundLight}" 
+                            CornerRadius="10" 
+                            Padding="15" 
+                            Margin="0,0,0,15">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="الصورة الحالية:" 
+                                       Style="{StaticResource SettingsLabel}"
+                                       Margin="0,0,15,0"/>
+                            <Border Width="50" Height="50" 
+                                    CornerRadius="25" 
+                                    Background="White"
+                                    BorderBrush="{StaticResource BorderLight}"
+                                    BorderThickness="1">
+                                <Image x:Name="PreviewImage" 
+                                       Stretch="UniformToFill"
+                                       Width="46" 
+                                       Height="46"/>
+                            </Border>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- مسار الشعار -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="مسار الشعار" 
+                                   Style="{StaticResource SettingsLabel}"
+                                   Grid.Column="0"/>
+                        <TextBox x:Name="txtLogoPath" 
+                                 Grid.Column="1"
+                                 Style="{StaticResource SettingsTextBox}"
+                                 Height="35"
+                                 IsReadOnly="True"
+                                 Background="#F1F5F9"/>
+                        <Button x:Name="btnBrowseLogo" 
+                                Grid.Column="2"
+                                Content="📂 تصفح"
+                                Style="{StaticResource SmallButton}"
+                                Width="80"
+                                Margin="10,0,0,0"/>
+                    </Grid>
+
+                    <!-- أزرار التحكم -->
+                    <StackPanel Orientation="Horizontal" Margin="150,10,0,0">
+                        <Button x:Name="btnUploadLogo" 
+                                Content="⬆️ رفع الشعار"
+                                Style="{StaticResource PrimaryButton}"
+                                Width="140"/>
+                        <Button x:Name="btnResetLogo" 
+                                Content="🔄 استعادة الافتراضي"
+                                Style="{StaticResource SecondaryButton}"
+                                Width="160"
+                                Margin="10,0,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- ================================================================ -->
+            <!-- ==================== قسم معلومات الشركة ==================== -->
+            <!-- ================================================================ -->
+            <Border Style="{StaticResource SectionBorder}">
+                <StackPanel>
+                    <TextBlock Text="🏢 معلومات الشركة" Style="{StaticResource SectionTitle}"/>
+
+                    <!-- اسم الشركة -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="اسم الشركة" 
+                                   Style="{StaticResource SettingsLabel}"
+                                   Grid.Column="0"/>
+                        <TextBox x:Name="txtCompanyName" 
+                                 Grid.Column="1"
+                                 Style="{StaticResource SettingsTextBox}"
+                                 Height="35"/>
+                    </Grid>
+
+                    <!-- البريد الإلكتروني -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="البريد الإلكتروني" 
+                                   Style="{StaticResource SettingsLabel}"
+                                   Grid.Column="0"/>
+                        <TextBox x:Name="txtEmail" 
+                                 Grid.Column="1"
+                                 Style="{StaticResource SettingsTextBox}"
+                                 Height="35"/>
+                    </Grid>
+
+                    <!-- رقم الهاتف -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="رقم الهاتف" 
+                                   Style="{StaticResource SettingsLabel}"
+                                   Grid.Column="0"/>
+                        <TextBox x:Name="txtPhone" 
+                                 Grid.Column="1"
+                                 Style="{StaticResource SettingsTextBox}"
+                                 Height="35"/>
+                    </Grid>
+
+                    <!-- العنوان -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="العنوان" 
+                                   Style="{StaticResource SettingsLabel}"
+                                   Grid.Column="0"/>
+                        <TextBox x:Name="txtAddress" 
+                                 Grid.Column="1"
+                                 Style="{StaticResource SettingsTextBox}"
+                                 Height="35"/>
+                    </Grid>
+
+                    <!-- الرقم الضريبي -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="الرقم الضريبي" 
+                                   Style="{StaticResource SettingsLabel}"
+                                   Grid.Column="0"/>
+                        <TextBox x:Name="txtTaxNumber" 
+                                 Grid.Column="1"
+                                 Style="{StaticResource SettingsTextBox}"
+                                 Height="35"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- ================================================================ -->
+            <!-- ==================== قسم إعدادات العملة ==================== -->
+            <!-- ================================================================ -->
+            <Border Style="{StaticResource SectionBorder}">
+                <StackPanel>
+                    <TextBlock Text="💱 إعدادات العملة" Style="{StaticResource SectionTitle}"/>
+
+                    <!-- رمز العملة -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="رمز العملة (المعروض)" 
+                                   Style="{StaticResource SettingsLabel}"
+                                   Grid.Column="0"/>
+                        <TextBox x:Name="txtCurrencySymbol" 
+                                 Grid.Column="1"
+                                 Style="{StaticResource SettingsTextBox}"
+                                 Height="35"
+                                 Text="ر.س"/>
+                    </Grid>
+
+                    <!-- كود العملة -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="كود العملة (ISO)" 
+                                   Style="{StaticResource SettingsLabel}"
+                                   Grid.Column="0"/>
+                        <TextBox x:Name="txtCurrencyCode" 
+                                 Grid.Column="1"
+                                 Style="{StaticResource SettingsTextBox}"
+                                 Height="35"
+                                 Text="SAR"/>
+                    </Grid>
+
+                    <!-- اسم العملة بالعربية -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="اسم العملة (عربي)" 
+                                   Style="{StaticResource SettingsLabel}"
+                                   Grid.Column="0"/>
+                        <TextBox x:Name="txtCurrencyNameAr" 
+                                 Grid.Column="1"
+                                 Style="{StaticResource SettingsTextBox}"
+                                 Height="35"
+                                 Text="ريال سعودي"/>
+                    </Grid>
+
+                    <!-- اسم العملة بالإنجليزية -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="اسم العملة (إنجليزي)" 
+                                   Style="{StaticResource SettingsLabel}"
+                                   Grid.Column="0"/>
+                        <TextBox x:Name="txtCurrencyNameEn" 
+                                 Grid.Column="1"
+                                 Style="{StaticResource SettingsTextBox}"
+                                 Height="35"
+                                 Text="Saudi Riyal"/>
+                    </Grid>
+
+                    <!-- عدد المنازل العشرية -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="عدد المنازل العشرية" 
+                                   Style="{StaticResource SettingsLabel}"
+                                   Grid.Column="0"/>
+                        <ComboBox x:Name="cmbDecimalPlaces" 
+                                  Grid.Column="1"
+                                  Style="{StaticResource SettingsComboBox}"
+                                  Height="35">
+                            <ComboBoxItem Content="0" Tag="0"/>
+                            <ComboBoxItem Content="1" Tag="1"/>
+                            <ComboBoxItem Content="2" Tag="2" IsSelected="True"/>
+                            <ComboBoxItem Content="3" Tag="3"/>
+                        </ComboBox>
+                    </Grid>
+
+                    <!-- مثال -->
+                    <TextBlock Text="💡 مثال: 1,234.56 ر.س" 
+                               FontSize="11" 
+                               Foreground="{StaticResource TextSecondary}"
+                               FontFamily="Cairo"
+                               Margin="150,5,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- ================================================================ -->
+            <!-- ==================== قسم النسخ الاحتياطي التلقائي ==================== -->
+            <!-- ================================================================ -->
+            <Border Style="{StaticResource SectionBorder}">
+                <StackPanel>
+                    <TextBlock Text="🔄 النسخ الاحتياطي التلقائي" Style="{StaticResource SectionTitle}"/>
+
+                    <!-- تفعيل النسخ الاحتياطي التلقائي -->
+                    <CheckBox x:Name="chkAutoBackup"
+                              Style="{StaticResource SettingsCheckBox}"
+                              Content="✅ تفعيل النسخ الاحتياطي التلقائي"
+                              Margin="0,0,0,10"
+                              Checked="ChkAutoBackup_Checked"
+                              Unchecked="ChkAutoBackup_Unchecked"/>
+
+                    <!-- مسار الحفظ -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="مسار الحفظ" 
+                                   Style="{StaticResource SettingsLabel}"
+                                   Grid.Column="0"/>
+                        <TextBox x:Name="txtBackupPath" 
+                                 Grid.Column="1"
+                                 Style="{StaticResource SettingsTextBox}"
+                                 Height="35"
+                                 IsReadOnly="True"
+                                 IsEnabled="False"/>
+                        <Button x:Name="btnBrowseBackupPath" 
+                                Grid.Column="2"
+                                Content="📂 اختيار"
+                                Style="{StaticResource SmallButton}"
+                                Width="80"
+                                Margin="10,0,0,0"
+                                IsEnabled="False"
+                                Click="BtnBrowseBackupPath_Click"/>
+                    </Grid>
+
+                    <!-- تكرار النسخ -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="تكرار النسخ" 
+                                   Style="{StaticResource SettingsLabel}"
+                                   Grid.Column="0"/>
+                        <ComboBox x:Name="cmbBackupFrequency" 
+                                  Grid.Column="1"
+                                  Style="{StaticResource SettingsComboBox}"
+                                  Height="35"
+                                  IsEnabled="False">
+                            <ComboBoxItem Content="عند كل حفظ" Tag="OnSave" IsSelected="True"/>
+                            <ComboBoxItem Content="يومي" Tag="Daily"/>
+                            <ComboBoxItem Content="أسبوعي" Tag="Weekly"/>
+                            <ComboBoxItem Content="شهري" Tag="Monthly"/>
+                        </ComboBox>
+                    </Grid>
+
+                    <!-- عدد النسخ الاحتفاظ بها -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="الاحتفاظ بـ" 
+                                   Style="{StaticResource SettingsLabel}"
+                                   Grid.Column="0"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox x:Name="txtBackupRetention" 
+                                     Grid.Column="1"
+                                     Style="{StaticResource SettingsTextBox}"
+                                     Height="35"
+                                     Width="80"
+                                     Text="10"
+                                     TextAlignment="Center"
+                                     IsEnabled="False"/>
+                            <TextBlock Text="نسخة احتياطية" 
+                                       FontSize="13"
+                                       Foreground="{StaticResource TextSecondary}"
+                                       FontFamily="Cairo"
+                                       VerticalAlignment="Center"
+                                       Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- رسالة إرشادية -->
+                    <TextBlock Text="💡 سيتم حفظ النسخ الاحتياطية تلقائياً في المجلد المحدد دون الحاجة لتدخل منك"
+                               FontSize="11"
+                               Foreground="{StaticResource TextSecondary}"
+                               FontFamily="Cairo"
+                               Margin="150,5,0,0"/>
+
+                    <!-- زر حفظ إعدادات النسخ الاحتياطي -->
+                    <Button x:Name="btnSaveBackupSettings" 
+                            Content="💾 حفظ إعدادات النسخ الاحتياطي"
+                            Style="{StaticResource SuccessButton}"
+                            Width="260"
+                            HorizontalAlignment="Left"
+                            Margin="150,15,0,0"
+                            Click="BtnSaveBackupSettings_Click"/>
+                </StackPanel>
+            </Border>
+
+            <!-- ================================================================ -->
+            <!-- ==================== قسم تغيير كلمة المرور ==================== -->
+            <!-- ================================================================ -->
+            <Border Style="{StaticResource SectionBorder}">
+                <StackPanel>
+                    <TextBlock Text="👤 تغيير كلمة المرور" Style="{StaticResource SectionTitle}"/>
+
+                    <!-- كلمة المرور الحالية -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="كلمة المرور الحالية" 
+                                   Style="{StaticResource SettingsLabel}"
+                                   Grid.Column="0"/>
+                        <PasswordBox x:Name="txtCurrentPassword" 
+                                     Grid.Column="1"
+                                     Style="{StaticResource SettingsPasswordBox}"
+                                     Height="35"/>
+                    </Grid>
+
+                    <!-- كلمة المرور الجديدة -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="كلمة المرور الجديدة" 
+                                   Style="{StaticResource SettingsLabel}"
+                                   Grid.Column="0"/>
+                        <PasswordBox x:Name="txtNewPassword" 
+                                     Grid.Column="1"
+                                     Style="{StaticResource SettingsPasswordBox}"
+                                     Height="35"/>
+                    </Grid>
+
+                    <!-- تأكيد كلمة المرور -->
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="تأكيد كلمة المرور" 
+                                   Style="{StaticResource SettingsLabel}"
+                                   Grid.Column="0"/>
+                        <PasswordBox x:Name="txtConfirmPassword" 
+                                     Grid.Column="1"
+                                     Style="{StaticResource SettingsPasswordBox}"
+                                     Height="35"/>
+                    </Grid>
+
+                    <Button x:Name="btnChangePassword" 
+                            Content="🔑 تغيير كلمة المرور"
+                            Style="{StaticResource PrimaryButton}"
+                            HorizontalAlignment="Left"
+                            Margin="150,10,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- ================================================================ -->
+            <!-- ==================== قسم النسخ الاحتياطي اليدوي ==================== -->
+            <!-- ================================================================ -->
+            <Border Style="{StaticResource SectionBorder}">
+                <StackPanel>
+                    <TextBlock Text="💾 النسخ الاحتياطي اليدوي" Style="{StaticResource SectionTitle}"/>
+
+                    <TextBlock Text="قم بإنشاء نسخة احتياطية يدوية أو استعادة نسخة سابقة"
+                               FontSize="12"
+                               Foreground="{StaticResource TextSecondary}"
+                               FontFamily="Cairo"
+                               Margin="0,0,0,15"/>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <Button x:Name="btnBackup" 
+                                Content="💾 نسخ احتياطي"
+                                Style="{StaticResource PrimaryButton}"
+                                Width="160"/>
+                        <Button x:Name="btnRestore" 
+                                Content="📂 استعادة نسخة"
+                                Style="{StaticResource SecondaryButton}"
+                                Width="160"
+                                Margin="10,0,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- ================================================================ -->
+            <!-- ==================== قسم المظهر ==================== -->
+            <!-- ================================================================ -->
+            <Border Style="{StaticResource SectionBorder}">
+                <StackPanel>
+                    <TextBlock Text="🎨 المظهر" Style="{StaticResource SectionTitle}"/>
+
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="الوضع" 
+                                   Style="{StaticResource SettingsLabel}"
+                                   Grid.Column="0"/>
+                        <ComboBox x:Name="cmbTheme" 
+                                  Grid.Column="1"
+                                  Style="{StaticResource SettingsComboBox}"
+                                  Height="35">
+                            <ComboBoxItem Content="☀️ فاتح" Tag="Light" IsSelected="True"/>
+                            <ComboBoxItem Content="🌙 داكن" Tag="Dark"/>
+                        </ComboBox>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <!-- ================================================================ -->
+            <!-- ==================== أزرار الحفظ والإلغاء ==================== -->
+            <!-- ================================================================ -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,30">
+                <Button x:Name="btnSave" 
+                        Content="💾 حفظ جميع الإعدادات"
+                        Style="{StaticResource PrimaryButton}"
+                        Width="180"/>
+                <Button x:Name="btnCancel" 
+                        Content="❌ إلغاء"
+                        Style="{StaticResource SecondaryButton}"
+                        Width="140"
+                        Margin="10,0,0,0"/>
+            </StackPanel>
+
+            <!-- ==================== رسالة الحالة ==================== -->
+            <TextBlock x:Name="lblStatus" 
+                       FontSize="13" 
+                       FontFamily="Cairo"
+                       FontWeight="SemiBold"
+                       HorizontalAlignment="Center"
+                       Margin="0,10,0,0"
+                       Visibility="Collapsed"/>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

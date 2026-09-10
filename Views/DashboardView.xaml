@@ -1,0 +1,580 @@
+﻿<UserControl x:Class="RasidAccountingSystem.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             Background="#FAF7F0"
+             FlowDirection="RightToLeft">
+
+    <UserControl.Resources>
+
+        <!-- الألوان الأساسية - هوية "الخزينة الحديثة" (متماشية مع App.xaml وMainWindow) -->
+        <SolidColorBrush x:Key="PrimaryBlue" Color="#0F5C46"/>
+        <SolidColorBrush x:Key="PrimaryGreen" Color="#1E8E5A"/>
+        <SolidColorBrush x:Key="PrimaryRed" Color="#DC2626"/>
+        <SolidColorBrush x:Key="PrimaryOrange" Color="#D97706"/>
+        <SolidColorBrush x:Key="PrimaryPurple" Color="#C9972C"/>
+
+        <SolidColorBrush x:Key="ExcelGreen" Color="#1E8E5A"/>
+        <SolidColorBrush x:Key="PrintBlue" Color="#3B7A8C"/>
+
+        <SolidColorBrush x:Key="BgPage" Color="#FAF7F0"/>
+        <SolidColorBrush x:Key="BgCard" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="BgHover" Color="#F2EEE6"/>
+
+        <SolidColorBrush x:Key="TextDark" Color="#24211D"/>
+        <SolidColorBrush x:Key="TextGray" Color="#6B6156"/>
+        <SolidColorBrush x:Key="TextLight" Color="#97896F"/>
+        <SolidColorBrush x:Key="TextWhite" Color="#FFFFFF"/>
+
+        <SolidColorBrush x:Key="BgBlueLight" Color="#E6F3EE"/>
+        <SolidColorBrush x:Key="BgGreenLight" Color="#E6F7ED"/>
+        <SolidColorBrush x:Key="BgRedLight" Color="#FFE6E6"/>
+        <SolidColorBrush x:Key="BgOrangeLight" Color="#FFF2E6"/>
+        <SolidColorBrush x:Key="BgPurpleLight" Color="#FBF1DC"/>
+
+        <SolidColorBrush x:Key="BorderGray" Color="#D8CDB8"/>
+
+        <!-- الظلال -->
+        <DropShadowEffect x:Key="CardShadow" BlurRadius="6" ShadowDepth="1" Opacity="0.08" Color="#000000"/>
+        <DropShadowEffect x:Key="CardShadowHover" BlurRadius="12" ShadowDepth="2" Opacity="0.12" Color="#000000"/>
+
+        <!-- أنماط البطاقات -->
+        <Style x:Key="DashboardCard" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource BgCard}"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Effect" Value="{StaticResource CardShadow}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderGray}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Effect" Value="{StaticResource CardShadowHover}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- نمط الأزرار الأساسي -->
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryBlue}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextWhite}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#0A3D2F"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- نمط زر Excel -->
+        <Style x:Key="ExcelButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource ExcelGreen}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextWhite}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Width" Value="90"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="📊" FontSize="12" Margin="0,0,6,0"/>
+                                <TextBlock Text="Excel" FontSize="11"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#146B48"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- نمط زر الطباعة -->
+        <Style x:Key="PrintButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrintBlue}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextWhite}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Width" Value="90"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="🖨️" FontSize="12" Margin="0,0,6,0"/>
+                                <TextBlock Text="طباعة" FontSize="11"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#2C5F6B"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- نمط الأزرار الثانوي -->
+        <Style x:Key="OutlineButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryBlue}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryBlue}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource PrimaryBlue}"/>
+                                <Setter Property="Foreground" Value="{StaticResource TextWhite}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- أنماط حقول الإدخال -->
+        <Style TargetType="DatePicker">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="{StaticResource TextDark}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderGray}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="{StaticResource BgCard}"/>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="{StaticResource TextDark}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderGray}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="{StaticResource BgCard}"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="{StaticResource TextDark}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderGray}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="{StaticResource BgCard}"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <!-- أنماط الجدول (معدل ليصبح مثل TreasuryView) -->
+        <Style x:Key="DataGridStyle" TargetType="DataGrid">
+            <Setter Property="Background" Value="{StaticResource BgCard}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderGray}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="RowHeight" Value="50"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="GridLinesVisibility" Value="None"/>
+            <Setter Property="AlternatingRowBackground" Value="#FAF8F4"/>
+            <Setter Property="RowBackground" Value="{StaticResource BgCard}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#F2EEE6"/>
+            <Setter Property="Foreground" Value="#24211D"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="BorderBrush" Value="#E7E0D2"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Padding" Value="15,0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="Foreground" Value="#24211D"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="15,0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Setter Property="Background" Value="{StaticResource BgCard}"/>
+            <Setter Property="BorderBrush" Value="#F2EEE6"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Margin" Value="0,1,0,0"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FAF8F4"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#E6F3EE"/>
+                    <Setter Property="BorderBrush" Value="#3D8F73"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- أنماط شريط التمرير (مثل TreasuryView) -->
+        <Style x:Key="ThinScrollBar" TargetType="ScrollBar">
+            <Setter Property="Width" Value="6"/>
+            <Setter Property="MinWidth" Value="6"/>
+            <Setter Property="MaxWidth" Value="6"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Background="Transparent">
+                            <Track x:Name="PART_Track">
+                                <Track.Thumb>
+                                    <Thumb x:Name="Thumb" Background="#B8AC94">
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border Background="{TemplateBinding Background}" 
+                                                        CornerRadius="4"
+                                                        Height="{TemplateBinding Height}"
+                                                        Width="6"/>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                                <Track.IncreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageDownCommand" Background="Transparent"/>
+                                </Track.IncreaseRepeatButton>
+                                <Track.DecreaseRepeatButton>
+                                    <RepeatButton Command="ScrollBar.PageUpCommand" Background="Transparent"/>
+                                </Track.DecreaseRepeatButton>
+                            </Track>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Thumb" Property="Background" Value="#97896F"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid Margin="10">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- ==================== شريط الفلاتر ==================== -->
+        <Border Grid.Row="0" Style="{StaticResource DashboardCard}" Margin="0,0,0,10" Padding="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Margin="0,0,8,0">
+                    <TextBlock Text="من تاريخ" FontSize="10" Foreground="{StaticResource TextGray}" FontWeight="SemiBold" Margin="0,0,0,3"/>
+                    <DatePicker x:Name="FromDatePicker"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Margin="0,0,8,0">
+                    <TextBlock Text="إلى تاريخ" FontSize="10" Foreground="{StaticResource TextGray}" FontWeight="SemiBold" Margin="0,0,0,3"/>
+                    <DatePicker x:Name="ToDatePicker"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Margin="0,0,8,0">
+                    <TextBlock Text="نوع التقرير" FontSize="10" Foreground="{StaticResource TextGray}" FontWeight="SemiBold" Margin="0,0,0,3"/>
+                    <ComboBox x:Name="ReportTypeCombo">
+                        <ComboBoxItem>الملخص المالي</ComboBoxItem>
+                        <ComboBoxItem>تقرير المبيعات</ComboBoxItem>
+                        <ComboBoxItem>تقرير المشتريات</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Grid.Column="3" Margin="0,0,8,0">
+                    <TextBlock Text="الفترة" FontSize="10" Foreground="{StaticResource TextGray}" FontWeight="SemiBold" Margin="0,0,0,3"/>
+                    <ComboBox x:Name="PeriodCombo" SelectedIndex="2">
+                        <ComboBoxItem>اليوم</ComboBoxItem>
+                        <ComboBoxItem>أسبوع</ComboBoxItem>
+                        <ComboBoxItem>شهر</ComboBoxItem>
+                        <ComboBoxItem>ربع سنة</ComboBoxItem>
+                        <ComboBoxItem>سنة</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+
+                <StackPanel Grid.Column="4" Margin="0,0,8,0">
+                    <TextBlock Text="بحث" FontSize="10" Foreground="{StaticResource TextGray}" FontWeight="SemiBold" Margin="0,0,0,3"/>
+                    <TextBox x:Name="SearchBox"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="5" VerticalAlignment="Bottom">
+                    <Button x:Name="RefreshButton" Content="⟳ تحديث" Style="{StaticResource PrimaryButton}" Width="75"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ==================== بطاقات KPI - الصف الأول ==================== -->
+        <Grid Grid.Row="1" Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource DashboardCard}" Margin="0,0,8,0" Padding="8">
+                <StackPanel>
+                    <TextBlock Text="المبيعات" FontSize="10" Foreground="{StaticResource TextGray}" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="SalesText" Text="0" FontSize="22" FontWeight="Bold" Foreground="{StaticResource PrimaryBlue}" Margin="0,5,0,0"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock x:Name="SalesTrendText" Text="0%" FontSize="10" FontWeight="Bold" Foreground="{StaticResource PrimaryGreen}"/>
+                        <TextBlock Text="عن السابق" FontSize="10" Foreground="{StaticResource TextLight}" Margin="6,0,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="1" Style="{StaticResource DashboardCard}" Margin="4,0,4,0" Padding="8">
+                <StackPanel>
+                    <TextBlock Text="المشتريات" FontSize="10" Foreground="{StaticResource TextGray}" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="PurchasesText" Text="0" FontSize="22" FontWeight="Bold" Foreground="{StaticResource PrimaryOrange}" Margin="0,5,0,0"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock x:Name="PurchasesTrendText" Text="0%" FontSize="10" FontWeight="Bold" Foreground="{StaticResource PrimaryRed}"/>
+                        <TextBlock Text="عن السابق" FontSize="10" Foreground="{StaticResource TextLight}" Margin="6,0,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="2" Style="{StaticResource DashboardCard}" Margin="4,0,4,0" Padding="8">
+                <StackPanel>
+                    <TextBlock Text="صافي الربح" FontSize="10" Foreground="{StaticResource TextGray}" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="ProfitText" Text="0" FontSize="22" FontWeight="Bold" Foreground="{StaticResource PrimaryGreen}" Margin="0,5,0,0"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock x:Name="ProfitTrendText" Text="0%" FontSize="10" FontWeight="Bold" Foreground="{StaticResource PrimaryGreen}"/>
+                        <TextBlock Text="عن السابق" FontSize="10" Foreground="{StaticResource TextLight}" Margin="6,0,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="3" Style="{StaticResource DashboardCard}" Margin="8,0,0,0" Padding="8">
+                <StackPanel>
+                    <TextBlock Text="هامش الربح" FontSize="10" Foreground="{StaticResource TextGray}" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="MarginText" Text="0%" FontSize="22" FontWeight="Bold" Foreground="{StaticResource PrimaryPurple}" Margin="0,5,0,0"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock x:Name="MarginTrendText" Text="0%" FontSize="10" FontWeight="Bold" Foreground="{StaticResource PrimaryBlue}"/>
+                        <TextBlock Text="نقطة" FontSize="10" Foreground="{StaticResource TextLight}" Margin="6,0,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- ==================== بطاقات KPI - الصف الثاني ==================== -->
+        <Grid Grid.Row="2" Margin="0,0,0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource DashboardCard}" Margin="0,0,8,0" Padding="8">
+                <StackPanel Orientation="Horizontal">
+                    <Border Width="32" Height="32" CornerRadius="6" Background="{StaticResource BgGreenLight}" Margin="0,0,12,0">
+                        <TextBlock Text="💰" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel>
+                        <TextBlock Text="المقبوضات" FontSize="10" Foreground="{StaticResource TextGray}" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="ReceiptsText" Text="0" FontSize="16" FontWeight="Bold" Foreground="{StaticResource PrimaryGreen}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="1" Style="{StaticResource DashboardCard}" Margin="4,0,4,0" Padding="8">
+                <StackPanel Orientation="Horizontal">
+                    <Border Width="32" Height="32" CornerRadius="6" Background="{StaticResource BgRedLight}" Margin="0,0,12,0">
+                        <TextBlock Text="💸" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel>
+                        <TextBlock Text="المدفوعات" FontSize="10" Foreground="{StaticResource TextGray}" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="PaymentsText" Text="0" FontSize="16" FontWeight="Bold" Foreground="{StaticResource PrimaryRed}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="2" Style="{StaticResource DashboardCard}" Margin="4,0,4,0" Padding="8">
+                <StackPanel Orientation="Horizontal">
+                    <Border Width="32" Height="32" CornerRadius="6" Background="{StaticResource BgBlueLight}" Margin="0,0,12,0">
+                        <TextBlock Text="👥" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel>
+                        <TextBlock Text="الذمم المدينة" FontSize="10" Foreground="{StaticResource TextGray}" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="ReceivablesText" Text="0" FontSize="16" FontWeight="Bold" Foreground="{StaticResource PrimaryBlue}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="3" Style="{StaticResource DashboardCard}" Margin="8,0,0,0" Padding="8">
+                <StackPanel Orientation="Horizontal">
+                    <Border Width="32" Height="32" CornerRadius="6" Background="{StaticResource BgOrangeLight}" Margin="0,0,12,0">
+                        <TextBlock Text="🏭" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <StackPanel>
+                        <TextBlock Text="الذمم الدائنة" FontSize="10" Foreground="{StaticResource TextGray}" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="PayablesText" Text="0" FontSize="16" FontWeight="Bold" Foreground="{StaticResource PrimaryOrange}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- ==================== الرسوم البيانية ==================== -->
+        <Grid Grid.Row="3" Margin="0,0,0,8" Height="180">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource DashboardCard}" Margin="0,0,8,0" Padding="8">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="المبيعات الشهرية" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextDark}" Margin="0,0,0,5"/>
+                    <lvc:CartesianChart x:Name="SalesChart" Grid.Row="1"/>
+                </Grid>
+            </Border>
+
+            <Border Grid.Column="1" Style="{StaticResource DashboardCard}" Margin="8,0,0,0" Padding="8">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="توزيع الإيرادات" FontSize="12" FontWeight="SemiBold" Foreground="{StaticResource TextDark}" Margin="0,0,0,5"/>
+                    <lvc:PieChart x:Name="RevenueChart" Grid.Row="1" LegendLocation="Right"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- ==================== جدول البيانات (معدل ليصبح مثل TreasuryView) ==================== -->
+        <Border Grid.Row="4" Style="{StaticResource DashboardCard}" Padding="0" CornerRadius="16">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- عنوان القسم -->
+                <Border Grid.Row="0" 
+                        Background="#FAF8F4" 
+                        Padding="15,12" 
+                        CornerRadius="16,16,0,0"
+                        BorderBrush="#E7E0D2"
+                        BorderThickness="0,0,0,1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📋" FontSize="16" Margin="0,0,8,0"/>
+                            <TextBlock Text="المعاملات المالية" FontSize="14" FontWeight="Bold" Foreground="{StaticResource TextDark}"/>
+                            <Border Background="{StaticResource BgBlueLight}" CornerRadius="12" Padding="8,2" Margin="12,0,0,0">
+                                <TextBlock x:Name="RecordsCountText" Text="0" FontSize="11" Foreground="{StaticResource PrimaryBlue}" FontWeight="Bold"/>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- الجدول -->
+                <DataGrid x:Name="DataGridTable" 
+                          Grid.Row="1" 
+                          Style="{StaticResource DataGridStyle}"
+                          ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                          ScrollViewer.VerticalScrollBarVisibility="Auto"
+                          ScrollViewer.CanContentScroll="True">
+
+                    <DataGrid.Resources>
+                        <Style TargetType="ScrollBar" BasedOn="{StaticResource ThinScrollBar}"/>
+                    </DataGrid.Resources>
+
+                </DataGrid>
+
+                <!-- شريط الإجمالي والأزرار -->
+                <Border Grid.Row="2" 
+                        Background="#FAF8F4" 
+                        Padding="15,12" 
+                        CornerRadius="0,0,16,16"
+                        BorderBrush="#E7E0D2"
+                        BorderThickness="0,1,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <TextBlock Text="الإجمالي:" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TextGray}" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="TotalAmountText" Text="0.00" FontSize="18" FontWeight="Bold" Foreground="{StaticResource PrimaryBlue}" Margin="8,0,0,0" FontFamily="Segoe UI"/>
+                            <TextBlock x:Name="lblCurrencyTotalAmount" Text="ر.س" FontSize="12" Foreground="{StaticResource TextDark}" Margin="5,0,0,0" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Button x:Name="ExportExcelButton" Style="{StaticResource ExcelButton}"/>
+                            <Button x:Name="PrintButton" Style="{StaticResource PrintButton}" Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+    </Grid>
+</UserControl>

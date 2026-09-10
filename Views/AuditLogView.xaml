@@ -1,0 +1,160 @@
+﻿<UserControl x:Class="RasidAccountingSystem.Views.AuditLogView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             Background="#F8FAFC"
+             FlowDirection="RightToLeft"
+             FontFamily="Segoe UI">
+
+    <UserControl.Resources>
+
+        <SolidColorBrush x:Key="PrimaryColor" Color="#4361EE"/>
+        <SolidColorBrush x:Key="PrimaryDark" Color="#3A56D4"/>
+        <SolidColorBrush x:Key="SurfaceColor" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="TextPrimaryColor" Color="#1E293B"/>
+        <SolidColorBrush x:Key="TextSecondaryColor" Color="#64748B"/>
+        <SolidColorBrush x:Key="BorderLight" Color="#E2E8F0"/>
+        <SolidColorBrush x:Key="Gray50" Color="#F8FAFC"/>
+        <SolidColorBrush x:Key="DangerColor" Color="#EF4444"/>
+        <SolidColorBrush x:Key="WarningColor" Color="#F59E0B"/>
+
+        <DropShadowEffect x:Key="ShadowSm" BlurRadius="6" ShadowDepth="1" Opacity="0.08" Color="#000000"/>
+
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource PrimaryDark}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModernComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLight}"/>
+        </Style>
+
+        <Style x:Key="FormTextBox" TargetType="TextBox">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLight}"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style x:Key="ActionBadge" TargetType="Border">
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="8,3"/>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- الشريط العلوي -->
+        <Border Grid.Row="0" Background="{StaticResource SurfaceColor}" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1" Effect="{StaticResource ShadowSm}">
+            <Grid Margin="15,10,15,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,12">
+                    <TextBlock Text="🕵️" FontSize="22" Margin="0,0,10,0"/>
+                    <TextBlock Text="سجل التعديلات" FontSize="18" FontWeight="Bold" Foreground="{StaticResource TextPrimaryColor}" VerticalAlignment="Center"/>
+                    <TextBlock Text="سجل تلقائي لأهم التغييرات الحساسة أمنياً ومالياً في النظام" FontSize="12" Foreground="{StaticResource TextSecondaryColor}" VerticalAlignment="Center" Margin="15,0,0,0"/>
+                </StackPanel>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ComboBox x:Name="cmbTableFilter" Grid.Column="0" Width="170" Height="34" Style="{StaticResource ModernComboBoxStyle}" Margin="0,0,8,0"/>
+                    <ComboBox x:Name="cmbActionFilter" Grid.Column="1" Width="150" Height="34" Style="{StaticResource ModernComboBoxStyle}" Margin="0,0,8,0"/>
+                    <TextBox x:Name="txtSearch" Grid.Column="2" Width="220" Height="34" Style="{StaticResource FormTextBox}" Margin="0,0,8,0"/>
+
+                    <Button x:Name="btnRefresh" Grid.Column="4" Content="⟳ تحديث" Width="90" Height="34" Style="{StaticResource PrimaryButton}"/>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <!-- الجدول -->
+        <Border Grid.Row="1" Background="{StaticResource SurfaceColor}" Margin="20" BorderBrush="{StaticResource BorderLight}" BorderThickness="1" CornerRadius="12" Effect="{StaticResource ShadowSm}" Padding="20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock x:Name="lblNoResults" Grid.Row="1" Text="لا توجد تعديلات مسجَّلة مطابقة لهذا الفلتر" FontSize="13" Foreground="{StaticResource TextSecondaryColor}" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+
+                <DataGrid x:Name="dgAuditLog" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column" GridLinesVisibility="None" RowHeight="44" BorderThickness="0" Background="{StaticResource SurfaceColor}" AlternatingRowBackground="{StaticResource Gray50}" RowBackground="{StaticResource SurfaceColor}">
+                    <DataGrid.Columns>
+
+                        <DataGridTextColumn Header="التاريخ والوقت" Binding="{Binding ChangedDateDisplay}" Width="150">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock"><Setter Property="HorizontalAlignment" Value="Center"/><Setter Property="FontSize" Value="12"/></Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTemplateColumn Header="نوع الحدث" Width="130">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource ActionBadge}" Background="{Binding ActionBackground}" HorizontalAlignment="Center">
+                                        <TextBlock Text="{Binding ActionDisplay}" FontSize="11" FontWeight="SemiBold" Foreground="{Binding ActionForeground}"/>
+                                    </Border>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTextColumn Header="الجدول" Binding="{Binding TableNameDisplay}" Width="130">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock"><Setter Property="HorizontalAlignment" Value="Center"/><Setter Property="FontSize" Value="12"/></Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="التفاصيل" Binding="{Binding Summary}" Width="*" MinWidth="250">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock"><Setter Property="HorizontalAlignment" Value="Right"/><Setter Property="FontSize" Value="12"/><Setter Property="TextWrapping" Value="Wrap"/></Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="بواسطة" Binding="{Binding ChangedByName}" Width="130">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock"><Setter Property="HorizontalAlignment" Value="Center"/><Setter Property="FontSize" Value="12"/></Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

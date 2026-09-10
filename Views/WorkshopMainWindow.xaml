@@ -1,0 +1,300 @@
+<Window x:Class="RasidAccountingSystem.Views.WorkshopMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:views="clr-namespace:RasidAccountingSystem.Views"
+        Title="الورشة"
+        Height="820" Width="1400"
+        WindowStartupLocation="CenterScreen"
+        FlowDirection="RightToLeft">
+
+    <!--
+        ==========================================================================
+        WorkshopMainWindow.xaml — الهيكل العام التجريبي لبرنامج "الورشة"
+        ==========================================================================
+        نافذة تجريبية منفصلة تمامًا عن MainWindow.xaml الإنتاجي الحالي.
+        الهدف من هذه الخطوة: الاتفاق على شكل الإطار العام (Sidebar + Header
+        + منطقة محتوى) قبل اتخاذ قرار استبدال MainWindow.xaml الفعلي أو
+        دمج هذا الهيكل بداخله تدريجيًا (قرار مقترح في الخطوة التالية).
+
+        منطقة المحتوى في النص حاليًا Placeholder فاضي (بدون أي Dashboard
+        حقيقي بعد) — بناء الـDashboard نفسه هو المرحلة التالية في الخطة
+        الأصلية (المرحلة 4)، ومُتعمَّد الفصل بينه وبين هيكل الإطار العام
+        هنا حتى تكون كل خطوة قابلة للمراجعة بمفردها.
+    -->
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/WorkshopTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- زرار أيقونة دائري بسيط للهيدر (إشعارات/إعدادات) -->
+            <Style x:Key="HeaderIconButtonStyle" TargetType="Button">
+                <Setter Property="Width" Value="40"/>
+                <Setter Property="Height" Value="40"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Bd" Background="{TemplateBinding Background}"
+                                    CornerRadius="{StaticResource RadiusPill}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Bd" Property="Background" Value="{StaticResource HoverSurfaceBrush}"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid Background="{StaticResource AppBackgroundBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ===================== الشريط الجانبي (Column 0 هنا = يمين فعليًا تحت RTL) ===================== -->
+        <views:WorkshopSidebar x:Name="Sidebar" Grid.Column="0"/>
+
+        <!-- ===================== منطقة المحتوى (Header + Content) ===================== -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="72"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- ===================== Header ===================== -->
+            <Border Grid.Row="0" Background="{StaticResource SurfaceBrush}"
+                    BorderBrush="{StaticResource BorderBrush2}" BorderThickness="0,0,0,1">
+                <Grid Margin="24,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- اسم الورشة الحالية (Placeholder — من إعدادات النظام لاحقًا) -->
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="ورشة الأمانة لصيانة السيارات" Style="{StaticResource TextH3Style}"/>
+                        <TextBlock Text="مرحبًا، أحمد" Style="{StaticResource TextCaptionStyle}"/>
+                    </StackPanel>
+
+                    <!-- البحث السريع (منتصف الهيدر) -->
+                    <Border Grid.Column="1" Background="{StaticResource AppBackgroundBrush}"
+                            CornerRadius="{StaticResource RadiusMedium}"
+                            Height="42" MaxWidth="460" Margin="32,0"
+                            HorizontalAlignment="Stretch">
+                        <DockPanel Margin="14,0" LastChildFill="True">
+                            <TextBlock Text="&#xE721;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                            <TextBlock Text="ابحث برقم الهاتف، رقم اللوحة، أو اسم العميل..."
+                                       Style="{StaticResource TextMutedStyle}"
+                                       VerticalAlignment="Center" Margin="10,0,0,0"/>
+                        </DockPanel>
+                    </Border>
+
+                    <!-- الإشعارات + إعدادات الحساب -->
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Style="{StaticResource HeaderIconButtonStyle}" Margin="6,0">
+                            <Grid>
+                                <TextBlock Text="&#xE7E7;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="16"/>
+                                <Border Background="{StaticResource AccentBrush}" CornerRadius="8"
+                                        Width="8" Height="8" HorizontalAlignment="Right" VerticalAlignment="Top"
+                                        Margin="0,-2,-2,0"/>
+                            </Grid>
+                        </Button>
+                        <Button Content="&#xE713;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" Style="{StaticResource HeaderIconButtonStyle}" Margin="6,0"/>
+                        <Border Width="1" Height="26" Background="{StaticResource BorderBrush2}" Margin="10,0"/>
+                        <Border Width="36" Height="36" CornerRadius="{StaticResource RadiusPill}"
+                                Background="{StaticResource AccentSoftBrush}">
+                            <TextBlock Text="أ" FontWeight="Bold" Foreground="{StaticResource AccentDarkBrush}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- ===================== منطقة المحتوى — Dashboard حقيقي (أرقام Placeholder شكلية، بدون قاعدة بيانات بعد) ===================== -->
+            <ScrollViewer x:Name="DashboardView" Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <StackPanel Margin="24">
+                    <TextBlock Text="نظرة عامة على اليوم" Style="{StaticResource TextH2Style}" Margin="0,0,0,4"/>
+                    <TextBlock Text="أرقام تجريبية للمعاينة فقط — سيتم ربطها بقاعدة البيانات الفعلية في خطوة تالية"
+                               Style="{StaticResource TextMutedStyle}" Margin="0,0,0,16"/>
+
+                    <!-- ===== الحالة التشغيلية الآن (الأهم في يوم الورشة — عنصر واحد بارز) ===== -->
+                    <Grid Margin="0,0,0,24">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.4*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- الكارت البطل: عدد السيارات داخل الورشة + توزيعها على مراحل العمل -->
+                        <Border Grid.Column="0" Style="{StaticResource HeroMetricCardStyle}">
+                            <StackPanel>
+                                <TextBlock Text="سيارات داخل الورشة الآن" Foreground="#9AA0A8"
+                                           FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeSmall}"/>
+                                <TextBlock Text="7" Foreground="White"
+                                           FontFamily="{StaticResource FontFamilyBase}"
+                                           FontSize="46" FontWeight="Bold" Margin="0,2,0,14"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse Width="7" Height="7" Fill="{StaticResource StatusInspectionBrush}" VerticalAlignment="Center"/>
+                                    <TextBlock Text="فحص · 2" Foreground="#C9CDD3" VerticalAlignment="Center"
+                                               FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeCaption}" Margin="6,0,16,0"/>
+                                    <Ellipse Width="7" Height="7" Fill="{StaticResource StatusInProgressBrush}" VerticalAlignment="Center"/>
+                                    <TextBlock Text="تنفيذ · 3" Foreground="#C9CDD3" VerticalAlignment="Center"
+                                               FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeCaption}" Margin="6,0,16,0"/>
+                                    <Ellipse Width="7" Height="7" Fill="{StaticResource StatusReadyBrush}" VerticalAlignment="Center"/>
+                                    <TextBlock Text="جاهز · 2" Foreground="#C9CDD3" VerticalAlignment="Center"
+                                               FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeCaption}" Margin="6,0,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- بلاطة: مسلَّمة اليوم -->
+                        <Border Grid.Column="2" Style="{StaticResource StatTileStyle}">
+                            <DockPanel LastChildFill="True">
+                                <Border DockPanel.Dock="Right" Width="3" CornerRadius="2" Margin="0,0,14,0"
+                                        Background="{StaticResource SuccessBrush}"/>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="مسلَّمة اليوم" Style="{StaticResource TextMutedStyle}"/>
+                                    <TextBlock Text="3" Style="{StaticResource TextDisplayStyle}" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+
+                        <!-- بلاطة: منتظرة قطع غيار -->
+                        <Border Grid.Column="4" Style="{StaticResource StatTileStyle}">
+                            <DockPanel LastChildFill="True">
+                                <Border DockPanel.Dock="Right" Width="3" CornerRadius="2" Margin="0,0,14,0"
+                                        Background="{StaticResource StatusWaitingPartsBrush}"/>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="منتظرة قطع غيار" Style="{StaticResource TextMutedStyle}"/>
+                                    <TextBlock Text="4" Style="{StaticResource TextDisplayStyle}" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                    </Grid>
+
+                    <!-- ===== أوامر الشغل اليوم ===== -->
+                    <TextBlock Text="أوامر الشغل اليوم" Style="{StaticResource SectionLabelStyle}" Margin="0,0,0,10"/>
+                    <Grid Margin="0,0,0,24">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="16"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border Grid.Column="0" Style="{StaticResource StatTileStyle}">
+                            <DockPanel LastChildFill="True">
+                                <Border DockPanel.Dock="Right" Width="3" CornerRadius="2" Margin="0,0,14,0"
+                                        Background="{StaticResource AccentBrush}"/>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="أوامر شغل مفتوحة" Style="{StaticResource TextMutedStyle}"/>
+                                    <TextBlock Text="9" Style="{StaticResource TextDisplayStyle}" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+
+                        <Border Grid.Column="2" Style="{StaticResource StatTileStyle}">
+                            <DockPanel LastChildFill="True">
+                                <Border DockPanel.Dock="Right" Width="3" CornerRadius="2" Margin="0,0,14,0"
+                                        Background="{StaticResource SuccessBrush}"/>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="أوامر شغل مكتملة اليوم" Style="{StaticResource TextMutedStyle}"/>
+                                    <TextBlock Text="5" Style="{StaticResource TextDisplayStyle}" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </DockPanel>
+                        </Border>
+                    </Grid>
+
+                    <!-- ===== الملخص المالي لليوم — شكل كشف حساب مصغّر بدل 4 كروت متطابقة ===== -->
+                    <TextBlock Text="الملخص المالي لليوم" Style="{StaticResource SectionLabelStyle}" Margin="0,0,0,10"/>
+                    <Border Style="{StaticResource LedgerStripStyle}" Margin="0,0,0,24">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="1"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="1"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="1"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Grid.Column="0" Style="{StaticResource LedgerCellStyle}">
+                                <TextBlock Text="مبيعات اليوم" Style="{StaticResource TextMutedStyle}"/>
+                                <TextBlock Text="8,650 ج.م" Style="{StaticResource TextH3Style}" Margin="0,4,0,0"/>
+                            </StackPanel>
+                            <Border Grid.Column="1" Background="{StaticResource BorderBrush2}" Margin="0,16"/>
+
+                            <StackPanel Grid.Column="2" Style="{StaticResource LedgerCellStyle}">
+                                <TextBlock Text="مصروفات اليوم" Style="{StaticResource TextMutedStyle}"/>
+                                <TextBlock Text="2,100 ج.م" Style="{StaticResource TextH3Style}" Margin="0,4,0,0"
+                                           Foreground="{StaticResource DangerBrush}"/>
+                            </StackPanel>
+                            <Border Grid.Column="3" Background="{StaticResource BorderBrush2}" Margin="0,16"/>
+
+                            <StackPanel Grid.Column="4" Style="{StaticResource LedgerCellStyle}">
+                                <TextBlock Text="صافي اليوم" Style="{StaticResource TextMutedStyle}"/>
+                                <TextBlock Text="6,550 ج.م" Style="{StaticResource TextH3Style}" Margin="0,4,0,0"
+                                           Foreground="{StaticResource SuccessBrush}"/>
+                            </StackPanel>
+                            <Border Grid.Column="5" Background="{StaticResource BorderBrush2}" Margin="0,16"/>
+
+                            <StackPanel Grid.Column="6" Style="{StaticResource LedgerCellStyle}">
+                                <TextBlock Text="مستحقات على العملاء" Style="{StaticResource TextMutedStyle}"/>
+                                <TextBlock Text="12,400 ج.م" Style="{StaticResource TextH3Style}" Margin="0,4,0,0"
+                                           Foreground="{StaticResource WarningBrush}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- ===== تنبيهات — شارات مضغوطة بدل كروت كاملة لكل تنبيه ===== -->
+                    <TextBlock Text="تنبيهات" Style="{StaticResource SectionLabelStyle}" Margin="0,0,0,10"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Border Background="{StaticResource WarningSoftBrush}" CornerRadius="{StaticResource RadiusPill}"
+                                Padding="14,8" Margin="0,0,10,0">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE7BA;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="13"
+                                           Foreground="{StaticResource WarningBrush}" VerticalAlignment="Center"/>
+                                <TextBlock Text="3 أصناف مخزون منخفضة" Foreground="{StaticResource WarningBrush}"
+                                           FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeSmall}"
+                                           FontWeight="SemiBold" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                        <Border Background="{StaticResource InfoSoftBrush}" CornerRadius="{StaticResource RadiusPill}" Padding="14,8">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="&#xE787;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="13"
+                                           Foreground="{StaticResource InfoBrush}" VerticalAlignment="Center"/>
+                                <TextBlock Text="موعدان قادمان" Foreground="{StaticResource InfoBrush}"
+                                           FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeSmall}"
+                                           FontWeight="SemiBold" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- تظهر بدل الـDashboard لما تُضغط أي قسم لسه مالوش شاشة حقيقية مبنية -->
+            <Border x:Name="NotReadyView" Grid.Row="1" Background="{StaticResource AppBackgroundBrush}" Visibility="Collapsed">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="&#xE90F;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="38"
+                               Foreground="{StaticResource TextMutedBrush}" HorizontalAlignment="Center" Margin="0,0,0,12"/>
+                    <TextBlock x:Name="NotReadySectionNameText" Text="—" Style="{StaticResource TextH3Style}" HorizontalAlignment="Center"/>
+                    <TextBlock Text="الشاشة دي لسه مش مبنية — هتُضاف في خطوة تالية"
+                               Style="{StaticResource TextMutedStyle}" HorizontalAlignment="Center" Margin="0,6,0,0"/>
+                </StackPanel>
+            </Border>
+
+        </Grid>
+    </Grid>
+</Window>

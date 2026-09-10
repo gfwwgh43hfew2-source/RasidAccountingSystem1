@@ -1,0 +1,200 @@
+﻿<Window x:Class="RasidAccountingSystem.Views.CheckDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:RasidAccountingSystem.Views"
+        Title="شيك"
+        Height="680" Width="540"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="NoResize"
+        FlowDirection="RightToLeft"
+        Background="#F5F7FA"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+
+        <SolidColorBrush x:Key="PrimaryColor" Color="#4361EE"/>
+        <SolidColorBrush x:Key="PrimaryDark" Color="#3A56D4"/>
+        <SolidColorBrush x:Key="TextDark" Color="#1E293B"/>
+        <SolidColorBrush x:Key="TextLight" Color="#64748B"/>
+        <SolidColorBrush x:Key="BorderColor" Color="#E2E8F0"/>
+        <SolidColorBrush x:Key="Gray100" Color="#F1F5F9"/>
+
+        <Style x:Key="FormLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource TextDark}"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+
+        <Style x:Key="FormTextBox" TargetType="TextBox">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource PrimaryDark}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource TextLight}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{StaticResource BorderColor}" BorderThickness="1" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource Gray100}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="TypeRadio" TargetType="RadioButton">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="8,0,0,0"/>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- الترويسة -->
+        <Border Grid.Row="0" Background="{StaticResource PrimaryColor}" Padding="24,18">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="🧾" FontSize="22" Margin="0,0,10,0"/>
+                <TextBlock x:Name="lblDialogTitle" Text="إضافة شيك جديد" FontSize="17" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- النموذج -->
+        <ScrollViewer Grid.Row="1" Margin="24,20,24,10" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+
+                <TextBlock Text="نوع الشيك *" Style="{StaticResource FormLabel}"/>
+                <StackPanel x:Name="panelCheckType" Orientation="Horizontal" Margin="0,0,0,15">
+                    <RadioButton x:Name="rbReceivable" Content="⬅️ وارد (من عميل)" GroupName="CheckType" Style="{StaticResource TypeRadio}" Margin="0,0,25,0" IsChecked="True"/>
+                    <RadioButton x:Name="rbPayable" Content="➡️ صادر (لمورد)" GroupName="CheckType" Style="{StaticResource TypeRadio}"/>
+                </StackPanel>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="رقم الشيك *" Style="{StaticResource FormLabel}"/>
+                        <TextBox x:Name="txtCheckNumber" Style="{StaticResource FormTextBox}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="القيمة *" Style="{StaticResource FormLabel}"/>
+                        <TextBox x:Name="txtAmount" Style="{StaticResource FormTextBox}" FontWeight="Bold"/>
+                    </StackPanel>
+                </Grid>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="تاريخ الشيك *" Style="{StaticResource FormLabel}"/>
+                        <DatePicker x:Name="dpCheckDate" Height="38" Margin="0,0,0,12" FlowDirection="LeftToRight" HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="تاريخ الاستحقاق" Style="{StaticResource FormLabel}"/>
+                        <DatePicker x:Name="dpDueDate" Height="38" Margin="0,0,0,12" FlowDirection="LeftToRight" HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                </Grid>
+
+                <TextBlock x:Name="lblPartyLabel" Text="العميل" Style="{StaticResource FormLabel}"/>
+                <local:SmartSearchComboBox x:Name="cmbParty" DisplayMemberPath="Name" SelectedValuePath="Id" Placeholder="اكتب اسم العميل..." Margin="0,0,0,12"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="اسم البنك *" Style="{StaticResource FormLabel}"/>
+                        <TextBox x:Name="txtBankName" Style="{StaticResource FormTextBox}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="رقم الحساب البنكي" Style="{StaticResource FormLabel}"/>
+                        <TextBox x:Name="txtAccountNumber" Style="{StaticResource FormTextBox}"/>
+                    </StackPanel>
+                </Grid>
+
+                <TextBlock Text="وصف / ملاحظات" Style="{StaticResource FormLabel}"/>
+                <TextBox x:Name="txtNotes" Style="{StaticResource FormTextBox}" Height="70" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Padding="10,8"/>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- الأزرار -->
+        <Border Grid.Row="2" Background="White" BorderBrush="{StaticResource BorderColor}" BorderThickness="0,1,0,0" Padding="24,14">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button x:Name="btnSave" Content="حفظ" Width="120" Style="{StaticResource PrimaryButton}" Margin="0,0,10,0"/>
+                <Button x:Name="btnCancel" Content="إلغاء" Width="120" Style="{StaticResource SecondaryButton}"/>
+            </StackPanel>
+        </Border>
+
+    </Grid>
+</Window>

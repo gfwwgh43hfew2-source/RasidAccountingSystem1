@@ -1,0 +1,716 @@
+﻿<UserControl x:Class="RasidAccountingSystem.Views.ProductsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             FlowDirection="RightToLeft"
+             Background="{StaticResource BackgroundColor}">
+
+    <UserControl.Resources>
+
+        <!-- ==================== ألوان المنتجات (أزرق/نيلي) ==================== -->
+
+        <Style x:Key="EditButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="46"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Background" Value="#EBF4FF"/>
+            <Setter Property="Foreground" Value="#2563EB"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,3,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#DBEAFE"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DeleteButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="46"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Background" Value="#FEF2F2"/>
+            <Setter Property="Foreground" Value="#DC2626"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FEE2E2"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="AddStockButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="Background" Value="#D1FAE5"/>
+            <Setter Property="Foreground" Value="#059669"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="9"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,3,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#A7F3D0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ============================================ -->
+        <!-- أنماط DataGrid للخلايا                        -->
+        <!-- ============================================ -->
+
+        <Style x:Key="CenterDataGridCellStyle" TargetType="DataGridCell">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="4,0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#374151"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="#2563EB"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="LeftAlignDataGridCellStyle" TargetType="DataGridCell">
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="4,0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#374151"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="#2563EB"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="NumericDataGridCellStyle" TargetType="DataGridCell">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="4,0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#374151"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="#2563EB"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- الهيدر العلوي -->
+        <Border Grid.Row="0" Background="{StaticResource SurfaceColor}" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1">
+            <Border.Effect>
+                <DropShadowEffect Color="#000000" Opacity="0.03" BlurRadius="8" ShadowDepth="1" Direction="270"/>
+            </Border.Effect>
+
+            <Grid Margin="15">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- بطاقة الإحصائيات بلون أزرق -->
+                <Border Grid.Row="0" Background="#1E3A5F" Padding="12" Margin="0,0,0,12" CornerRadius="0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Orientation="Horizontal">
+                            <Viewbox Width="24" Height="24" Margin="0,0,10,0">
+                                <Path Fill="#60A5FA" Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                            </Viewbox>
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock Text="إجمالي المنتجات" FontSize="11" Foreground="#93C5FD" Margin="0,0,0,2"/>
+                                <TextBlock x:Name="lblTotalProducts" Text="0" FontSize="20" FontWeight="Bold" Foreground="White"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <TextBlock Grid.Column="2" Text="منتج نشط" FontSize="11" Foreground="#93C5FD" VerticalAlignment="Center" Margin="0,0,15,0"/>
+
+                        <Button x:Name="btnRefresh" Grid.Column="3" Width="32" Height="32" Background="#30FFFFFF" BorderThickness="0" Cursor="Hand" ToolTip="تحديث البيانات">
+                            <Viewbox Width="16" Height="16">
+                                <Path Fill="White" Data="M17.65,6.35C16.2,4.9 14.21,4 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20C15.73,20 18.84,17.45 19.73,14H17.65C16.83,16.33 14.61,18 12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6C13.66,6 15.14,6.69 16.22,7.78L13,11H20V4L17.65,6.35Z"/>
+                            </Viewbox>
+                        </Button>
+                    </Grid>
+                </Border>
+
+                <!-- شريط البحث والأزرار -->
+                <DockPanel Grid.Row="1" LastChildFill="False">
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                        <TextBlock Text="قائمة المنتجات" FontSize="15" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{StaticResource TextPrimaryColor}"/>
+                        <Border Background="#EBF4FF" Padding="6,1" CornerRadius="6" VerticalAlignment="Center">
+                            <TextBlock x:Name="lblTotalBadge" Text="0" Foreground="#2563EB" FontWeight="Bold" FontSize="11"/>
+                        </Border>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+
+                        <Grid Margin="0,0,10,0">
+                            <Border Background="#F9FAFB" BorderBrush="#E5E7EB" BorderThickness="1" CornerRadius="6" Width="220" Height="34"/>
+                            <Path Fill="#9CA3AF" Data="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L19.71,19L18.3,20.41L13.04,15.11C12.03,15.82 10.81,16.25 9.5,16.25A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" 
+                                  Width="14" Height="14" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center" IsHitTestVisible="False"/>
+                            <TextBlock Text="ابحث بالاسم أو الكود..." Foreground="#9CA3AF" VerticalAlignment="Center" Margin="8,0,32,0" IsHitTestVisible="False" FontSize="11">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Text.Length, ElementName=txtSearch}" Value="0">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            <TextBox x:Name="txtSearch" Background="Transparent" BorderThickness="0" VerticalContentAlignment="Center" Padding="8,0,30,0" FontSize="11"/>
+                        </Grid>
+
+                        <!-- زر استيراد Excel بلون أخضر -->
+                        <Button x:Name="btnImportExcel" Height="34" Width="95" Background="#10B981" Foreground="White" BorderThickness="0" Cursor="Hand" Margin="0,0,8,0">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Viewbox Width="14" Height="14" Margin="0,0,6,0">
+                                    <Path Fill="White" Data="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M13,3.5L18.5,9H13V3.5M12,12L15,15H13V19H11V15H9L12,12Z"/>
+                                </Viewbox>
+                                <TextBlock Text="استيراد Excel" FontSize="10" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- زر إضافة منتج بلون أزرق -->
+                        <Button x:Name="btnAddProduct" Height="34" Width="95" Background="#2563EB" Foreground="White" BorderThickness="0" Cursor="Hand" Padding="12,0">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Viewbox Width="14" Height="14" Margin="0,0,6,0">
+                                    <Path Fill="White" Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                                </Viewbox>
+                                <TextBlock Text="منتج جديد" FontSize="10" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </DockPanel>
+            </Grid>
+        </Border>
+
+        <!-- منطقة الجدول الرئيسية -->
+        <Border Grid.Row="1" Background="{StaticResource BackgroundColor}" Padding="15">
+            <Border Background="{StaticResource SurfaceColor}" CornerRadius="10" BorderBrush="#E2E8F0" BorderThickness="1">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- شريط التحديد الجماعي -->
+                    <Border x:Name="BulkBar" Grid.Row="0" Background="#EFF6FF" BorderBrush="#BFDBFE" BorderThickness="1" CornerRadius="6" Padding="10,8" Margin="12,12,12,0" Visibility="Collapsed">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock x:Name="BulkText" Foreground="#1D4ED8" FontSize="11" FontWeight="SemiBold" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                            <Button x:Name="btnBulkDelete" Content="حذف المحدد" Background="#DC2626" Foreground="White" Padding="12,5" BorderThickness="0" Cursor="Hand" FontSize="11" FontWeight="SemiBold">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius" Value="5"/>
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- جدول المنتجات -->
+                    <DataGrid x:Name="dgProducts" Grid.Row="1" Margin="12"
+                              HorizontalAlignment="Stretch"
+                              AutoGenerateColumns="False" 
+                              SelectionMode="Extended" 
+                              SelectionUnit="FullRow"
+                              CanUserAddRows="False" 
+                              CanUserDeleteRows="False" 
+                              HeadersVisibility="Column"
+                              RowHeaderWidth="0" 
+                              Background="Transparent" 
+                              BorderThickness="0"
+                              GridLinesVisibility="None" 
+                              RowHeight="40" 
+                              EnableRowVirtualization="True"
+                              VerticalScrollBarVisibility="Auto" 
+                              HorizontalScrollBarVisibility="Auto">
+
+                        <DataGrid.ColumnHeaderStyle>
+                            <Style TargetType="DataGridColumnHeader">
+                                <Setter Property="Background" Value="#F8FAFC"/>
+                                <Setter Property="Foreground" Value="#475569"/>
+                                <Setter Property="FontSize" Value="10"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Setter Property="Height" Value="34"/>
+                                <Setter Property="Padding" Value="4,0"/>
+                                <Setter Property="BorderBrush" Value="#E2E8F0"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,2"/>
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            </Style>
+                        </DataGrid.ColumnHeaderStyle>
+
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="#F1F5F9"/>
+                                <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                                <Setter Property="Margin" Value="0,1,0,0"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#F8FAFC"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#EBF4FF"/>
+                                        <Setter Property="BorderBrush" Value="#60A5FA"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.RowStyle>
+
+                        <DataGrid.Columns>
+
+                            <!-- عمود الاختيار -->
+                            <DataGridTemplateColumn Width="35" CellStyle="{StaticResource CenterDataGridCellStyle}">
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <CheckBox x:Name="HeaderCheckBox" 
+                                                  HorizontalAlignment="Center" 
+                                                  VerticalAlignment="Center"
+                                                  Checked="HeaderCheckBox_Checked"
+                                                  Unchecked="HeaderCheckBox_Unchecked"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  HorizontalAlignment="Center" 
+                                                  VerticalAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- كود المنتج -->
+                            <DataGridTemplateColumn Header="الكود" Width="85" CellStyle="{StaticResource CenterDataGridCellStyle}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ProductCode}" 
+                                                   Foreground="#2563EB" 
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"
+                                                   TextAlignment="Center"
+                                                   FontSize="10"
+                                                   FontWeight="SemiBold"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- اسم المنتج -->
+                            <DataGridTemplateColumn Header="اسم المنتج" Width="*" MinWidth="120" CellStyle="{StaticResource LeftAlignDataGridCellStyle}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ProductNameAr}" 
+                                                   HorizontalAlignment="Left" 
+                                                   VerticalAlignment="Center"
+                                                   TextAlignment="Right"
+                                                   FontSize="11"
+                                                   FontWeight="SemiBold"
+                                                   Margin="3,0,0,0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- ✅ الوحدة الثالثة (الأساسية) مع التوضيح -->
+                            <DataGridTemplateColumn Header="الوحدة ٣" Width="80" CellStyle="{StaticResource CenterDataGridCellStyle}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Unit3}" 
+                                                       HorizontalAlignment="Center" 
+                                                       VerticalAlignment="Center"
+                                                       TextAlignment="Center"
+                                                       FontSize="10"
+                                                       Foreground="#374151"/>
+                                            <TextBlock Text="(أساسية)" 
+                                                       FontSize="7"
+                                                       Foreground="#9CA3AF"
+                                                       HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- سعر الوحدة 3 -->
+                            <DataGridTemplateColumn Header="السعر" Width="75" CellStyle="{StaticResource NumericDataGridCellStyle}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding DisplayPrice3}" 
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"
+                                                   TextAlignment="Center"
+                                                   FontSize="10"
+                                                   Foreground="#059669"
+                                                   FontWeight="SemiBold"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- ✅ الوحدة الثانية (الوسطى) مع التوضيح -->
+                            <DataGridTemplateColumn Header="الوحدة ٢" Width="85" CellStyle="{StaticResource CenterDataGridCellStyle}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Unit2}" 
+                                                       HorizontalAlignment="Center" 
+                                                       VerticalAlignment="Center"
+                                                       TextAlignment="Center"
+                                                       FontSize="10"
+                                                       Foreground="#374151"/>
+                                            <TextBlock Text="{Binding Unit2FactorDisplay}" 
+                                                       FontSize="7"
+                                                       Foreground="#9CA3AF"
+                                                       HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- سعر الوحدة 2 -->
+                            <DataGridTemplateColumn Header="السعر" Width="75" CellStyle="{StaticResource NumericDataGridCellStyle}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding DisplayPrice2}" 
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"
+                                                   TextAlignment="Center"
+                                                   FontSize="10"
+                                                   Foreground="#2563EB"
+                                                   FontWeight="SemiBold"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- ✅ الوحدة الأولى (الكبرى) مع التوضيح -->
+                            <DataGridTemplateColumn Header="الوحدة ١" Width="90" CellStyle="{StaticResource CenterDataGridCellStyle}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Unit1}" 
+                                                       HorizontalAlignment="Center" 
+                                                       VerticalAlignment="Center"
+                                                       TextAlignment="Center"
+                                                       FontSize="10"
+                                                       Foreground="#374151"/>
+                                            <TextBlock Text="{Binding Unit1FactorDisplay}" 
+                                                       FontSize="7"
+                                                       Foreground="#9CA3AF"
+                                                       HorizontalAlignment="Center"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- سعر الوحدة 1 -->
+                            <DataGridTemplateColumn Header="السعر" Width="75" CellStyle="{StaticResource NumericDataGridCellStyle}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding DisplayPrice1}" 
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"
+                                                   TextAlignment="Center"
+                                                   FontSize="10"
+                                                   Foreground="#7C3AED"
+                                                   FontWeight="SemiBold"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- حد الطلب -->
+                            <DataGridTemplateColumn Header="حد الطلب" Width="65" CellStyle="{StaticResource NumericDataGridCellStyle}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding DisplayReorderLevel}" 
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"
+                                                   TextAlignment="Center"
+                                                   FontSize="10"
+                                                   Foreground="#D97706"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- الكمية -->
+                            <DataGridTemplateColumn Header="الكمية" Width="70" CellStyle="{StaticResource NumericDataGridCellStyle}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding DisplayQuantity}" 
+                                                   HorizontalAlignment="Center" 
+                                                   VerticalAlignment="Center"
+                                                   TextAlignment="Center"
+                                                   FontSize="11"
+                                                   FontWeight="Bold"
+                                                   Foreground="#1E293B"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <!-- الإجراءات -->
+                            <DataGridTemplateColumn Header="إجراءات" Width="155" CellStyle="{StaticResource CenterDataGridCellStyle}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" 
+                                                    HorizontalAlignment="Center" 
+                                                    VerticalAlignment="Center">
+                                            <Button Content="+ رصيد" 
+                                                    Style="{StaticResource AddStockButtonStyle}" 
+                                                    Tag="{Binding ProductID}"
+                                                    Click="AddStock_Click"/>
+                                            <Button Content="تعديل" 
+                                                    Style="{StaticResource EditButtonStyle}" 
+                                                    Tag="{Binding ProductID}"
+                                                    Click="EditRow_Click"/>
+                                            <Button Content="حذف" 
+                                                    Style="{StaticResource DeleteButtonStyle}" 
+                                                    Tag="{Binding ProductID}"
+                                                    Click="DeleteRow_Click"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- رسالة عدم وجود بيانات -->
+                    <StackPanel Grid.Row="1" x:Name="lblNoData" Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Path Fill="#CBD5E1" Data="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z" Width="48" Height="48" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+                        <TextBlock Text="لا يوجد منتجات مسجلة حتى الآن" FontSize="14" FontWeight="SemiBold" Foreground="#475569" HorizontalAlignment="Center" TextAlignment="Center"/>
+                        <TextBlock Text="اضغط على زر إضافة جديد للبدء" FontSize="11" Foreground="#94A3B8" HorizontalAlignment="Center" Margin="0,5,0,0" TextAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- شريط الترقيم -->
+                    <Border Grid.Row="2" Background="#F8FAFC" BorderBrush="#E2E8F0" BorderThickness="0,1,0,0" Padding="10" CornerRadius="0,0,10,10">
+                        <Grid>
+                            <TextBlock x:Name="lblPaginationInfo" Text="عرض 0 إلى 0 من أصل 0 منتج" Foreground="#64748B" FontSize="11" VerticalAlignment="Center" HorizontalAlignment="Right" TextAlignment="Right"/>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <Button x:Name="btnPrevPage" Content="← السابق" Width="65" Height="28" Background="White" BorderBrush="#E2E8F0" BorderThickness="1" Foreground="#475569" Cursor="Hand" Margin="0,0,6,0" FontSize="10">
+                                    <Button.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="5"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+
+                                <Border Background="#EBF4FF" BorderThickness="1" BorderBrush="#60A5FA" CornerRadius="5" Width="28" Height="28">
+                                    <TextBlock x:Name="lblPageInfo" Text="1" 
+                                               Foreground="#2563EB" 
+                                               FontWeight="Bold" 
+                                               VerticalAlignment="Center" 
+                                               HorizontalAlignment="Center" 
+                                               FontSize="10" 
+                                               TextAlignment="Center"/>
+                                </Border>
+
+                                <Button x:Name="btnNextPage" Content="التالي →" Width="65" Height="28" Background="White" BorderBrush="#E2E8F0" BorderThickness="1" Foreground="#475569" Cursor="Hand" Margin="6,0,0,0" FontSize="10">
+                                    <Button.Resources>
+                                        <Style TargetType="Border">
+                                            <Setter Property="CornerRadius" Value="5"/>
+                                        </Style>
+                                    </Button.Resources>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                </Grid>
+            </Border>
+        </Border>
+
+        <!-- ==================== Overlay الاستيراد من Excel ==================== -->
+        <Border x:Name="ImportOverlay" Visibility="Collapsed" Background="#80000000" Grid.RowSpan="2">
+            <Border Background="{StaticResource SurfaceColor}" CornerRadius="12" Width="540" Height="460" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="30" ShadowDepth="0" Opacity="0.2" Color="#000000"/>
+                </Border.Effect>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Background="#10B981" CornerRadius="12,12,0,0" Height="6"/>
+
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="24,18">
+                        <StackPanel>
+                            <TextBlock Text="استيراد المنتجات من ملف Excel" FontFamily="Segoe UI" FontSize="17" FontWeight="SemiBold" Foreground="#1E293B" Margin="0,0,0,14"/>
+
+                            <Border Background="#F7FAFC" CornerRadius="6" Padding="14" Margin="0,0,0,14">
+                                <StackPanel>
+                                    <TextBlock Text="متطلبات الملف:" FontFamily="Segoe UI" FontSize="11" FontWeight="SemiBold" Foreground="#475569" Margin="0,0,0,6"/>
+                                    <TextBlock Text="• يجب أن يكون الملف بصيغة .xlsx أو .xls" FontSize="10" Foreground="#64748B" Margin="0,0,0,3"/>
+                                    <TextBlock Text="• الصف الأول يحتوي على عناوين الأعمدة" FontSize="10" Foreground="#64748B" Margin="0,0,0,3"/>
+                                    <TextBlock Text="• الأعمدة المطلوبة: كود المنتج، اسم المنتج" FontSize="10" Foreground="#64748B" Margin="0,0,0,3"/>
+                                    <TextBlock Text="• الأعمدة الاختيارية: الوحدة١، الوحدة٢، الوحدة٣، سعر١، سعر٢، سعر٣، باركود، الكمية" FontSize="10" Foreground="#64748B" Margin="0,0,0,3"/>
+                                    <TextBlock Text="• عمود المخزن: اسم المخزن (يتم إنشاؤه تلقائياً)" FontSize="10" Foreground="#059669" FontWeight="SemiBold"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border x:Name="FileSelectionBorder" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="6" Padding="14" Margin="0,0,0,14" Background="#FAFBFC" Cursor="Hand">
+                                <StackPanel>
+                                    <TextBlock x:Name="FileNameText" Text="اضغط لاختيار ملف Excel..." TextAlignment="Center" FontSize="11" Foreground="#64748B"/>
+                                    <TextBlock x:Name="FilePathText" Text="" FontSize="9" Foreground="#94A3B8" TextAlignment="Center" Margin="0,4,0,0" Visibility="Collapsed"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border x:Name="ProgressBorder" Visibility="Collapsed" CornerRadius="6" Padding="14" Margin="0,0,0,14" Background="#EBF4FF">
+                                <StackPanel>
+                                    <TextBlock x:Name="ProgressText" Text="جاري الاستيراد..." FontSize="11" FontWeight="SemiBold" Foreground="#2563EB" Margin="0,0,0,6" TextAlignment="Center"/>
+                                    <ProgressBar x:Name="ImportProgressBar" Height="4" Foreground="#2563EB" Background="#DBEAFE"/>
+                                    <TextBlock x:Name="ProgressDetailText" Text="تم استيراد 0 من 0" FontSize="9" Foreground="#64748B" Margin="0,6,0,0" TextAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border x:Name="ResultBorder" Visibility="Collapsed" CornerRadius="6" Padding="14" Margin="0,0,0,14">
+                                <StackPanel>
+                                    <TextBlock x:Name="ResultText" Text="" FontSize="11" TextWrapping="Wrap" TextAlignment="Center"/>
+                                </StackPanel>
+                            </Border>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,4,0,0">
+                                <Button x:Name="BtnSelectFile" Content="اختيار ملف" Width="90" Height="32" Margin="0,0,6,0" Background="#1E3A5F" Foreground="White" BorderThickness="0" Cursor="Hand" FontSize="11">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" CornerRadius="4">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#2D5A8E"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                                <Button x:Name="BtnStartImport" Content="بدء الاستيراد" Width="90" Height="32" Margin="0,0,6,0" Background="#10B981" Foreground="White" BorderThickness="0" Cursor="Hand" FontSize="11" IsEnabled="False">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" CornerRadius="4">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#059669"/>
+                                                </Trigger>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Background" Value="#A0AEC0"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                                <Button x:Name="BtnCloseImport" Content="إلغاء" Width="90" Height="32" Background="Transparent" Foreground="#64748B" BorderBrush="#E2E8F0" BorderThickness="1" Cursor="Hand" FontSize="11">
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="4">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#F8FAFC"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+        </Border>
+
+    </Grid>
+</UserControl>

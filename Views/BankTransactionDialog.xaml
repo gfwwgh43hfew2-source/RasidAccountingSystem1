@@ -1,0 +1,145 @@
+﻿<Window x:Class="RasidAccountingSystem.Views.BankTransactionDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="حركة بنكية"
+        Height="520" Width="460"
+        WindowStartupLocation="CenterOwner"
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="NoResize"
+        FlowDirection="RightToLeft"
+        Background="#F5F7FA"
+        FontFamily="Segoe UI">
+
+    <Window.Resources>
+
+        <SolidColorBrush x:Key="TextDark" Color="#1E293B"/>
+        <SolidColorBrush x:Key="TextLight" Color="#64748B"/>
+        <SolidColorBrush x:Key="BorderColor" Color="#E2E8F0"/>
+        <SolidColorBrush x:Key="Gray100" Color="#F1F5F9"/>
+        <SolidColorBrush x:Key="AccentColor" Color="#4361EE"/>
+
+        <Style x:Key="FormLabel" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource TextDark}"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+        </Style>
+
+        <Style x:Key="FormTextBox" TargetType="TextBox">
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource AccentColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SecondaryButton" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource TextLight}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{StaticResource BorderColor}" BorderThickness="1" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource Gray100}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- الترويسة -->
+        <Border x:Name="borderHeader" Grid.Row="0" Padding="24,18">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock x:Name="lblHeaderIcon" Text="💰" FontSize="22" Margin="0,0,10,0"/>
+                <StackPanel>
+                    <TextBlock x:Name="lblDialogTitle" Text="إيداع بنكي" FontSize="17" FontWeight="Bold" Foreground="White"/>
+                    <TextBlock x:Name="lblBankAccountName" Text="" FontSize="12" Foreground="#DDE6FF"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- النموذج -->
+        <StackPanel Grid.Row="1" Margin="24,20,24,10">
+
+            <TextBlock Text="المبلغ *" Style="{StaticResource FormLabel}"/>
+            <TextBox x:Name="txtAmount" Style="{StaticResource FormTextBox}" FontSize="18" FontWeight="Bold"/>
+
+            <TextBlock Text="التاريخ *" Style="{StaticResource FormLabel}"/>
+            <DatePicker x:Name="dpTransactionDate" Height="38" Margin="0,0,0,12" FlowDirection="LeftToRight" HorizontalAlignment="Stretch"/>
+
+            <TextBlock Text="رقم المرجع (اختياري)" Style="{StaticResource FormLabel}"/>
+            <TextBox x:Name="txtReferenceNumber" Style="{StaticResource FormTextBox}"/>
+
+            <TextBlock Text="البيان / الوصف" Style="{StaticResource FormLabel}"/>
+            <TextBox x:Name="txtDescription" Style="{StaticResource FormTextBox}" Height="70" TextWrapping="Wrap" AcceptsReturn="True" VerticalContentAlignment="Top" Padding="10,8"/>
+
+            <TextBlock x:Name="lblCurrentBalance" Text="الرصيد الحالي: 0" FontSize="12" Foreground="{StaticResource TextLight}" Margin="0,4,0,0"/>
+
+        </StackPanel>
+
+        <!-- الأزرار -->
+        <Border Grid.Row="2" Background="White" BorderBrush="{StaticResource BorderColor}" BorderThickness="0,1,0,0" Padding="24,14">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <Button x:Name="btnSave" Content="حفظ" Width="120" Style="{StaticResource ActionButton}" Margin="0,0,10,0"/>
+                <Button x:Name="btnCancel" Content="إلغاء" Width="120" Style="{StaticResource SecondaryButton}"/>
+            </StackPanel>
+        </Border>
+
+    </Grid>
+</Window>

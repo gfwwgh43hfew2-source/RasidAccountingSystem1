@@ -1,0 +1,100 @@
+﻿<UserControl x:Class="RasidAccountingSystem.Views.PermissionsManagementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:RasidAccountingSystem.Views"
+             mc:Ignorable="d"
+             Background="#F8FAFC"
+             FlowDirection="RightToLeft"
+             FontFamily="Segoe UI">
+
+    <UserControl.Resources>
+
+        <SolidColorBrush x:Key="PrimaryColor" Color="#4361EE"/>
+        <SolidColorBrush x:Key="SuccessColor" Color="#10B981"/>
+        <SolidColorBrush x:Key="DangerColor" Color="#EF4444"/>
+        <SolidColorBrush x:Key="SurfaceColor" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="TextPrimaryColor" Color="#1E293B"/>
+        <SolidColorBrush x:Key="TextSecondaryColor" Color="#64748B"/>
+        <SolidColorBrush x:Key="BorderLight" Color="#E2E8F0"/>
+        <SolidColorBrush x:Key="Gray50" Color="#F8FAFC"/>
+
+        <DropShadowEffect x:Key="ShadowSm" BlurRadius="6" ShadowDepth="1" Opacity="0.08" Color="#000000"/>
+
+        <Style x:Key="StatePill" TargetType="Border">
+            <Setter Property="CornerRadius" Value="14"/>
+            <Setter Property="Padding" Value="12,5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- الشريط العلوي -->
+        <Border Grid.Row="0" Background="{StaticResource SurfaceColor}" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1" Effect="{StaticResource ShadowSm}">
+            <Grid Margin="20,15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="260"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <TextBlock Text="🔐" FontSize="22" Margin="0,0,10,0"/>
+                    <TextBlock Text="إدارة صلاحيات المستخدمين" FontSize="18" FontWeight="Bold" Foreground="{StaticResource TextPrimaryColor}" VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <local:SmartSearchComboBox x:Name="cmbUser" Grid.Column="2" Height="38" DisplayMemberPath="FullName" SelectedValuePath="UserId" Placeholder="اختر مستخدماً..."/>
+            </Grid>
+        </Border>
+
+        <!-- محتوى الصلاحيات -->
+        <Grid Grid.Row="1" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="lblNoUserSelected" Grid.Row="1" Text="اختر مستخدماً من الأعلى لعرض وتعديل صلاحياته" FontSize="13" Foreground="{StaticResource TextSecondaryColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+            <Border x:Name="borderUserInfo" Grid.Row="0" Background="{StaticResource SurfaceColor}" BorderBrush="{StaticResource BorderLight}" BorderThickness="1" CornerRadius="10" Padding="15" Margin="0,0,0,15" Visibility="Collapsed">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="lblSelectedUserInfo" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryColor}" VerticalAlignment="Center"/>
+                    <TextBlock x:Name="lblAdminNotice" Text="  (مدير النظام له كل الصلاحيات دائماً ولا يمكن تقييده)" FontSize="12" Foreground="{StaticResource DangerColor}" VerticalAlignment="Center" Visibility="Collapsed"/>
+                </StackPanel>
+            </Border>
+
+            <ItemsControl x:Name="icPermissions" Grid.Row="1" Visibility="Collapsed">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="{StaticResource SurfaceColor}" BorderBrush="{StaticResource BorderLight}" BorderThickness="1" CornerRadius="10" Padding="15" Margin="0,0,0,10">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="{Binding NameAr}" FontSize="14" FontWeight="SemiBold" Foreground="{StaticResource TextPrimaryColor}"/>
+                                    <TextBlock Text="{Binding CategoryAr}" FontSize="11" Foreground="{StaticResource TextSecondaryColor}"/>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <Border Background="{Binding StatusBackground}" Style="{StaticResource StatePill}" MouseLeftButtonUp="PermissionPill_Click" Tag="{Binding PermissionKey}">
+                                        <TextBlock Text="{Binding StatusText}" FontSize="12" FontWeight="SemiBold" Foreground="{Binding StatusForeground}"/>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+    </Grid>
+</UserControl>

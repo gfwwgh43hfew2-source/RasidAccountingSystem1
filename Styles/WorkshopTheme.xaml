@@ -1,0 +1,351 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <!--
+        ==========================================================================
+        WorkshopTheme.xaml — نظام التصميم المركزي لبرنامج "الورشة"
+        ==========================================================================
+        هذا الملف يمثل نتاج المرحلة 2 فقط: التوكينز (الألوان + الطباعة + المسافات
+        + زوايا الاستدارة) بدون أي قوالب تحكم (ControlTemplate/Style) بعد.
+        الملف غير مربوط بـ App.xaml حتى الآن عن قصد، حتى لا يغيّر أي شكل حالي
+        في البرنامج قبل موافقتك على المرحلة 3 (بناء الـLayout الرئيسي به فعليًا).
+
+        الهوية: "الورشة" — Carbon & Ignition
+        الفكرة: هوية SaaS/ERP احترافية حديثة، لكن باستدعاء بصري للورش
+        (جرافيت/كاربون داكن + برتقالي "إشعال" Ignition Orange كلون تمييز
+        وحيد ومقصود، بدل الألوان المتعددة العشوائية). القرار: لون تمييز واحد
+        قوي أفضل من هوية "أخضر + ذهبي" السابقة لأنه أوضح بصريًا في شاشات
+        الحالة (Status Badges) الكثيرة في دورة عمل الورشة.
+    -->
+
+    <!-- ======================= 1) الألوان الأساسية (Brand) ======================= -->
+    <Color x:Key="PrimaryDarkColor">#1C2126</Color>       <!-- جرافيت/كاربون: للـSidebar والعناصر الرئيسية -->
+    <Color x:Key="PrimaryDarkerColor">#14171B</Color>     <!-- أغمق درجة، لحالات hover/pressed داكنة -->
+    <Color x:Key="PrimarySoftColor">#2A2F36</Color>       <!-- درجة وسطى، لعناصر فرعية داخل الشريط الجانبي -->
+
+    <Color x:Key="AccentColor">#FF6B35</Color>            <!-- برتقالي الإشعال: اللون الوحيد للتمييز والأزرار الأساسية -->
+    <Color x:Key="AccentDarkColor">#E5541F</Color>        <!-- hover/pressed -->
+    <Color x:Key="AccentSoftColor">#FFE7DB</Color>        <!-- خلفية فاتحة لشارات/تنبيهات مرتبطة بالتمييز -->
+
+    <!-- ======================= 2) الخلفيات والأسطح (Surfaces) ======================= -->
+    <Color x:Key="AppBackgroundColor">#F5F6F8</Color>     <!-- خلفية عامة نظيفة، مش دافئة عاجية زي القديم -->
+    <Color x:Key="SurfaceColor">#FFFFFF</Color>           <!-- خلفية الكروت/الجداول/الفورمات -->
+    <Color x:Key="SurfaceAltColor">#FAFAFB</Color>        <!-- خلفية صفوف متبادلة في الجداول -->
+    <Color x:Key="BorderColor">#E4E6EA</Color>
+    <Color x:Key="BorderStrongColor">#CBCFD6</Color>
+
+    <!-- ======================= 3) الرمادي الدافئ للنصوص (Neutral Text Scale) ======================= -->
+    <Color x:Key="Gray900Color">#14171B</Color>  <!-- نص أساسي عالي التباين -->
+    <Color x:Key="Gray700Color">#3A3F47</Color>  <!-- نص أساسي عادي -->
+    <Color x:Key="Gray500Color">#6B7078</Color>  <!-- نص ثانوي/وصفي -->
+    <Color x:Key="Gray300Color">#A3A8B0</Color>  <!-- نص معطّل/placeholder -->
+    <Color x:Key="Gray100Color">#EEF0F2</Color>  <!-- خلفيات فاتحة جدًا (hover خفيف) -->
+
+    <!-- ======================= 4) ألوان الحالة (Status — أهم جزء لدورة عمل الورشة) ======================= -->
+    <!-- تُستخدم لاحقًا في Status Badges لأوامر الشغل: جديد/فحص/تنفيذ/انتظار قطع/جاهز/تسليم/ملغي -->
+    <Color x:Key="StatusNewColor">#6B7280</Color>          <!-- جديد: رمادي محايد -->
+    <Color x:Key="StatusInspectionColor">#2563EB</Color>   <!-- قيد الفحص: أزرق -->
+    <Color x:Key="StatusInProgressColor">#7C3AED</Color>   <!-- قيد التنفيذ: بنفسجي -->
+    <Color x:Key="StatusWaitingPartsColor">#D97706</Color> <!-- انتظار قطع غيار: كهرماني -->
+    <Color x:Key="StatusReadyColor">#0D9488</Color>        <!-- جاهز للتسليم: تركوازي -->
+    <Color x:Key="StatusDeliveredColor">#16A34A</Color>    <!-- تم التسليم: أخضر -->
+    <Color x:Key="StatusCancelledColor">#DC2626</Color>    <!-- ملغي: أحمر -->
+
+    <!-- ======================= 5) ألوان دلالية عامة (Semantic) ======================= -->
+    <Color x:Key="SuccessColor">#16A34A</Color>
+    <Color x:Key="SuccessSoftColor">#E7F7EC</Color>
+    <Color x:Key="WarningColor">#D97706</Color>
+    <Color x:Key="WarningSoftColor">#FEF3E2</Color>
+    <Color x:Key="DangerColor">#DC2626</Color>
+    <Color x:Key="DangerSoftColor">#FDEAEA</Color>
+    <Color x:Key="InfoColor">#2563EB</Color>
+    <Color x:Key="InfoSoftColor">#E8F0FE</Color>
+
+    <!-- ======================= Brushes (نسخة Brush من كل الألوان أعلاه) ======================= -->
+    <SolidColorBrush x:Key="PrimaryDarkBrush" Color="{StaticResource PrimaryDarkColor}"/>
+    <SolidColorBrush x:Key="PrimaryDarkerBrush" Color="{StaticResource PrimaryDarkerColor}"/>
+    <SolidColorBrush x:Key="PrimarySoftBrush" Color="{StaticResource PrimarySoftColor}"/>
+
+    <SolidColorBrush x:Key="AccentBrush" Color="{StaticResource AccentColor}"/>
+    <SolidColorBrush x:Key="AccentDarkBrush" Color="{StaticResource AccentDarkColor}"/>
+    <SolidColorBrush x:Key="AccentSoftBrush" Color="{StaticResource AccentSoftColor}"/>
+
+    <SolidColorBrush x:Key="AppBackgroundBrush" Color="{StaticResource AppBackgroundColor}"/>
+    <SolidColorBrush x:Key="SurfaceBrush" Color="{StaticResource SurfaceColor}"/>
+    <SolidColorBrush x:Key="SurfaceAltBrush" Color="{StaticResource SurfaceAltColor}"/>
+    <SolidColorBrush x:Key="BorderBrush2" Color="{StaticResource BorderColor}"/>
+    <SolidColorBrush x:Key="BorderStrongBrush" Color="{StaticResource BorderStrongColor}"/>
+
+    <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource Gray900Color}"/>
+    <SolidColorBrush x:Key="TextBodyBrush" Color="{StaticResource Gray700Color}"/>
+    <SolidColorBrush x:Key="TextMutedBrush" Color="{StaticResource Gray500Color}"/>
+    <SolidColorBrush x:Key="TextDisabledBrush" Color="{StaticResource Gray300Color}"/>
+    <SolidColorBrush x:Key="HoverSurfaceBrush" Color="{StaticResource Gray100Color}"/>
+
+    <SolidColorBrush x:Key="StatusNewBrush" Color="{StaticResource StatusNewColor}"/>
+    <SolidColorBrush x:Key="StatusInspectionBrush" Color="{StaticResource StatusInspectionColor}"/>
+    <SolidColorBrush x:Key="StatusInProgressBrush" Color="{StaticResource StatusInProgressColor}"/>
+    <SolidColorBrush x:Key="StatusWaitingPartsBrush" Color="{StaticResource StatusWaitingPartsColor}"/>
+    <SolidColorBrush x:Key="StatusReadyBrush" Color="{StaticResource StatusReadyColor}"/>
+    <SolidColorBrush x:Key="StatusDeliveredBrush" Color="{StaticResource StatusDeliveredColor}"/>
+    <SolidColorBrush x:Key="StatusCancelledBrush" Color="{StaticResource StatusCancelledColor}"/>
+
+    <SolidColorBrush x:Key="SuccessBrush" Color="{StaticResource SuccessColor}"/>
+    <SolidColorBrush x:Key="SuccessSoftBrush" Color="{StaticResource SuccessSoftColor}"/>
+    <SolidColorBrush x:Key="WarningBrush" Color="{StaticResource WarningColor}"/>
+    <SolidColorBrush x:Key="WarningSoftBrush" Color="{StaticResource WarningSoftColor}"/>
+    <SolidColorBrush x:Key="DangerBrush" Color="{StaticResource DangerColor}"/>
+    <SolidColorBrush x:Key="DangerSoftBrush" Color="{StaticResource DangerSoftColor}"/>
+    <SolidColorBrush x:Key="InfoBrush" Color="{StaticResource InfoColor}"/>
+    <SolidColorBrush x:Key="InfoSoftBrush" Color="{StaticResource InfoSoftColor}"/>
+
+    <!--
+        ======================= 6) الطباعة (Typography) =======================
+        ملاحظة صريحة: مفروض الخط المثالي لهوية عربية احترافية حديثة يكون
+        "Cairo" أو "Tajawal"، لكن بيئة التنفيذ الحالية (هذه المحادثة) معندهاش
+        وصول لتحميل ملفات خطوط من الإنترنت (Google Fonts مش متاح من الشبكة
+        المسموح بها هنا). لذلك التوكينز دلوقتي مبنية على "Segoe UI" (متوفر
+        افتراضيًا على وندوز ويدعم العربي بشكل سليم). إذا حبيت خط "Cairo" أو
+        "Tajawal"، حمّل ملفات .ttf بنفسك وحطها في مجلد Fonts/ بالمشروع وقولي،
+        وهغيّر FontFamilyBase في خطوة منفصلة صغيرة (تعديل سطر واحد فقط).
+    -->
+    <FontFamily x:Key="FontFamilyBase">Segoe UI</FontFamily>
+
+    <system:Double x:Key="FontSizeDisplay">28</system:Double>
+    <system:Double x:Key="FontSizeH1">22</system:Double>
+    <system:Double x:Key="FontSizeH2">18</system:Double>
+    <system:Double x:Key="FontSizeH3">15</system:Double>
+    <system:Double x:Key="FontSizeBody">13.5</system:Double>
+    <system:Double x:Key="FontSizeSmall">12</system:Double>
+    <system:Double x:Key="FontSizeCaption">11</system:Double>
+
+    <!-- ======================= 7) المسافات (Spacing Scale — 4px base) ======================= -->
+    <Thickness x:Key="Space1">4</Thickness>
+    <Thickness x:Key="Space2">8</Thickness>
+    <Thickness x:Key="Space3">12</Thickness>
+    <Thickness x:Key="Space4">16</Thickness>
+    <Thickness x:Key="Space5">24</Thickness>
+    <Thickness x:Key="Space6">32</Thickness>
+
+    <!-- ======================= 8) زوايا الاستدارة (Radii) ======================= -->
+    <CornerRadius x:Key="RadiusSmall">6</CornerRadius>
+    <CornerRadius x:Key="RadiusMedium">10</CornerRadius>
+    <CornerRadius x:Key="RadiusLarge">14</CornerRadius>
+    <CornerRadius x:Key="RadiusPill">999</CornerRadius>
+
+    <!-- ======================= 9) سُمك الحدود (Border Thickness) ======================= -->
+    <Thickness x:Key="BorderThin">1</Thickness>
+    <Thickness x:Key="BorderMedium">1.5</Thickness>
+
+    <!-- ======================= 9ب) الارتفاع البصري (Elevation) =======================
+         يُستخدم بحرص شديد وعلى عنصر "بطل" واحد فقط في كل شاشة، مش على كل كارت —
+         التكرار الأعمى للظل هو أحد أوضح علامات تصميم القوالب الجاهزة. -->
+    <DropShadowEffect x:Key="ElevatedShadowEffect" Color="#14171B" Direction="270"
+                       ShadowDepth="6" BlurRadius="22" Opacity="0.16"/>
+
+    <!--
+        ==========================================================================
+        الخطوة 2: أنماط أساسية (Styles) فوق التوكينز أعلاه.
+        لسه مش مربوطة بأي شاشة حالية — هدف هذه الخطوة فقط إثبات إن التوكينز
+        شغالة ومتناسقة مع بعضها قبل تطبيقها على أي Layout حقيقي في المرحلة 3.
+        ==========================================================================
+    -->
+
+    <!-- ======================= 10) أنماط النصوص (Typography Styles) ======================= -->
+    <Style x:Key="TextDisplayStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontFamilyBase}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeDisplay}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+    </Style>
+
+    <Style x:Key="TextH1Style" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontFamilyBase}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeH1}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+    </Style>
+
+    <Style x:Key="TextH2Style" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontFamilyBase}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeH2}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+    </Style>
+
+    <Style x:Key="TextH3Style" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontFamilyBase}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeH3}"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+    </Style>
+
+    <Style x:Key="TextBodyStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontFamilyBase}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeBody}"/>
+        <Setter Property="FontWeight" Value="Normal"/>
+        <Setter Property="Foreground" Value="{StaticResource TextBodyBrush}"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <Style x:Key="TextMutedStyle" TargetType="TextBlock" BasedOn="{StaticResource TextBodyStyle}">
+        <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}"/>
+    </Style>
+
+    <Style x:Key="TextCaptionStyle" TargetType="TextBlock" BasedOn="{StaticResource TextBodyStyle}">
+        <Setter Property="FontSize" Value="{StaticResource FontSizeCaption}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}"/>
+    </Style>
+
+    <!-- عنوان قسم داخل منطقة المحتوى (خلفية فاتحة) — بديل عن SidebarGroupHeaderStyle
+         المصمَّم أصلًا لخلفية الـSidebar الداكنة -->
+    <Style x:Key="SectionLabelStyle" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}"/>
+        <Setter Property="FontFamily" Value="{StaticResource FontFamilyBase}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+    </Style>
+
+    <!-- ======================= 11) أزرار (Buttons) ======================= -->
+
+    <!-- الزرار الأساسي: خلفية برتقالية مليانة — للأفعال الرئيسية (حفظ، إنشاء أمر شغل...) -->
+    <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="FontFamily" Value="{StaticResource FontFamilyBase}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeBody}"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Padding" Value="18,10"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="{StaticResource RadiusMedium}"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource AccentDarkBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource AccentDarkBrush}"/>
+                            <Setter TargetName="Bd" Property="Opacity" Value="0.9"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Bd" Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- الزرار الثانوي: حدود فقط بدون خلفية مليانة — للأفعال الأقل أهمية (إلغاء، تصدير...) -->
+    <Style x:Key="SecondaryButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextBodyBrush}"/>
+        <Setter Property="FontFamily" Value="{StaticResource FontFamilyBase}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontSizeBody}"/>
+        <Setter Property="FontWeight" Value="Medium"/>
+        <Setter Property="Padding" Value="18,10"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderStrongBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{StaticResource RadiusMedium}"
+                            Padding="{TemplateBinding Padding}">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource HoverSurfaceBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="Bd" Property="Background" Value="{StaticResource Gray100Color}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Bd" Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ======================= 12) شارات الحالة (Status Badges) ======================= -->
+    <!-- نمط أساسي (Base) — كل شارة حالة بترث منه وتغيّر لون الخلفية/الحدود بس -->
+    <Style x:Key="StatusBadgeBaseStyle" TargetType="Border">
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusPill}"/>
+        <Setter Property="Padding" Value="10,4"/>
+        <Setter Property="HorizontalAlignment" Value="Right"/>
+    </Style>
+
+    <Style x:Key="StatusBadgeTextStyle" TargetType="TextBlock" BasedOn="{StaticResource TextCaptionStyle}">
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+    <!-- استخدام متوقع لاحقًا (مثال توضيحي فقط، هيتربط فعليًا في مرحلة أوامر الشغل):
+         <Border Style="{StaticResource StatusBadgeBaseStyle}" Background="{StaticResource StatusReadyBrush}">
+             <TextBlock Text="جاهز للتسليم" Style="{StaticResource StatusBadgeTextStyle}" Foreground="White"/>
+         </Border> -->
+
+    <!--
+        ==========================================================================
+        13) لوحة القيادة (Dashboard) — تسلسل هرمي بصري حقيقي بدل تكرار الكروت
+        ==========================================================================
+        القرار: بدل ما كل رقم ياخد نفس الكارت بنفس الحجم ونفس دائرة الأيقونة
+        (شكل "قالب SaaS جاهز" كلاسيكي)، الأرقام هنا متقسّمة 4 معاملات مختلفة
+        حسب أهميتها الفعلية ليوم شغل الورشة:
+        1) HeroMetricCardStyle — رقم واحد بس، الأهم تشغيليًا الآن (كارت داكن
+           بارز بارتفاع/ظل حقيقي، مش متكرر في أي مكان تاني بالشاشة).
+        2) StatTileStyle — أرقام ثانوية، بشريط لون رفيع بدل دائرة أيقونة.
+        3) LedgerStripStyle/LedgerCellStyle — الأرقام المالية بشكل "كشف
+           حساب" مصغّر أفقي (خانات مفصولة بخط) بدل 4 كروت منفصلة متطابقة.
+        4) الأنماط الموجودة أصلًا (StatusBadge) لأي تنبيه بشكل شارة/Pill.
+    -->
+
+    <!-- الكارت البطل: الرقم التشغيلي الأهم في يوم الورشة — واحد بس لكل شاشة -->
+    <Style x:Key="HeroMetricCardStyle" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource PrimaryDarkBrush}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusLarge}"/>
+        <Setter Property="Padding" Value="28,24"/>
+        <Setter Property="Effect" Value="{StaticResource ElevatedShadowEffect}"/>
+    </Style>
+
+    <!-- بلاطة إحصائية ثانوية: شريط لون رفيع بدل دائرة أيقونة متكررة -->
+    <Style x:Key="StatTileStyle" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush2}"/>
+        <Setter Property="BorderThickness" Value="{StaticResource BorderThin}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusMedium}"/>
+        <Setter Property="Padding" Value="16,14"/>
+    </Style>
+
+    <!-- شريط مالي بشكل كشف حساب مصغّر أفقي — بديل عن تكرار كارت لكل رقم مالي -->
+    <Style x:Key="LedgerStripStyle" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BorderBrush2}"/>
+        <Setter Property="BorderThickness" Value="{StaticResource BorderThin}"/>
+        <Setter Property="CornerRadius" Value="{StaticResource RadiusMedium}"/>
+    </Style>
+
+    <Style x:Key="LedgerCellStyle" TargetType="StackPanel">
+        <Setter Property="Margin" Value="20,16"/>
+    </Style>
+
+</ResourceDictionary>

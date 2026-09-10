@@ -1,0 +1,459 @@
+﻿<UserControl x:Class="RasidAccountingSystem.Views.SuppliersBalanceView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             Background="#F5F7FA"
+             FlowDirection="RightToLeft">
+
+    <UserControl.Resources>
+        <!-- الألوان الأساسية -->
+        <SolidColorBrush x:Key="PrimaryColor" Color="#0047FF"/>
+        <SolidColorBrush x:Key="PrimaryDark" Color="#0035CC"/>
+        <SolidColorBrush x:Key="PrimarySoft" Color="#E6EEFF"/>
+        <SolidColorBrush x:Key="SuccessColor" Color="#27AE60"/>
+        <SolidColorBrush x:Key="DangerColor" Color="#E74C3C"/>
+        <SolidColorBrush x:Key="WarningColor" Color="#F39C12"/>
+        <SolidColorBrush x:Key="TextPrimaryColor" Color="#2C3E50"/>
+        <SolidColorBrush x:Key="TextSecondaryColor" Color="#6C757D"/>
+        <SolidColorBrush x:Key="BorderLightColor" Color="#E2E8F0"/>
+        <SolidColorBrush x:Key="BackgroundGrayColor" Color="#F8FAFC"/>
+        <SolidColorBrush x:Key="SurfaceColor" Color="#FFFFFF"/>
+
+        <!-- الظلال -->
+        <DropShadowEffect x:Key="ShadowSm" 
+                          BlurRadius="6" 
+                          ShadowDepth="1" 
+                          Opacity="0.06" 
+                          Direction="270"/>
+
+        <!-- نمط الزر الثانوي -->
+        <Style x:Key="SecondaryButton" TargetType="Button">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PrimarySoft}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- نمط زر Excel -->
+        <Style x:Key="ExcelButtonStyle" TargetType="Button">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#1E7E41"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="📊" FontSize="11" Margin="0,0,5,0"/>
+                                <TextBlock Text="Excel" FontSize="10"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#166534"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- نمط زر الطباعة -->
+        <Style x:Key="PrintButtonStyle" TargetType="Button">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#1E4F7A"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="5">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="🖨️" FontSize="11" Margin="0,0,5,0"/>
+                                <TextBlock Text="طباعة" FontSize="10"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#143D5E"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- نمط رأس العمود -->
+        <Style x:Key="DataGridHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{StaticResource PrimarySoft}"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLightColor}"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <!-- نمط خلية البيانات -->
+        <Style TargetType="DataGridCell">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLightColor}"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Height" Value="38"/>
+        </Style>
+
+        <!-- نمط صف الجدول -->
+        <Style TargetType="DataGridRow">
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource PrimarySoft}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- شريط العنوان والأزرار -->
+        <Border Grid.Row="0"
+                Background="White"
+                CornerRadius="8"
+                Padding="12,10"
+                Margin="0,0,0,8"
+                BorderBrush="{StaticResource BorderLightColor}"
+                BorderThickness="1"
+                Effect="{StaticResource ShadowSm}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="📊" FontSize="18" Margin="0,0,8,0"/>
+                    <TextBlock Text="ميزان الموردين"
+                               FontSize="14"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource PrimaryColor}"
+                               FontFamily="Segoe UI"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Button x:Name="RefreshButton"
+                            Content="⟳ تحديث"
+                            Style="{StaticResource SecondaryButton}"
+                            Margin="0,0,8,0"
+                            Width="70"/>
+                    <Button x:Name="ExportExcelButton"
+                            Content="📊 Excel"
+                            Style="{StaticResource ExcelButtonStyle}"
+                            Margin="0,0,8,0"/>
+                    <Button x:Name="PrintButton"
+                            Content="🖨️ طباعة"
+                            Style="{StaticResource PrintButtonStyle}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- جدول الموردين -->
+        <Border Grid.Row="1"
+                Background="White"
+                CornerRadius="8"
+                BorderBrush="{StaticResource BorderLightColor}"
+                BorderThickness="1"
+                Effect="{StaticResource ShadowSm}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- عنوان الجدول -->
+                <Border Grid.Row="0"
+                        Background="{StaticResource PrimarySoft}"
+                        Padding="12,8"
+                        CornerRadius="8,8,0,0"
+                        BorderBrush="{StaticResource BorderLightColor}"
+                        BorderThickness="0,0,0,1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="📋 قائمة الموردين"
+                                   FontSize="12"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource PrimaryColor}"
+                                   FontFamily="Segoe UI"/>
+                        <TextBlock Grid.Column="1"
+                                   x:Name="RecordsCountText"
+                                   Text="عدد الموردين: 0"
+                                   FontSize="10"
+                                   Foreground="{StaticResource TextSecondaryColor}"
+                                   FontFamily="Segoe UI"/>
+                    </Grid>
+                </Border>
+
+                <!-- جدول البيانات -->
+                <DataGrid x:Name="SuppliersDataGrid"
+                          Grid.Row="1"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          HeadersVisibility="Column"
+                          GridLinesVisibility="Horizontal"
+                          BorderThickness="0"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"
+                          Background="White"
+                          RowHeaderWidth="0"
+                          ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}"
+                          CanUserResizeColumns="True"
+                          CanUserSortColumns="True">
+
+                    <DataGrid.Columns>
+                        <!-- عمود الرقم التسلسلي -->
+                        <DataGridTextColumn Header="م" 
+                                            Binding="{Binding SerialNumber}" 
+                                            Width="45">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="FontFamily" Value="Segoe UI"/>
+                                    <Setter Property="FontSize" Value="10"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- عمود كود المورد -->
+                        <DataGridTextColumn Header="كود المورد" 
+                                            Binding="{Binding SupplierCode}" 
+                                            Width="85">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="FontFamily" Value="Segoe UI"/>
+                                    <Setter Property="FontSize" Value="10"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- عمود اسم المورد -->
+                        <DataGridTextColumn Header="اسم المورد" 
+                                            Binding="{Binding SupplierName}" 
+                                            Width="*">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Padding" Value="4,0"/>
+                                    <Setter Property="FontFamily" Value="Segoe UI"/>
+                                    <Setter Property="FontSize" Value="11"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- عمود رصيد أول المدة -->
+                        <DataGridTextColumn Header="💵 رصيد أول المدة" 
+                                            Binding="{Binding FormattedOpeningBalance}" 
+                                            Width="95">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Foreground" Value="{StaticResource WarningColor}"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="FontFamily" Value="Segoe UI"/>
+                                    <Setter Property="FontSize" Value="10"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- عمود دائن (مشتريات) -->
+                        <DataGridTextColumn Header="💰 دائن (مشتريات)" 
+                                            Binding="{Binding FormattedTotalPurchases}" 
+                                            Width="105">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Foreground" Value="{StaticResource SuccessColor}"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="FontFamily" Value="Segoe UI"/>
+                                    <Setter Property="FontSize" Value="10"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- عمود مدين (مدفوعات) -->
+                        <DataGridTextColumn Header="💸 مدين (مدفوعات)" 
+                                            Binding="{Binding FormattedTotalPayments}" 
+                                            Width="105">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Foreground" Value="{StaticResource DangerColor}"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="FontFamily" Value="Segoe UI"/>
+                                    <Setter Property="FontSize" Value="10"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- عمود الرصيد الحالي -->
+                        <DataGridTextColumn Header="⚖️ الرصيد الحالي" 
+                                            Binding="{Binding FormattedCurrentBalance}" 
+                                            Width="105">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="Foreground" Value="{Binding BalanceColor}"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="FontSize" Value="11"/>
+                                    <Setter Property="FontFamily" Value="Segoe UI"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- شريط الإجمالي -->
+                <Border Grid.Row="2"
+                        Background="#F8FAFC"
+                        Padding="10,8"
+                        CornerRadius="0,0,8,8"
+                        BorderBrush="{StaticResource BorderLightColor}"
+                        BorderThickness="0,1,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- إجمالي الرصيد الافتتاحي -->
+                        <Border Grid.Column="0" 
+                                Background="#FFF8E1" 
+                                CornerRadius="6" 
+                                Padding="10,4" 
+                                HorizontalAlignment="Left">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="إجمالي رصيد أول المدة:" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryColor}" VerticalAlignment="Center" FontFamily="Segoe UI"/>
+                                <TextBlock x:Name="TotalOpeningBalanceText" Text="0" FontSize="12" FontWeight="Bold" Foreground="{StaticResource WarningColor}" Margin="6,0,0,0" FontFamily="Segoe UI"/>
+                                <TextBlock x:Name="lblCurrencyOpening" Text="ر.س" FontSize="9" Foreground="{StaticResource TextSecondaryColor}" Margin="3,0,0,0" VerticalAlignment="Center" FontFamily="Segoe UI"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- إجمالي المشتريات -->
+                        <Border Grid.Column="1" 
+                                Background="#E8F5E9" 
+                                CornerRadius="6" 
+                                Padding="10,4" 
+                                Margin="10,0,10,0" 
+                                HorizontalAlignment="Right">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="إجمالي المشتريات:" FontSize="10" Foreground="{StaticResource TextSecondaryColor}" VerticalAlignment="Center" FontFamily="Segoe UI"/>
+                                <TextBlock x:Name="TotalPurchasesText" Text="0" FontSize="12" FontWeight="Bold" Foreground="{StaticResource SuccessColor}" Margin="6,0,0,0" FontFamily="Segoe UI"/>
+                                <TextBlock x:Name="lblCurrencyPurchases" Text="ر.س" FontSize="9" Foreground="{StaticResource TextSecondaryColor}" Margin="3,0,0,0" VerticalAlignment="Center" FontFamily="Segoe UI"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- إجمالي المدفوعات -->
+                        <Border Grid.Column="2" 
+                                Background="#FFEBEE" 
+                                CornerRadius="6" 
+                                Padding="10,4" 
+                                Margin="0,0,10,0" 
+                                HorizontalAlignment="Right">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="إجمالي المدفوعات:" FontSize="10" Foreground="{StaticResource TextSecondaryColor}" VerticalAlignment="Center" FontFamily="Segoe UI"/>
+                                <TextBlock x:Name="TotalPaymentsText" Text="0" FontSize="12" FontWeight="Bold" Foreground="{StaticResource DangerColor}" Margin="6,0,0,0" FontFamily="Segoe UI"/>
+                                <TextBlock x:Name="lblCurrencyPayments" Text="ر.س" FontSize="9" Foreground="{StaticResource TextSecondaryColor}" Margin="3,0,0,0" VerticalAlignment="Center" FontFamily="Segoe UI"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- إجمالي الرصيد -->
+                        <Border Grid.Column="3" 
+                                Background="{StaticResource PrimarySoft}" 
+                                CornerRadius="6" 
+                                Padding="10,4" 
+                                HorizontalAlignment="Right">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="إجمالي الرصيد:" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryColor}" VerticalAlignment="Center" FontFamily="Segoe UI"/>
+                                <TextBlock x:Name="TotalBalanceText" Text="0" FontSize="13" FontWeight="Bold" Foreground="{StaticResource PrimaryColor}" Margin="6,0,0,0" FontFamily="Segoe UI"/>
+                                <TextBlock x:Name="lblCurrencyTotal" Text="ر.س" FontSize="9" Foreground="{StaticResource TextSecondaryColor}" Margin="3,0,0,0" VerticalAlignment="Center" FontFamily="Segoe UI"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- رسالة عدم وجود بيانات -->
+        <Border Grid.Row="1"
+                Background="{StaticResource BackgroundGrayColor}"
+                CornerRadius="8"
+                Padding="30"
+                x:Name="NoDataMessage"
+                Visibility="Collapsed">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="📭" FontSize="40" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                <TextBlock Text="لا توجد موردين مسجلين في النظام" FontSize="12" Foreground="{StaticResource TextSecondaryColor}" HorizontalAlignment="Center" FontFamily="Segoe UI"/>
+                <TextBlock Text="الرجاء إضافة موردين أولاً" FontSize="10" Foreground="#94A3B8" HorizontalAlignment="Center" Margin="0,4,0,0" FontFamily="Segoe UI"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

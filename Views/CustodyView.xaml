@@ -1,0 +1,587 @@
+﻿<UserControl x:Class="RasidAccountingSystem.Views.CustodyView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:RasidAccountingSystem.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1200"
+             Background="#F0F4F8"
+             FlowDirection="RightToLeft">
+
+    <UserControl.Resources>
+
+        <!-- ============================================ -->
+        <!-- الألوان الأساسية للعهد - بنفسجي/أرجواني     -->
+        <!-- ============================================ -->
+        <SolidColorBrush x:Key="CustodyPrimaryColor" Color="#8B5CF6"/>
+        <SolidColorBrush x:Key="CustodyPrimaryDark" Color="#7C3AED"/>
+        <SolidColorBrush x:Key="CustodyPrimaryLight" Color="#EDE9FE"/>
+        <SolidColorBrush x:Key="CustodyPrimaryVeryLight" Color="#F5F3FF"/>
+
+        <SolidColorBrush x:Key="CustodySuccessColor" Color="#14B8A6"/>
+        <SolidColorBrush x:Key="CustodySuccessDark" Color="#0D9488"/>
+        <SolidColorBrush x:Key="CustodySuccessLight" Color="#CCFBF1"/>
+
+        <SolidColorBrush x:Key="CustodyWarningColor" Color="#F97316"/>
+        <SolidColorBrush x:Key="CustodyWarningDark" Color="#EA580C"/>
+        <SolidColorBrush x:Key="CustodyWarningLight" Color="#FFEDD5"/>
+
+        <SolidColorBrush x:Key="CustodyDangerColor" Color="#EF4444"/>
+        <SolidColorBrush x:Key="CustodyDangerDark" Color="#DC2626"/>
+        <SolidColorBrush x:Key="CustodyDangerLight" Color="#FEE2E2"/>
+
+        <SolidColorBrush x:Key="CustodyInfoColor" Color="#06B6D4"/>
+        <SolidColorBrush x:Key="CustodyInfoLight" Color="#CFFAFE"/>
+
+        <SolidColorBrush x:Key="CustodySurfaceColor" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="CustodyTextPrimary" Color="#1E1B4B"/>
+        <SolidColorBrush x:Key="CustodyTextSecondary" Color="#6B7280"/>
+        <SolidColorBrush x:Key="CustodyBorderLight" Color="#E5E7EB"/>
+
+        <!-- ============================================ -->
+        <!-- التدرجات اللونية للعهد                      -->
+        <!-- ============================================ -->
+        <LinearGradientBrush x:Key="CustodyHeaderGradient" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#6D28D9" Offset="0"/>
+            <GradientStop Color="#8B5CF6" Offset="0.5"/>
+            <GradientStop Color="#A78BFA" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="CustodyCardGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFFFFF" Offset="0"/>
+            <GradientStop Color="#F5F3FF" Offset="1"/>
+        </LinearGradientBrush>
+
+        <!-- ============================================ -->
+        <!-- المؤثرات البصرية                             -->
+        <!-- ============================================ -->
+        <DropShadowEffect x:Key="CustodyCardShadow" BlurRadius="10" ShadowDepth="2" Opacity="0.08" Color="#6D28D9"/>
+        <DropShadowEffect x:Key="CustodyButtonShadow" BlurRadius="6" ShadowDepth="1" Opacity="0.15" Color="#8B5CF6"/>
+
+        <!-- ============================================ -->
+        <!-- أنماط الأزرار                               -->
+        <!-- ============================================ -->
+        <Style x:Key="CustodyPrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource CustodyPrimaryColor}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Effect" Value="{StaticResource CustodyButtonShadow}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource CustodyPrimaryDark}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CustodySuccessButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource CustodySuccessColor}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Effect" Value="{StaticResource CustodyButtonShadow}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource CustodySuccessDark}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CustodyWarningButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource CustodyWarningColor}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Effect" Value="{StaticResource CustodyButtonShadow}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource CustodyWarningDark}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CustodySecondaryButton" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource CustodyPrimaryColor}"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="BorderBrush" Value="{StaticResource CustodyPrimaryColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource CustodyPrimaryVeryLight}"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.98" ScaleY="0.98"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ============================================ -->
+        <!-- أنماط الجدول                                 -->
+        <!-- ============================================ -->
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{StaticResource CustodyPrimaryLight}"/>
+            <Setter Property="Foreground" Value="{StaticResource CustodyPrimaryDark}"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="6,0"/>
+            <Setter Property="BorderBrush" Value="{StaticResource CustodyBorderLight}"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource CustodyBorderLight}"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Margin" Value="0,1,0,0"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource CustodyPrimaryVeryLight}"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="{StaticResource CustodyPrimaryLight}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="6,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="{StaticResource CustodyTextSecondary}"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="{StaticResource CustodyPrimaryColor}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- ============================================ -->
+        <!-- نمط الـ ComboBox                             -->
+        <!-- ============================================ -->
+        <Style x:Key="CustodyComboBox" TargetType="ComboBox">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Foreground" Value="{StaticResource CustodyTextPrimary}"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource CustodyBorderLight}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,0"/>
+        </Style>
+
+        <!-- ============================================ -->
+        <!-- نمط الـ DatePicker                           -->
+        <!-- ============================================ -->
+        <Style x:Key="CustodyDatePicker" TargetType="DatePicker">
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="Foreground" Value="{StaticResource CustodyTextPrimary}"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource CustodyBorderLight}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+
+    </UserControl.Resources>
+
+    <ScrollViewer x:Name="MainScrollViewer" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="15">
+
+            <!-- ============================================ -->
+            <!-- شريط العنوان                                 -->
+            <!-- ============================================ -->
+            <Border Background="{StaticResource CustodyHeaderGradient}" CornerRadius="8,8,0,0" Margin="0,0,0,12" Padding="12,10" Effect="{StaticResource CustodyCardShadow}">
+                <Grid>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                        <Border Background="White" Width="32" Height="32" CornerRadius="8" Margin="0,0,10,0" Opacity="0.95">
+                            <TextBlock Text="📋" FontSize="16" Foreground="{StaticResource CustodyPrimaryColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel>
+                            <TextBlock Text="إدارة العهد" FontSize="14" FontWeight="Bold" Foreground="White" FontFamily="Segoe UI"/>
+                            <TextBlock Text="إدارة عهد الموظفين، صرف وتسوية العهدة" FontSize="10" Foreground="#DDD6FE" FontFamily="Segoe UI"/>
+                        </StackPanel>
+                        <Border Background="White" CornerRadius="16" Padding="10,3" Margin="12,0,0,0" Opacity="0.95">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="عدد العهود:" FontSize="10" Foreground="{StaticResource CustodyPrimaryColor}" FontFamily="Segoe UI" Margin="0,0,5,0"/>
+                                <TextBlock x:Name="lblHeaderTotalCount" FontSize="11" FontWeight="Bold" Foreground="{StaticResource CustodyPrimaryDark}" FontFamily="Segoe UI"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- ============================================ -->
+            <!-- شريط الأدوات والفلاتر                        -->
+            <!-- ============================================ -->
+            <Border Background="White" CornerRadius="8" Padding="12,10" Margin="0,0,0,12" Effect="{StaticResource CustodyCardShadow}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- الأزرار -->
+                    <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button x:Name="btnAddCustody" Content="➕ عهدة جديدة" Style="{StaticResource CustodyPrimaryButton}" Margin="0,0,8,0" Width="110"/>
+                        <Button x:Name="btnAddExpense" Content="💰 صرف" Style="{StaticResource CustodyWarningButton}" Margin="0,0,8,0" Width="90"/>
+                        <Button x:Name="btnSettle" Content="✅ تسوية" Style="{StaticResource CustodySuccessButton}" Margin="0,0,8,0" Width="90"/>
+                        <Button x:Name="btnRefresh" Content="⟳ تحديث" Style="{StaticResource CustodySecondaryButton}" Width="90"/>
+                    </StackPanel>
+
+                    <!-- الفلاتر -->
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left">
+                        <TextBlock Text="الحالة:" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{StaticResource CustodyTextSecondary}" FontSize="11"/>
+                        <ComboBox x:Name="cmbStatusFilter" Width="120" Height="34" Style="{StaticResource CustodyComboBox}" Margin="0,0,15,0"/>
+                        <TextBlock Text="الموظف:" VerticalAlignment="Center" Margin="0,0,8,0" Foreground="{StaticResource CustodyTextSecondary}" FontSize="11"/>
+                        <local:SmartSearchComboBox x:Name="cmbEmployeeFilter" Width="150" Height="34" DisplayMemberPath="Content" SelectedValuePath="Tag" Placeholder="اكتب اسم الموظف..."/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- ============================================ -->
+            <!-- بطاقات الإحصائيات                            -->
+            <!-- ============================================ -->
+            <Grid Margin="0,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- البطاقة 1: إجمالي العهد -->
+                <Border Grid.Column="3" Background="{StaticResource CustodyPrimaryLight}" CornerRadius="8" Padding="12,10" Margin="8,0,0,0" Effect="{StaticResource CustodyCardShadow}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,12,0">
+                            <TextBlock Text="إجمالي العهد" FontSize="10" Foreground="{StaticResource CustodyTextSecondary}" TextAlignment="Right"/>
+                            <TextBlock x:Name="lblTotalCustody" FontSize="20" FontWeight="Bold" Foreground="{StaticResource CustodyPrimaryDark}" TextAlignment="Right"/>
+                        </StackPanel>
+                        <Border Grid.Column="1" Width="36" Height="36" CornerRadius="8" Background="{StaticResource CustodyPrimaryColor}" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <TextBlock Text="💰" FontSize="16" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- البطاقة 2: المسدد -->
+                <Border Grid.Column="2" Background="{StaticResource CustodySuccessLight}" CornerRadius="8" Padding="12,10" Margin="8,0,8,0" Effect="{StaticResource CustodyCardShadow}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,12,0">
+                            <TextBlock Text="المسدد" FontSize="10" Foreground="{StaticResource CustodyTextSecondary}" TextAlignment="Right"/>
+                            <TextBlock x:Name="lblTotalSettled" FontSize="20" FontWeight="Bold" Foreground="{StaticResource CustodySuccessColor}" TextAlignment="Right"/>
+                        </StackPanel>
+                        <Border Grid.Column="1" Width="36" Height="36" CornerRadius="8" Background="{StaticResource CustodySuccessColor}" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <TextBlock Text="✅" FontSize="16" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- البطاقة 3: المتبقي -->
+                <Border Grid.Column="1" Background="{StaticResource CustodyWarningLight}" CornerRadius="8" Padding="12,10" Margin="8,0,8,0" Effect="{StaticResource CustodyCardShadow}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,12,0">
+                            <TextBlock Text="المتبقي" FontSize="10" Foreground="{StaticResource CustodyTextSecondary}" TextAlignment="Right"/>
+                            <TextBlock x:Name="lblTotalRemaining" FontSize="20" FontWeight="Bold" Foreground="{StaticResource CustodyWarningColor}" TextAlignment="Right"/>
+                        </StackPanel>
+                        <Border Grid.Column="1" Width="36" Height="36" CornerRadius="8" Background="{StaticResource CustodyWarningColor}" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <TextBlock Text="📊" FontSize="16" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!-- البطاقة 4: العهد النشطة -->
+                <Border Grid.Column="0" Background="{StaticResource CustodyInfoLight}" CornerRadius="8" Padding="12,10" Margin="0,0,8,0" Effect="{StaticResource CustodyCardShadow}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" HorizontalAlignment="Right" Margin="0,0,12,0">
+                            <TextBlock Text="العهد النشطة" FontSize="10" Foreground="{StaticResource CustodyTextSecondary}" TextAlignment="Right"/>
+                            <TextBlock x:Name="lblActiveCount" FontSize="20" FontWeight="Bold" Foreground="{StaticResource CustodyInfoColor}" TextAlignment="Right"/>
+                        </StackPanel>
+                        <Border Grid.Column="1" Width="36" Height="36" CornerRadius="8" Background="{StaticResource CustodyInfoColor}" HorizontalAlignment="Right" VerticalAlignment="Center">
+                            <TextBlock Text="🔄" FontSize="16" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Grid>
+
+            <!-- ============================================ -->
+            <!-- بطاقات العهود                                -->
+            <!-- ============================================ -->
+            <Border Background="White" CornerRadius="8" Padding="12,8" Margin="0,0,0,12" Effect="{StaticResource CustodyCardShadow}">
+                <StackPanel>
+                    <TextBlock Text="📋 قائمة العهود" FontSize="13" FontWeight="SemiBold" Foreground="{StaticResource CustodyPrimaryDark}" Margin="0,0,0,10" TextAlignment="Right"/>
+                    <ItemsControl x:Name="icCustodyList">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{StaticResource CustodyCardGradient}" CornerRadius="10" Width="320" Margin="0,0,12,12" Padding="12" BorderBrush="{StaticResource CustodyBorderLight}" BorderThickness="1" Effect="{StaticResource CustodyCardShadow}">
+                                    <StackPanel>
+                                        <!-- الرأس: الحالة -->
+                                        <Grid Margin="0,0,0,8">
+                                            <Border Background="{Binding StatusColor}" CornerRadius="12" Padding="6,2" HorizontalAlignment="Right" Width="Auto">
+                                                <TextBlock Text="{Binding StatusText}" FontSize="10" Foreground="White" FontWeight="SemiBold"/>
+                                            </Border>
+                                        </Grid>
+
+                                        <!-- رقم العهدة والموظف -->
+                                        <TextBlock Text="{Binding Number}" FontSize="13" FontWeight="Bold" Foreground="{StaticResource CustodyTextPrimary}" Margin="0,0,0,3" TextAlignment="Right"/>
+                                        <TextBlock Text="{Binding EmployeeName}" FontSize="11" Foreground="{StaticResource CustodyTextSecondary}" Margin="0,0,0,8" TextAlignment="Right"/>
+
+                                        <!-- قيمة العهدة والمتبقي -->
+                                        <Border Background="{StaticResource CustodyPrimaryVeryLight}" CornerRadius="8" Padding="8" Margin="0,0,0,8">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+
+                                                <TextBlock Text="قيمة العهدة" Grid.Row="0" Grid.Column="0" FontSize="9" Foreground="{StaticResource CustodyTextSecondary}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding FormattedAmount}" Grid.Row="1" Grid.Column="0" FontSize="14" FontWeight="Bold" Foreground="{StaticResource CustodyPrimaryColor}" TextAlignment="Right"/>
+
+                                                <TextBlock Text="المتبقي" Grid.Row="0" Grid.Column="1" FontSize="9" Foreground="{StaticResource CustodyTextSecondary}" TextAlignment="Right"/>
+                                                <TextBlock Text="{Binding FormattedRemaining}" Grid.Row="1" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="{StaticResource CustodyWarningColor}" TextAlignment="Right"/>
+                                            </Grid>
+                                        </Border>
+
+                                        <!-- شريط التقدم - تم تعديل Mode إلى OneWay -->
+                                        <ProgressBar Value="{Binding CompletionPercentage, Mode=OneWay}" Maximum="100" Height="4" Margin="0,0,0,8" Background="{StaticResource CustodyBorderLight}" Foreground="{StaticResource CustodySuccessColor}"/>
+
+                                        <!-- أزرار الإجراءات -->
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,5,0,0">
+                                            <Button Content="📋 العمليات" Tag="{Binding Id}" Click="ViewTransactions_Click" Width="85" Height="28" Style="{StaticResource CustodySecondaryButton}" Margin="0,0,6,0" FontSize="11"/>
+                                            <Button Content="✏️ تعديل" Tag="{Binding Id}" Click="EditCustody_Click" Width="70" Height="28" Style="{StaticResource CustodyPrimaryButton}" FontSize="11"/>
+                                        </StackPanel>
+
+                                        <TextBlock Text="{Binding FormattedDate}" FontSize="9" Foreground="{StaticResource CustodyTextSecondary}" Margin="0,6,0,0" HorizontalAlignment="Right"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- ============================================ -->
+            <!-- جدول العمليات                                -->
+            <!-- ============================================ -->
+            <Border Background="White" CornerRadius="8" Effect="{StaticResource CustodyCardShadow}" Margin="0,0,0,12">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- رأس الجدول -->
+                    <Border Grid.Row="0" Background="{StaticResource CustodyHeaderGradient}" CornerRadius="8,8,0,0" Padding="12,8">
+                        <TextBlock Text="📋 عمليات العهدة" FontSize="13" FontWeight="SemiBold" Foreground="White" TextAlignment="Right"/>
+                    </Border>
+
+                    <!-- محتوى الجدول -->
+                    <DataGrid Grid.Row="1" x:Name="dgTransactions" AutoGenerateColumns="False" HeadersVisibility="Column" 
+                              BorderThickness="0" RowBackground="White" 
+                              AlternatingRowBackground="{StaticResource CustodyPrimaryVeryLight}"
+                              FontFamily="Segoe UI" FontSize="11"
+                              SelectionMode="Single" SelectionUnit="FullRow"
+                              GridLinesVisibility="Horizontal" HorizontalGridLinesBrush="{StaticResource CustodyBorderLight}"
+                              RowHeight="38" CanUserAddRows="False" CanUserDeleteRows="False"
+                              EnableRowVirtualization="True" VirtualizingPanel.ScrollUnit="Pixel">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="التاريخ" Binding="{Binding FormattedDate}" Width="140">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="FontFamily" Value="Consolas"/>
+                                        <Setter Property="FontSize" Value="10"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="نوع العملية" Binding="{Binding TransactionTypeText}" Width="100">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{Binding TransactionTypeColor}"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="المبلغ" Binding="{Binding FormattedAmount}" Width="100">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="{StaticResource CustodyPrimaryColor}"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="الرصيد بعد" Binding="{Binding BalanceAfter}" Width="100">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="نوع المصروف" Binding="{Binding ExpenseType}" Width="100">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="Foreground" Value="{StaticResource CustodyTextSecondary}"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="رقم الإيصال" Binding="{Binding ReceiptNumber}" Width="100">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="FontFamily" Value="Consolas"/>
+                                        <Setter Property="FontSize" Value="10"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="الوصف" Binding="{Binding Description}" Width="*">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                                        <Setter Property="Padding" Value="8,0"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- رسالة عدم وجود بيانات -->
+                    <Border Grid.Row="2" x:Name="lblNoData" Background="{StaticResource CustodyPrimaryVeryLight}" CornerRadius="0,0,8,8" 
+                            Padding="30" Visibility="Collapsed">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock Text="📭" FontSize="36" HorizontalAlignment="Center" Opacity="0.5"/>
+                            <TextBlock Text="لا توجد عمليات لهذه العهدة" FontSize="13" FontWeight="SemiBold" 
+                                       Foreground="{StaticResource CustodyTextSecondary}" Margin="0,10,0,3" HorizontalAlignment="Center"/>
+                            <TextBlock Text="اختر عهدة من البطاقات لعرض عملياتها" FontSize="10" 
+                                       Foreground="{StaticResource CustodyTextSecondary}" Opacity="0.7" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

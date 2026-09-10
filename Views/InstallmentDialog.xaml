@@ -1,0 +1,312 @@
+﻿<Window x:Class="RasidAccountingSystem.Views.InstallmentDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="تقسيم الفاتورة إلى أقساط" 
+        Height="750" 
+        Width="900"
+        MinHeight="700"
+        MinWidth="800"
+        WindowStartupLocation="CenterOwner"
+        Background="#F8FAFC"
+        FontFamily="Segoe UI"
+        FlowDirection="RightToLeft"
+        WindowStyle="SingleBorderWindow"
+        ResizeMode="CanResize">
+
+    <Window.Resources>
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="#6366F1"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="MinWidth" Value="100"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#4F46E5"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#4338CA"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SecondaryButton" TargetType="Button">
+            <Setter Property="Background" Value="#E2E8F0"/>
+            <Setter Property="Foreground" Value="#334155"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="MinWidth" Value="100"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#CBD5E1"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="DangerButton" TargetType="Button">
+            <Setter Property="Background" Value="#EF4444"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="8,4"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="MinWidth" Value="40"/>
+            <Setter Property="MinHeight" Value="30"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#DC2626"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ModernTextBox" TargetType="TextBox">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Background" Value="#F8FAFC"/>
+            <Setter Property="BorderBrush" Value="#CBD5E1"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Foreground" Value="#1E293B"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Style.Triggers>
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="BorderBrush" Value="#6366F1"/>
+                    <Setter Property="BorderThickness" Value="2"/>
+                    <Setter Property="Background" Value="White"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="DataGridStyle" TargetType="DataGrid">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="RowHeight" Value="42"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#E2E8F0"/>
+            <Setter Property="VerticalGridLinesBrush" Value="Transparent"/>
+            <Setter Property="AlternatingRowBackground" Value="#F8FAFC"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="CanUserDeleteRows" Value="False"/>
+            <Setter Property="CanUserReorderColumns" Value="False"/>
+            <Setter Property="CanUserResizeColumns" Value="True"/>
+            <Setter Property="CanUserSortColumns" Value="True"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="0,1,0,0"/>
+            <Setter Property="AutoGenerateColumns" Value="False"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="25">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- العنوان -->
+        <Border Grid.Row="0" Background="#6366F1" CornerRadius="10" Padding="20,15" Margin="0,0,0,20">
+            <StackPanel>
+                <TextBlock Text="📋 تقسيم الفاتورة إلى أقساط" 
+                           FontSize="22" 
+                           FontWeight="Bold" 
+                           Foreground="White"
+                           HorizontalAlignment="Center"/>
+                <TextBlock x:Name="txtInvoiceInfo" 
+                           Text="الفاتورة: SIN-000001 | العميل: أحمد محمد | الإجمالي: 5,000.00 ر.س" 
+                           FontSize="14" 
+                           Foreground="#E0E7FF"
+                           HorizontalAlignment="Center"
+                           Margin="0,8,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- ملخص المبالغ -->
+        <Border Grid.Row="1" Background="White" CornerRadius="10" Padding="18" Margin="0,0,0,18" BorderBrush="#E2E8F0" BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Background="#F1F5F9" CornerRadius="8" Padding="12" Margin="5">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="الإجمالي" FontSize="12" Foreground="#64748B"/>
+                        <TextBlock x:Name="txtTotalAmount" Text="0.00 ر.س" FontSize="18" FontWeight="Bold" Foreground="#1E293B"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Background="#F1F5F9" CornerRadius="8" Padding="12" Margin="5">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="المقدم" FontSize="12" Foreground="#64748B"/>
+                        <TextBlock x:Name="txtPaidUpfront" Text="0.00 ر.س" FontSize="18" FontWeight="Bold" Foreground="#6366F1"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Background="#FEF3C7" CornerRadius="8" Padding="12" Margin="5">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="المتبقي" FontSize="12" Foreground="#92400E"/>
+                        <TextBlock x:Name="txtRemaining" Text="0.00 ر.س" FontSize="18" FontWeight="Bold" Foreground="#D97706"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="3" Background="#DBEAFE" CornerRadius="8" Padding="12" Margin="5">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="عدد الأقساط" FontSize="12" Foreground="#1E40AF"/>
+                        <TextBlock x:Name="txtInstallmentCount" Text="0" FontSize="18" FontWeight="Bold" Foreground="#2563EB"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- إدخال القسط الجديد -->
+        <Border Grid.Row="2" Background="White" CornerRadius="10" Padding="18" Margin="0,0,0,18" BorderBrush="#E2E8F0" BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="قيمة القسط:" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,12,0" Foreground="#334155"/>
+                <TextBox x:Name="txtInstallmentAmount" Grid.Row="0" Grid.Column="1" Style="{StaticResource ModernTextBox}" 
+                         Text="0.00" Margin="0,0,12,0"/>
+
+                <TextBlock Grid.Row="0" Grid.Column="2" Text="مدة القسط (أيام):" FontSize="14" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,12,0" Foreground="#334155"/>
+                <TextBox x:Name="txtDueDays" Grid.Row="0" Grid.Column="3" Style="{StaticResource ModernTextBox}" 
+                         Text="30" Margin="0,0,12,0"/>
+
+                <Button x:Name="btnAddInstallment" Grid.Row="0" Grid.Column="4" Style="{StaticResource ModernButton}" 
+                        Content="➕ إضافة" Width="110" Height="38" Padding="12,6" Margin="0,0,8,0"
+                        Click="BtnAddInstallment_Click"/>
+
+                <Button x:Name="btnAutoDistribute" Grid.Row="0" Grid.Column="5" Style="{StaticResource SecondaryButton}" 
+                        Content="🔄 توزيع تلقائي" Width="140" Height="38" Padding="12,6"
+                        Click="BtnAutoDistribute_Click"/>
+
+                <!-- ملخص الأقساط -->
+                <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="6" 
+                           Text="💡 ملاحظة: يمكنك إضافة أقساط متعددة بمدد مختلفة حسب رغبتك" 
+                           FontSize="12" Foreground="#64748B" Margin="0,12,0,0"/>
+            </Grid>
+        </Border>
+
+        <!-- جدول الأقساط -->
+        <Border Grid.Row="3" Background="White" CornerRadius="10" Padding="12" Margin="0,0,0,18" BorderBrush="#E2E8F0" BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Background="#F1F5F9" CornerRadius="6" Padding="12,10" Margin="0,0,0,12">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <TextBlock Text="📊 قائمة الأقساط" FontSize="15" FontWeight="SemiBold" Foreground="#334155"/>
+                        <TextBlock x:Name="txtTotalInstallments" Text=" (الإجمالي: 0)" FontSize="14" Foreground="#64748B" Margin="12,0,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <DataGrid x:Name="dgInstallments" Grid.Row="1" Style="{StaticResource DataGridStyle}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="م" Binding="{Binding SerialNumber}" Width="55">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="قيمة القسط" Binding="{Binding FormattedAmount}" Width="140">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="Foreground" Value="#6366F1"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="المدة (أيام)" Binding="{Binding DueDays}" Width="110">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="تاريخ الاستحقاق" Binding="{Binding FormattedDueDate}" Width="150">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextAlignment" Value="Center"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTemplateColumn Header="ملاحظات" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Notes}" TextAlignment="Right" Margin="10,0,10,0" FontSize="13" Foreground="#64748B" VerticalAlignment="Center"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <DataGridTemplateColumn Header="" Width="70">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="✕" Style="{StaticResource DangerButton}" 
+                                            Tag="{Binding}" Click="BtnRemoveInstallment_Click"
+                                            HorizontalAlignment="Center" VerticalAlignment="Center"
+                                            Width="44" Height="32"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+
+        <!-- الأزرار -->
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
+            <Button x:Name="btnConfirm" Style="{StaticResource ModernButton}" Content="✅ تأكيد" Width="160" Height="48" FontSize="16" Click="BtnConfirm_Click"/>
+            <Button x:Name="btnCancel" Style="{StaticResource SecondaryButton}" Content="❌ إلغاء" Width="160" Height="48" FontSize="16" Click="BtnCancel_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

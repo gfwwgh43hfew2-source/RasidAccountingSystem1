@@ -1,0 +1,372 @@
+﻿<UserControl x:Class="RasidAccountingSystem.Views.BankAccountsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             Background="#F8FAFC"
+             FlowDirection="RightToLeft"
+             FontFamily="Segoe UI">
+
+    <UserControl.Resources>
+
+        <SolidColorBrush x:Key="PrimaryColor" Color="#4361EE"/>
+        <SolidColorBrush x:Key="PrimaryDark" Color="#3A56D4"/>
+        <SolidColorBrush x:Key="PrimaryLight" Color="#E8EDFF"/>
+        <SolidColorBrush x:Key="SuccessColor" Color="#10B981"/>
+        <SolidColorBrush x:Key="SuccessDark" Color="#059669"/>
+        <SolidColorBrush x:Key="DangerColor" Color="#EF4444"/>
+        <SolidColorBrush x:Key="DangerDark" Color="#DC2626"/>
+        <SolidColorBrush x:Key="SurfaceColor" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="TextPrimaryColor" Color="#1E293B"/>
+        <SolidColorBrush x:Key="TextSecondaryColor" Color="#64748B"/>
+        <SolidColorBrush x:Key="BorderLight" Color="#E2E8F0"/>
+        <SolidColorBrush x:Key="Gray50" Color="#F8FAFC"/>
+
+        <DropShadowEffect x:Key="ShadowSm" BlurRadius="6" ShadowDepth="1" Opacity="0.08" Color="#000000"/>
+
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource PrimaryDark}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SuccessButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="{StaticResource SuccessColor}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource SuccessDark}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="{StaticResource DangerColor}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource DangerDark}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SecondaryButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource SurfaceColor}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondaryColor}"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{StaticResource BorderLight}" BorderThickness="1" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource Gray50}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ModernComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLight}"/>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- الشريط العلوي -->
+        <Border Grid.Row="0" Background="{StaticResource SurfaceColor}" BorderBrush="#E2E8F0" BorderThickness="0,0,0,1" Effect="{StaticResource ShadowSm}">
+            <Grid Margin="15,10,15,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Border Grid.Row="0" Background="{StaticResource PrimaryColor}" Padding="15,12" Margin="0,0,0,12" CornerRadius="12" Effect="{StaticResource ShadowSm}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🏦" FontSize="36" Margin="0,0,12,0" Foreground="White"/>
+                            <StackPanel>
+                                <TextBlock Text="إجمالي أرصدة الحسابات البنكية" FontSize="12" Foreground="#CCCCCC"/>
+                                <TextBlock x:Name="lblTotalBalance" Text="0.00" FontSize="24" FontWeight="Bold" Foreground="White"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <TextBlock x:Name="lblCurrencySymbol" Grid.Column="2" Text="ر.س" FontSize="13" Foreground="#CCCCCC" VerticalAlignment="Center" Margin="0,0,20,0"/>
+
+                        <Button x:Name="btnRefresh" Grid.Column="3" Width="32" Height="32" Background="#40FFFFFF" Cursor="Hand" BorderThickness="0">
+                            <TextBlock Text="⟳" FontSize="16" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Button>
+                    </Grid>
+                </Border>
+
+                <WrapPanel Grid.Row="1">
+                    <Button x:Name="btnAddBankAccount" Content="➕ حساب بنكي جديد" Width="150" Height="36" Style="{StaticResource PrimaryButton}" Margin="0,0,8,0"/>
+                    <Button x:Name="btnDeposit" Content="💰 إيداع" Width="100" Height="36" Style="{StaticResource SuccessButton}" Margin="0,0,8,0"/>
+                    <Button x:Name="btnWithdraw" Content="💸 سحب" Width="100" Height="36" Style="{StaticResource DangerButton}" Margin="0,0,8,0"/>
+                </WrapPanel>
+            </Grid>
+        </Border>
+
+        <!-- القسم السفلي القابل للتمرير -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="20">
+            <StackPanel>
+
+                <!-- قائمة الحسابات البنكية -->
+                <Border Background="{StaticResource SurfaceColor}" Padding="20" Margin="0,0,0,20" BorderBrush="{StaticResource BorderLight}" BorderThickness="1" CornerRadius="12" Effect="{StaticResource ShadowSm}">
+                    <StackPanel>
+
+                        <Grid Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="الحسابات البنكية" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextPrimaryColor}"/>
+                            <TextBlock x:Name="lblAccountsCount" Grid.Column="1" Text="0 حساب" FontSize="12" Foreground="{StaticResource TextSecondaryColor}" VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <TextBlock x:Name="lblNoAccounts" Text="لا توجد حسابات بنكية بعد. اضغط على «➕ حساب بنكي جديد» للبدء." FontSize="13" Foreground="{StaticResource TextSecondaryColor}" Visibility="Collapsed" Margin="0,10,0,10"/>
+
+                        <ItemsControl x:Name="icBankAccountsList">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Width="320" Margin="0,0,15,15" Background="{StaticResource SurfaceColor}" BorderBrush="{StaticResource BorderLight}" BorderThickness="1" CornerRadius="10" Effect="{StaticResource ShadowSm}">
+                                        <Grid Margin="15">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+
+                                            <Grid Grid.Row="0" Margin="0,0,0,10">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding BankNameAr}" FontSize="15" FontWeight="Bold" Foreground="{StaticResource TextPrimaryColor}" TextWrapping="Wrap"/>
+                                                <Border Grid.Column="1" Background="{StaticResource PrimaryLight}" Padding="8,4" CornerRadius="12" VerticalAlignment="Top">
+                                                    <TextBlock Text="{Binding BankCode}" FontSize="10" Foreground="{StaticResource PrimaryColor}"/>
+                                                </Border>
+                                            </Grid>
+
+                                            <StackPanel Grid.Row="1" Margin="0,0,0,10">
+                                                <TextBlock Text="{Binding AccountNumberDisplay}" FontSize="12" Foreground="{StaticResource TextSecondaryColor}"/>
+                                                <TextBlock Text="{Binding IBANDisplay}" FontSize="11" Foreground="{StaticResource TextSecondaryColor}" Visibility="{Binding IBANVisibility}"/>
+                                            </StackPanel>
+
+                                            <Border Grid.Row="2" Background="{StaticResource Gray50}" Padding="12" Margin="0,0,0,12" CornerRadius="10">
+                                                <StackPanel>
+                                                    <TextBlock Text="الرصيد الحالي" FontSize="11" Foreground="{StaticResource TextSecondaryColor}"/>
+                                                    <TextBlock Text="{Binding FormattedBalance}" FontSize="20" FontWeight="Bold" Foreground="{Binding BalanceColor}"/>
+                                                </StackPanel>
+                                            </Border>
+
+                                            <StackPanel Grid.Row="3" Orientation="Horizontal">
+                                                <Button Content="عرض الحركات" Width="110" Height="32" Style="{StaticResource SecondaryButton}" Margin="0,0,8,0" Click="ViewTransactions_Click" Tag="{Binding Id}"/>
+                                                <Button Content="تعديل" Width="70" Height="32" Style="{StaticResource SecondaryButton}" Margin="0,0,8,0" Click="EditBankAccount_Click" Tag="{Binding Id}"/>
+                                                <Button Content="حذف" Width="70" Height="32" Style="{StaticResource SecondaryButton}" Click="DeleteBankAccount_Click" Tag="{Binding Id}"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                    </StackPanel>
+                </Border>
+
+                <!-- سجل الحركات البنكية -->
+                <Border Background="{StaticResource SurfaceColor}" Padding="20" BorderBrush="{StaticResource BorderLight}" BorderThickness="1" CornerRadius="12" Effect="{StaticResource ShadowSm}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Margin="0,0,0,15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="📋 سجل الحركات البنكية" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextPrimaryColor}"/>
+                            <ComboBox x:Name="cmbBankFilter" Grid.Column="1" Width="220" Height="35" Style="{StaticResource ModernComboBoxStyle}"/>
+                        </Grid>
+
+                        <Grid Grid.Row="1" Margin="0,0,0,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Background="#ECFDF5" Padding="15" Margin="0,0,10,0" CornerRadius="12">
+                                <StackPanel>
+                                    <TextBlock Text="📈 إجمالي الإيداعات" FontSize="12" Foreground="#065F46"/>
+                                    <TextBlock x:Name="lblTotalDeposits" Text="0.00" FontSize="22" FontWeight="Bold" Foreground="{StaticResource SuccessColor}"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="1" Background="#FEF2F2" Padding="15" Margin="5,0" CornerRadius="12">
+                                <StackPanel>
+                                    <TextBlock Text="📉 إجمالي السحوبات" FontSize="12" Foreground="#991B1B"/>
+                                    <TextBlock x:Name="lblTotalWithdrawals" Text="0.00" FontSize="22" FontWeight="Bold" Foreground="{StaticResource DangerColor}"/>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Grid.Column="2" Background="#EFF6FF" Padding="15" Margin="10,0,0,0" CornerRadius="12">
+                                <StackPanel>
+                                    <TextBlock Text="⚖️ صافي الحركة" FontSize="12" Foreground="#1E40AF"/>
+                                    <TextBlock x:Name="lblNetAmount" Text="0.00" FontSize="22" FontWeight="Bold" Foreground="{StaticResource PrimaryColor}"/>
+                                </StackPanel>
+                            </Border>
+                        </Grid>
+
+                        <DataGrid x:Name="dgTransactions" Grid.Row="2" MinHeight="300" AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column" GridLinesVisibility="None" RowHeight="45" BorderThickness="0" HorizontalAlignment="Stretch" Background="{StaticResource SurfaceColor}" AlternatingRowBackground="{StaticResource Gray50}" RowBackground="{StaticResource SurfaceColor}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="م" Binding="{Binding SerialNumber}" Width="50" MinWidth="50">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            <Setter Property="FontSize" Value="12"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="التاريخ" Binding="{Binding TransactionDateDisplay}" Width="110" MinWidth="100">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            <Setter Property="FontSize" Value="12"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="الحساب البنكي" Binding="{Binding BankAccountName}" Width="150" MinWidth="120">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                                            <Setter Property="FontSize" Value="12"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="البيان" Binding="{Binding Description}" Width="*" MinWidth="180">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                                            <Setter Property="TextWrapping" Value="Wrap"/>
+                                            <Setter Property="FontSize" Value="12"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="إيداع" Binding="{Binding FormattedDeposit}" Width="110" MinWidth="100">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            <Setter Property="FontSize" Value="12"/>
+                                            <Setter Property="Foreground" Value="{StaticResource SuccessColor}"/>
+                                            <Setter Property="FontWeight" Value="SemiBold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="سحب" Binding="{Binding FormattedWithdrawal}" Width="110" MinWidth="100">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            <Setter Property="FontSize" Value="12"/>
+                                            <Setter Property="Foreground" Value="{StaticResource DangerColor}"/>
+                                            <Setter Property="FontWeight" Value="SemiBold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="الرصيد بعد الحركة" Binding="{Binding FormattedBalanceAfter}" Width="130" MinWidth="120">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            <Setter Property="FontSize" Value="12"/>
+                                            <Setter Property="FontWeight" Value="SemiBold"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <DataGridTemplateColumn Header="" Width="70">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="حذف" Width="55" Height="28" FontSize="10" Style="{StaticResource SecondaryButton}" Click="DeleteTransaction_Click" Tag="{Binding TransactionId}"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                    </Grid>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

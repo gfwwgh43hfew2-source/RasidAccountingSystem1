@@ -1,0 +1,914 @@
+﻿<UserControl x:Class="RasidAccountingSystem.Views.PaymentVouchersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             Background="{StaticResource BackgroundColor}"
+             FlowDirection="RightToLeft"
+             mc:Ignorable="d">
+
+    <UserControl.Resources>
+
+        <!-- ==================== الألوان (باللون الأحمر للمدفوعات) ==================== -->
+        <SolidColorBrush x:Key="PaymentPrimaryColor" Color="#DC2626"/>
+        <SolidColorBrush x:Key="PaymentPrimaryDark" Color="#991B1B"/>
+        <SolidColorBrush x:Key="PaymentPrimarySoft" Color="#FEE2E2"/>
+        <SolidColorBrush x:Key="PaymentBorderLight" Color="#FECACA"/>
+
+        <!-- الألوان العامة -->
+        <SolidColorBrush x:Key="SuccessColor" Color="#27AE60"/>
+        <SolidColorBrush x:Key="DangerColor" Color="#E74C3C"/>
+        <SolidColorBrush x:Key="WarningColor" Color="#F39C12"/>
+        <SolidColorBrush x:Key="InfoColor" Color="#3498DB"/>
+        <SolidColorBrush x:Key="TextPrimaryColor" Color="#2C3E50"/>
+        <SolidColorBrush x:Key="TextSecondaryColor" Color="#6C757D"/>
+        <SolidColorBrush x:Key="BorderLightColor" Color="#E2E8F0"/>
+        <SolidColorBrush x:Key="BackgroundGrayColor" Color="#F8FAFC"/>
+        <SolidColorBrush x:Key="SurfaceColor" Color="#FFFFFF"/>
+
+        <!-- ==================== التأثيرات ==================== -->
+        <DropShadowEffect x:Key="ShadowSm" 
+                          BlurRadius="8" 
+                          ShadowDepth="1" 
+                          Opacity="0.08" 
+                          Direction="270"/>
+
+        <!-- ==================== الأنماط ==================== -->
+
+        <Style x:Key="FormLabel" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryColor}"/>
+            <Setter Property="Margin" Value="0,0,0,3"/>
+        </Style>
+
+        <Style x:Key="FormTextBox" TargetType="TextBox">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Padding" Value="8,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLightColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource PaymentPrimaryColor}"/>
+                                <Setter Property="BorderThickness" Value="1.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="FormDatePicker" TargetType="DatePicker">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLightColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimaryColor}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DatePicker">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <DatePickerTextBox x:Name="TextBox"
+                                                   Grid.Column="0"
+                                                   Margin="8,0,0,0"
+                                                   VerticalAlignment="Center"
+                                                   FontFamily="Cairo"
+                                                   FontSize="11"/>
+                                <Button x:Name="DropDownButton"
+                                        Grid.Column="1"
+                                        Width="32"
+                                        Height="32"
+                                        Background="Transparent"
+                                        BorderThickness="0"
+                                        Cursor="Hand">
+                                    <TextBlock Text="📅"
+                                               FontSize="13"
+                                               Foreground="{StaticResource TextSecondaryColor}"/>
+                                </Button>
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="{StaticResource PaymentPrimaryColor}"/>
+                                <Setter Property="BorderThickness" Value="1.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="FormComboBox" TargetType="ComboBox">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Padding" Value="6,0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLightColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="IsEditable" Value="True"/>
+            <Setter Property="IsTextSearchEnabled" Value="False"/>
+            <Setter Property="StaysOpenOnEdit" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <Border x:Name="Border"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="6">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox x:Name="PART_EditableTextBox"
+                                             Grid.Column="0"
+                                             Visibility="Visible"
+                                             IsReadOnly="{TemplateBinding IsReadOnly}"
+                                             Background="Transparent"
+                                             BorderThickness="0"
+                                             Margin="6,0,0,0"
+                                             VerticalAlignment="Center"
+                                             FontFamily="Cairo"
+                                             FontSize="11"/>
+                                    <ToggleButton x:Name="ToggleButton"
+                                                  Grid.Column="1"
+                                                  Width="30"
+                                                  Background="Transparent"
+                                                  BorderThickness="0"
+                                                  Focusable="False"
+                                                  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                  ClickMode="Press">
+                                        <ToggleButton.Template>
+                                            <ControlTemplate TargetType="ToggleButton">
+                                                <Grid Background="Transparent">
+                                                    <TextBlock x:Name="arrow"
+                                                               Text="▼"
+                                                               FontSize="10"
+                                                               Foreground="{StaticResource TextSecondaryColor}"
+                                                               VerticalAlignment="Center"
+                                                               HorizontalAlignment="Center"/>
+                                                </Grid>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsChecked" Value="True">
+                                                        <Setter TargetName="arrow" Property="Text" Value="▲"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </ToggleButton.Template>
+                                    </ToggleButton>
+                                </Grid>
+                            </Border>
+                            <Popup x:Name="Popup"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   Placement="Bottom"
+                                   Focusable="False"
+                                   AllowsTransparency="True">
+                                <Grid Width="{TemplateBinding ActualWidth}">
+                                    <Border Background="White"
+                                            BorderBrush="{StaticResource BorderLightColor}"
+                                            BorderThickness="1"
+                                            CornerRadius="6"
+                                            Margin="0,1,0,0">
+                                        <ScrollViewer MaxHeight="180">
+                                            <ItemsPresenter/>
+                                        </ScrollViewer>
+                                    </Border>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource PaymentPrimaryColor}"/>
+                                <Setter TargetName="Border" Property="BorderThickness" Value="1.5"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource PaymentPrimaryColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- زر الحفظ باللون الأحمر (للمدفوعات) -->
+        <Style x:Key="PaymentSaveButton" TargetType="Button">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource PaymentPrimaryColor}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PaymentPrimaryDark}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SecondaryButton" TargetType="Button">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource PaymentPrimaryColor}"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PaymentPrimaryColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource PaymentPrimarySoft}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="IconButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Width" Value="34"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{StaticResource BackgroundGrayColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ScrollBar">
+            <Setter Property="Width" Value="6"/>
+            <Setter Property="MinWidth" Value="6"/>
+            <Setter Property="MaxWidth" Value="6"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Background="Transparent">
+                            <Track x:Name="PART_Track">
+                                <Track.Thumb>
+                                    <Thumb x:Name="Thumb" Background="#A0B4C8">
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border Background="{TemplateBinding Background}" 
+                                                        CornerRadius="4"
+                                                        Height="{TemplateBinding Height}"
+                                                        Width="6"/>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Thumb" Property="Background" Value="#7A8EAA"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="RadioButton">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondaryColor}"/>
+            <Setter Property="Margin" Value="0,0,15,0"/>
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Foreground" Value="{StaticResource PaymentPrimaryColor}"/>
+                    <Setter Property="FontWeight" Value="SemiBold"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{StaticResource PaymentPrimarySoft}"/>
+            <Setter Property="Foreground" Value="{StaticResource PaymentPrimaryDark}"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PaymentBorderLight}"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Padding" Value="15,0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="Foreground" Value="#1E293B"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="15,0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#F1F5F9"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Margin" Value="0,1,0,0"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FEF2F2"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#FEE2E2"/>
+                    <Setter Property="BorderBrush" Value="#FECACA"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0"
+                Background="White"
+                CornerRadius="10"
+                Padding="10,8"
+                Margin="0,0,0,10"
+                BorderBrush="{StaticResource BorderLightColor}"
+                BorderThickness="1"
+                Effect="{StaticResource ShadowSm}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="💸" FontSize="18" Margin="0,0,8,0"/>
+                    <TextBlock Text="سندات الصرف / المدفوعات"
+                               FontSize="14"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource PaymentPrimaryDark}"
+                               FontFamily="Cairo"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Button x:Name="btnSave"
+                            Content="💾 حفظ السند"
+                            Style="{StaticResource PaymentSaveButton}"
+                            Margin="0,0,8,0"
+                            Width="100"/>
+                    <Button x:Name="btnClear"
+                            Content="🗑️ إلغاء"
+                            Style="{StaticResource SecondaryButton}"
+                            Width="80"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <ScrollViewer x:Name="MainScrollViewer" 
+                      Grid.Row="1" 
+                      VerticalScrollBarVisibility="Auto" 
+                      HorizontalScrollBarVisibility="Disabled">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.2*"/>
+                    <ColumnDefinition Width="3.8*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0"
+                        Background="White"
+                        CornerRadius="10"
+                        Padding="12"
+                        Margin="0,0,8,0"
+                        BorderBrush="{StaticResource BorderLightColor}"
+                        BorderThickness="1"
+                        Effect="{StaticResource ShadowSm}">
+                    <StackPanel>
+                        <TextBlock Text="💰 بيانات سند الدفع"
+                                   FontSize="13"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource PaymentPrimaryDark}"
+                                   FontFamily="Cairo"
+                                   Margin="0,0,0,12"/>
+
+                        <TextBlock Text="رقم السند" Style="{StaticResource FormLabel}"/>
+                        <TextBox x:Name="txtVoucherNumber"
+                                 Style="{StaticResource FormTextBox}"
+                                 Margin="0,0,0,10"
+                                 IsReadOnly="True"
+                                 Background="{StaticResource BackgroundGrayColor}"/>
+
+                        <TextBlock Text="تاريخ السند" Style="{StaticResource FormLabel}"/>
+                        <DatePicker x:Name="dpVoucherDate"
+                                    Height="34"
+                                    Margin="0,0,0,10"
+                                    SelectedDate="{x:Static sys:DateTime.Now}"
+                                    Style="{StaticResource FormDatePicker}"/>
+
+                        <TextBlock Text="نوع الطرف" Style="{StaticResource FormLabel}"/>
+                        <ComboBox x:Name="cboPartyType"
+                                  Style="{StaticResource FormComboBox}"
+                                  Margin="0,0,0,10"
+                                  SelectedIndex="0"
+                                  SelectionChanged="CboPartyType_SelectionChanged">
+                            <ComboBoxItem Content="🏭 مورد"/>
+                            <ComboBoxItem Content="👤 عميل"/>
+                        </ComboBox>
+
+                        <TextBlock x:Name="lblParty" Text="المورد" Style="{StaticResource FormLabel}"/>
+                        <Grid Margin="0,0,0,10">
+                            <Border x:Name="borderPartySearch"
+                                    CornerRadius="6"
+                                    BorderBrush="{StaticResource BorderLightColor}"
+                                    BorderThickness="1"
+                                    Background="White">
+                                <Grid>
+                                    <TextBlock x:Name="txtPartyPlaceholder"
+                                               Text="ابحث باسم المورد أو الكود..."
+                                               Margin="8,0"
+                                               VerticalAlignment="Center"
+                                               Foreground="#999999"
+                                               IsHitTestVisible="False"
+                                               FontFamily="Cairo"
+                                               FontSize="11"/>
+                                    <TextBox x:Name="txtPartySearch"
+                                             Style="{StaticResource FormTextBox}"
+                                             Background="Transparent"
+                                             BorderThickness="0"
+                                             Padding="8,0"
+                                             VerticalContentAlignment="Center"
+                                             FontFamily="Cairo"
+                                             FontSize="11"
+                                             TextChanged="TxtPartySearch_TextChanged"
+                                             GotFocus="TxtPartySearch_GotFocus"
+                                             LostFocus="TxtPartySearch_LostFocus"
+                                             KeyDown="TxtPartySearch_KeyDown"
+                                             PreviewKeyDown="TxtPartySearch_PreviewKeyDown"/>
+                                </Grid>
+                            </Border>
+                            <Popup x:Name="popupParties"
+                                   PlacementTarget="{Binding ElementName=txtPartySearch}"
+                                   Placement="Bottom"
+                                   AllowsTransparency="True"
+                                   StaysOpen="True"
+                                   PopupAnimation="Slide">
+                                <Border Background="White"
+                                        BorderBrush="{StaticResource BorderLightColor}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Width="{Binding ActualWidth, ElementName=txtPartySearch}">
+                                    <ListBox x:Name="lstParties"
+                                             MaxHeight="180"
+                                             Background="White"
+                                             BorderThickness="0"
+                                             Focusable="True"
+                                             IsTabStop="True"
+                                             MouseUp="LstParties_MouseUp"
+                                             KeyDown="LstParties_KeyDown"
+                                             PreviewKeyDown="LstParties_PreviewKeyDown">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Padding="8,5"
+                                                        BorderBrush="{StaticResource BorderLightColor}"
+                                                        BorderThickness="0,0,0,1">
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel>
+                                                            <TextBlock Text="{Binding Name}"
+                                                                       FontFamily="Cairo"
+                                                                       FontSize="11"
+                                                                       FontWeight="SemiBold"
+                                                                       Foreground="{StaticResource TextPrimaryColor}"/>
+                                                            <TextBlock Text="{Binding Code}"
+                                                                       FontFamily="Cairo"
+                                                                       FontSize="10"
+                                                                       Foreground="{StaticResource TextSecondaryColor}"
+                                                                       Margin="0,1,0,0"/>
+                                                        </StackPanel>
+                                                        <Border Grid.Column="1"
+                                                                Background="{StaticResource PaymentPrimarySoft}"
+                                                                CornerRadius="4"
+                                                                Padding="6,3"
+                                                                VerticalAlignment="Center">
+                                                            <TextBlock FontFamily="Cairo"
+                                                                       FontSize="10"
+                                                                       Foreground="{StaticResource PaymentPrimaryDark}"
+                                                                       Text="{Binding CurrentBalance, StringFormat=رصيد: {0:N2}}"/>
+                                                        </Border>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Border>
+                            </Popup>
+                        </Grid>
+
+                        <Border x:Name="borderPartyBalance"
+                                Background="{StaticResource PaymentPrimarySoft}"
+                                CornerRadius="6"
+                                Padding="8"
+                                Margin="0,3,0,10"
+                                Visibility="Collapsed">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="الرصيد الحالي للطرف"
+                                               FontSize="10"
+                                               Foreground="{StaticResource PaymentPrimaryDark}"
+                                               FontFamily="Cairo"/>
+                                    <TextBlock x:Name="lblPartyBalance"
+                                               Text="0.00"
+                                               FontSize="16"
+                                               FontWeight="Bold"
+                                               Foreground="{StaticResource PaymentPrimaryDark}"
+                                               FontFamily="Cairo"/>
+                                </StackPanel>
+                                <Border Grid.Column="1"
+                                        x:Name="borderBalanceStatus"
+                                        Background="{StaticResource PaymentPrimaryColor}"
+                                        CornerRadius="12"
+                                        Padding="6,3"
+                                        VerticalAlignment="Center">
+                                    <TextBlock x:Name="lblPartyBalanceStatus"
+                                               Text="مدين"
+                                               FontSize="9"
+                                               Foreground="White"
+                                               FontWeight="Bold"
+                                               FontFamily="Cairo"/>
+                                </Border>
+                            </Grid>
+                        </Border>
+
+                        <TextBlock Text="رقم الفاتورة (اختياري)" Style="{StaticResource FormLabel}"/>
+                        <Grid Margin="0,0,0,10" x:Name="pnlInvoice" Visibility="Collapsed">
+                            <Border x:Name="borderInvoiceSearch"
+                                    CornerRadius="6"
+                                    BorderBrush="{StaticResource BorderLightColor}"
+                                    BorderThickness="1"
+                                    Background="White">
+                                <Grid>
+                                    <TextBlock x:Name="txtInvoicePlaceholder"
+                                               Text="ابحث برقم الفاتورة..."
+                                               Margin="8,0"
+                                               VerticalAlignment="Center"
+                                               Foreground="#999999"
+                                               IsHitTestVisible="False"
+                                               FontFamily="Cairo"
+                                               FontSize="11"
+                                               Visibility="Visible"/>
+                                    <TextBox x:Name="txtInvoiceSearch"
+                                             Style="{StaticResource FormTextBox}"
+                                             Background="Transparent"
+                                             BorderThickness="0"
+                                             Padding="8,0"
+                                             VerticalContentAlignment="Center"
+                                             FontFamily="Cairo"
+                                             FontSize="11"
+                                             TextChanged="TxtInvoiceSearch_TextChanged"
+                                             GotFocus="TxtInvoiceSearch_GotFocus"
+                                             LostFocus="TxtInvoiceSearch_LostFocus"
+                                             KeyDown="TxtInvoiceSearch_KeyDown"
+                                             PreviewKeyDown="TxtInvoiceSearch_PreviewKeyDown"/>
+                                </Grid>
+                            </Border>
+                            <Popup x:Name="popupInvoices"
+                                   PlacementTarget="{Binding ElementName=txtInvoiceSearch}"
+                                   Placement="Bottom"
+                                   AllowsTransparency="True"
+                                   StaysOpen="True"
+                                   PopupAnimation="Slide">
+                                <Border Background="White"
+                                        BorderBrush="{StaticResource BorderLightColor}"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Width="{Binding ActualWidth, ElementName=txtInvoiceSearch}">
+                                    <ListBox x:Name="lstInvoices"
+                                             MaxHeight="180"
+                                             Background="White"
+                                             BorderThickness="0"
+                                             Focusable="True"
+                                             IsTabStop="True"
+                                             MouseUp="LstInvoices_MouseUp"
+                                             KeyDown="LstInvoices_KeyDown"
+                                             PreviewKeyDown="LstInvoices_PreviewKeyDown">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Padding="8,5"
+                                                        BorderBrush="{StaticResource BorderLightColor}"
+                                                        BorderThickness="0,0,0,1">
+                                                    <TextBlock Text="{Binding DisplayText}"
+                                                               FontFamily="Cairo"
+                                                               FontSize="11"
+                                                               Foreground="{StaticResource TextPrimaryColor}"/>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Border>
+                            </Popup>
+                        </Grid>
+
+                        <TextBlock Text="المبلغ" Style="{StaticResource FormLabel}"/>
+                        <TextBox x:Name="txtAmount"
+                                 Style="{StaticResource FormTextBox}"
+                                 Margin="0,0,0,10"
+                                 TextChanged="TxtAmount_TextChanged"/>
+
+                        <Border x:Name="borderBalanceAfter"
+                                Background="{StaticResource PaymentPrimarySoft}"
+                                CornerRadius="6"
+                                Padding="8"
+                                Margin="0,3,0,10"
+                                Visibility="Collapsed">
+                            <StackPanel>
+                                <TextBlock Text="الرصيد المتوقع بعد الصرف"
+                                           FontSize="10"
+                                           Foreground="{StaticResource PaymentPrimaryDark}"
+                                           FontFamily="Cairo"/>
+                                <TextBlock x:Name="lblBalanceAfter"
+                                           Text="0.00"
+                                           FontSize="16"
+                                           FontWeight="Bold"
+                                           Foreground="{StaticResource PaymentPrimaryColor}"
+                                           FontFamily="Cairo"/>
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Text="طريقة السداد" Style="{StaticResource FormLabel}"/>
+                        <ComboBox x:Name="cboPaymentMethod"
+                                  Style="{StaticResource FormComboBox}"
+                                  Margin="0,0,0,10"
+                                  DisplayMemberPath="DisplayName"
+                                  SelectedValuePath="Value"
+                                  SelectionChanged="CboPaymentMethod_SelectionChanged"/>
+
+                        <StackPanel x:Name="pnlCheckNumber" Visibility="Collapsed">
+                            <TextBlock Text="رقم الشيك" Style="{StaticResource FormLabel}"/>
+                            <TextBox x:Name="txtCheckNumber"
+                                     Style="{StaticResource FormTextBox}"
+                                     Margin="0,0,0,10"/>
+                        </StackPanel>
+
+                        <TextBlock Text="الصرف من" Style="{StaticResource FormLabel}"/>
+                        <ComboBox x:Name="cboTreasury"
+                                  Style="{StaticResource FormComboBox}"
+                                  Margin="0,0,0,10"
+                                  DisplayMemberPath="Name"
+                                  SelectedValuePath="Id"
+                                  SelectionChanged="CboTreasury_SelectionChanged"/>
+
+                        <TextBlock Text="البيان" Style="{StaticResource FormLabel}"/>
+                        <TextBox x:Name="txtDescription"
+                                 Style="{StaticResource FormTextBox}"
+                                 Height="55"
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="True"
+                                 Margin="0,0,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1"
+                        Background="White"
+                        CornerRadius="10"
+                        Padding="0"
+                        Margin="8,0,0,0"
+                        BorderBrush="{StaticResource BorderLightColor}"
+                        BorderThickness="1"
+                        Effect="{StaticResource ShadowSm}">
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0" 
+                                Background="{StaticResource PaymentPrimarySoft}"
+                                Padding="15,12"
+                                CornerRadius="10,10,0,0">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <TextBlock Text="📋 سندات الصرف المسجلة" 
+                                           FontSize="14" 
+                                           FontWeight="Bold" 
+                                           Foreground="{StaticResource PaymentPrimaryDark}"
+                                           FontFamily="Cairo"/>
+
+                                <WrapPanel Grid.Column="1">
+                                    <RadioButton x:Name="rbAll" Content="الكل" IsChecked="True" GroupName="Filter" Checked="Filter_Checked"/>
+                                    <RadioButton x:Name="rbToday" Content="اليوم" GroupName="Filter" Checked="Filter_Checked"/>
+                                    <RadioButton x:Name="rbThisWeek" Content="هذا الأسبوع" GroupName="Filter" Checked="Filter_Checked"/>
+                                    <RadioButton x:Name="rbThisMonth" Content="هذا الشهر" GroupName="Filter" Checked="Filter_Checked"/>
+                                </WrapPanel>
+                            </Grid>
+                        </Border>
+
+                        <Border Grid.Row="1"
+                                Background="{StaticResource PaymentPrimarySoft}"
+                                CornerRadius="0"
+                                Padding="15,12"
+                                BorderBrush="{StaticResource PaymentBorderLight}"
+                                BorderThickness="0,0,0,1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBlock Text="إجمالي المبلغ المدفوع"
+                                               FontSize="11"
+                                               Foreground="{StaticResource PaymentPrimaryDark}"
+                                               FontFamily="Cairo"/>
+                                    <TextBlock x:Name="lblTotalAmount"
+                                               Text="0.00"
+                                               FontSize="18"
+                                               FontWeight="Bold"
+                                               Foreground="{StaticResource PaymentPrimaryColor}"
+                                               FontFamily="Cairo"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="عدد السندات"
+                                               FontSize="11"
+                                               Foreground="{StaticResource PaymentPrimaryDark}"
+                                               FontFamily="Cairo"/>
+                                    <TextBlock x:Name="lblVouchersCount"
+                                               Text="0"
+                                               FontSize="18"
+                                               FontWeight="Bold"
+                                               Foreground="{StaticResource PaymentPrimaryColor}"
+                                               FontFamily="Cairo"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <DataGrid x:Name="dgVouchers" 
+                                  Grid.Row="2"
+                                  MinHeight="350"
+                                  AutoGenerateColumns="False" 
+                                  IsReadOnly="True"
+                                  HeadersVisibility="Column" 
+                                  GridLinesVisibility="None"
+                                  RowHeight="50" 
+                                  BorderThickness="0"
+                                  HorizontalAlignment="Stretch"
+                                  Background="{StaticResource SurfaceColor}"
+                                  AlternatingRowBackground="#FEF2F2"
+                                  RowBackground="{StaticResource SurfaceColor}">
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="🏷️ رقم السند" Binding="{Binding VoucherNumber}" Width="120"/>
+                                <DataGridTextColumn Header="📅 التاريخ" Binding="{Binding PaymentDate}" Width="100"/>
+                                <DataGridTextColumn Header="👤 الطرف" Binding="{Binding PartyName}" Width="150"/>
+                                <DataGridTextColumn Header="💰 المبلغ" Binding="{Binding Amount, StringFormat=N2}" Width="120"/>
+                                <DataGridTextColumn Header="💳 طريقة السداد" Binding="{Binding PaymentMethodDisplay}" Width="120"/>
+                                <DataGridTextColumn Header="🏦 الخزينة" Binding="{Binding TreasuryName}" Width="130"/>
+                                <DataGridTemplateColumn Header="🖨️" Width="60">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="🖨️" 
+                                                    Width="34" 
+                                                    Height="34" 
+                                                    Background="Transparent" 
+                                                    BorderThickness="0" 
+                                                    Cursor="Hand" 
+                                                    Tag="{Binding PaymentID}" 
+                                                    ToolTip="طباعة السند" 
+                                                    Style="{StaticResource IconButton}" 
+                                                    Click="PrintVoucher_Click"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="🗑️" Width="60">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="🗑️" 
+                                                    Width="34" 
+                                                    Height="34" 
+                                                    Background="Transparent" 
+                                                    BorderThickness="0" 
+                                                    Cursor="Hand" 
+                                                    Tag="{Binding PaymentID}" 
+                                                    ToolTip="حذف السند" 
+                                                    Style="{StaticResource IconButton}" 
+                                                    Click="DeleteVoucher_Click"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <Border Grid.Row="2"
+                                Background="{StaticResource PaymentPrimarySoft}"
+                                CornerRadius="12"
+                                Padding="40"
+                                x:Name="lblNoData"
+                                Visibility="Collapsed">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="💸" FontSize="48" HorizontalAlignment="Center" Margin="0,0,0,15"/>
+                                <TextBlock Text="لا توجد سندات صرف مسجلة"
+                                           FontSize="14"
+                                           Foreground="{StaticResource PaymentPrimaryDark}"
+                                           HorizontalAlignment="Center"
+                                           FontFamily="Cairo"/>
+                                <TextBlock Text="يمكنك إضافة سند صرف جديد من النموذج الأيمن"
+                                           FontSize="12"
+                                           Foreground="{StaticResource PaymentPrimaryDark}"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,5,0,0"
+                                           FontFamily="Cairo"
+                                           Opacity="0.7"/>
+                            </StackPanel>
+                        </Border>
+
+                    </Grid>
+                </Border>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

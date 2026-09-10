@@ -1,0 +1,458 @@
+﻿<Window x:Class="RasidAccountingSystem.Views.InventoryAdjustmentDetailWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:helpers="clr-namespace:RasidAccountingSystem.Helpers"
+        Title="تفاصيل التسوية الجردية"
+        Height="650" Width="900"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        FlowDirection="RightToLeft"
+        Background="White">
+
+    <Window.Resources>
+
+        <!-- ✅ محول الفرق - يستخدم MultiBinding -->
+        <helpers:DifferenceConverter x:Key="DifferenceConverter"/>
+
+        <!-- ✅ محول ظهور علامة الوحدة -->
+        <helpers:UnitTagVisibilityConverter x:Key="UnitTagVisibilityConverter"/>
+
+        <!-- ==================== الألوان ==================== -->
+        <Color x:Key="PrimaryColor">#1A2980</Color>
+        <Color x:Key="SecondaryColor">#26D0CE</Color>
+
+        <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource PrimaryColor}"/>
+        <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource SecondaryColor}"/>
+
+        <SolidColorBrush x:Key="SurfaceColor" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#1E293B"/>
+        <SolidColorBrush x:Key="TextSecondary" Color="#64748B"/>
+        <SolidColorBrush x:Key="BorderLight" Color="#E2E8F0"/>
+        <SolidColorBrush x:Key="SuccessColor" Color="#10B981"/>
+        <SolidColorBrush x:Key="WarningColor" Color="#F59E0B"/>
+        <SolidColorBrush x:Key="DangerColor" Color="#EF4444"/>
+        <SolidColorBrush x:Key="InfoColor" Color="#3B82F6"/>
+
+        <!-- ==================== التدرج اللوني ==================== -->
+        <LinearGradientBrush x:Key="HeaderGradient" StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="{StaticResource PrimaryColor}" Offset="0"/>
+            <GradientStop Color="{StaticResource SecondaryColor}" Offset="1"/>
+        </LinearGradientBrush>
+
+        <!-- ==================== الظلال ==================== -->
+        <DropShadowEffect x:Key="CardShadow" 
+                          BlurRadius="15" 
+                          ShadowDepth="2" 
+                          Opacity="0.08" 
+                          Color="#000000"/>
+
+        <DropShadowEffect x:Key="SoftShadow" 
+                          BlurRadius="8" 
+                          ShadowDepth="1" 
+                          Opacity="0.15" 
+                          Color="#000000"/>
+
+        <!-- ==================== الأنماط ==================== -->
+
+        <!-- زر نجاح (موافقة) -->
+        <Style x:Key="SuccessButton" TargetType="Button">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="MinWidth" Value="130"/>
+            <Setter Property="Padding" Value="30,0"/>
+            <Setter Property="Background" Value="{StaticResource SuccessColor}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                CornerRadius="8"
+                                Effect="{StaticResource SoftShadow}">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="✅" FontSize="16" Margin="0,0,10,0"/>
+                                <TextBlock Text="{TemplateBinding Content}" FontSize="14" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#059669"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Background" Value="#94A3B8"/>
+                                <Setter Property="Foreground" Value="#E2E8F0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- زر رفض -->
+        <Style x:Key="DangerButton" TargetType="Button">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="MinWidth" Value="130"/>
+            <Setter Property="Padding" Value="30,0"/>
+            <Setter Property="Background" Value="{StaticResource DangerColor}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                CornerRadius="8"
+                                Effect="{StaticResource SoftShadow}">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="❌" FontSize="16" Margin="0,0,10,0"/>
+                                <TextBlock Text="{TemplateBinding Content}" FontSize="14" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#DC2626"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="border" Property="Background" Value="#94A3B8"/>
+                                <Setter Property="Foreground" Value="#E2E8F0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- زر إغلاق -->
+        <Style x:Key="SecondaryButton" TargetType="Button">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#64748B"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="Padding" Value="28,0"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="#E2E8F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" 
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="✕" FontSize="16" Margin="0,0,10,0" Foreground="#EF4444"/>
+                                <TextBlock Text="{TemplateBinding Content}" FontSize="14" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#F1F5F9"/>
+                                <Setter Property="BorderBrush" Value="#CBD5E1"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- TextBlock للعرض -->
+        <Style x:Key="DisplayField" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="Margin" Value="0,2,0,12"/>
+        </Style>
+
+        <!-- تسمية الحقل -->
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+            <Setter Property="Margin" Value="0,0,0,2"/>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- ==================== رأس النافذة ==================== -->
+        <Border Grid.Row="0" 
+                Background="{StaticResource HeaderGradient}" 
+                Padding="20,15">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="📋" FontSize="24" Margin="0,0,12,0"/>
+                <StackPanel>
+                    <TextBlock Text="تفاصيل التسوية الجردية" 
+                               FontSize="18" FontWeight="Bold" 
+                               Foreground="White" 
+                               FontFamily="Segoe UI"/>
+                    <TextBlock x:Name="lblAdjustmentNumber" 
+                               FontSize="12" 
+                               Foreground="#E0E8F0" 
+                               FontFamily="Segoe UI"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+
+        <!-- ==================== معلومات الرأس ==================== -->
+        <Border Grid.Row="1" 
+                Background="#F8FAFC" 
+                BorderBrush="#E2E8F0" 
+                BorderThickness="0,0,0,1"
+                Padding="20,15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="المخزن" Style="{StaticResource FieldLabel}"/>
+                    <TextBlock x:Name="lblWarehouse" Style="{StaticResource DisplayField}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="التاريخ" Style="{StaticResource FieldLabel}"/>
+                    <TextBlock x:Name="lblDate" Style="{StaticResource DisplayField}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="الحالة" Style="{StaticResource FieldLabel}"/>
+                    <Border x:Name="StatusBorder" 
+                            Padding="8,4" 
+                            CornerRadius="12" 
+                            HorizontalAlignment="Right"
+                            Margin="0,2,0,0">
+                        <TextBlock x:Name="lblStatus" FontSize="14" FontWeight="SemiBold"/>
+                    </Border>
+                </StackPanel>
+
+                <StackPanel Grid.Column="3">
+                    <TextBlock Text="عدد الأصناف" Style="{StaticResource FieldLabel}"/>
+                    <TextBlock x:Name="lblItemsCount" Style="{StaticResource DisplayField}" FontWeight="Bold"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ==================== جدول الأصناف ==================== -->
+        <Border Grid.Row="2" 
+                Background="White" 
+                BorderBrush="#E2E8F0" 
+                BorderThickness="0,1,0,0"
+                Padding="20,15">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" 
+                           Text="📋 الأصناف" 
+                           FontSize="14" 
+                           FontWeight="Bold" 
+                           Foreground="#1E293B" 
+                           FontFamily="Segoe UI"
+                           Margin="0,0,0,10"/>
+
+                <DataGrid Grid.Row="1" 
+                          x:Name="dgItems"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          CanUserReorderColumns="False"
+                          IsReadOnly="True"
+                          RowHeight="38"
+                          FontFamily="Segoe UI"
+                          FontSize="13"
+                          GridLinesVisibility="Horizontal"
+                          HorizontalGridLinesBrush="#F1F5F9"
+                          VerticalGridLinesBrush="Transparent"
+                          Background="White"
+                          BorderBrush="Transparent"
+                          RowBackground="White"
+                          AlternatingRowBackground="#F8FAFC"
+                          MaxHeight="320">
+
+                    <DataGrid.Resources>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="{StaticResource SurfaceColor}"/>
+                            <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+                            <Setter Property="FontSize" Value="12"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter Property="Height" Value="38"/>
+                            <Setter Property="BorderBrush" Value="{StaticResource BorderLight}"/>
+                            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        </Style>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                            <Setter Property="Padding" Value="5,0"/>
+                        </Style>
+                    </DataGrid.Resources>
+
+                    <DataGrid.Columns>
+                        <!-- ✅ عمود رقم الصف -->
+                        <DataGridTextColumn Header="م" Binding="{Binding RowNumber}" Width="40"/>
+
+                        <!-- ✅ عمود المنتج -->
+                        <DataGridTextColumn Header="المنتج" Binding="{Binding ProductName}" Width="*"/>
+
+                        <!-- ✅ عمود كود المنتج -->
+                        <DataGridTextColumn Header="كود المنتج" Binding="{Binding ProductCode}" Width="100"/>
+
+                        <!-- ✅ عمود الوحدة -->
+                        <DataGridTemplateColumn Header="الوحدة" Width="80">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding UnitName}" 
+                                                   FontSize="12" 
+                                                   Foreground="#374151"
+                                                   HorizontalAlignment="Center"/>
+                                        <TextBlock Text="{Binding UnitTag}" 
+                                                   FontSize="8" 
+                                                   Foreground="#9CA3AF"
+                                                   HorizontalAlignment="Center"
+                                                   Visibility="{Binding UnitTag, Converter={StaticResource UnitTagVisibilityConverter}}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- ✅ عمود كمية النظام -->
+                        <DataGridTextColumn Header="كمية النظام" Binding="{Binding SystemQuantity, StringFormat={}{0:N0}}" Width="100"/>
+
+                        <!-- ✅ عمود الكمية الفعلية -->
+                        <DataGridTextColumn Header="الكمية الفعلية" Binding="{Binding ActualQuantity, StringFormat={}{0:N0}}" Width="100"/>
+
+                        <!-- ✅ عمود الفرق - باستخدام MultiBinding مع DifferenceConverter -->
+                        <DataGridTemplateColumn Header="الفرق" Width="140">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Border x:Name="DiffBorder" CornerRadius="12" Padding="8,4">
+                                        <TextBlock x:Name="DiffText" 
+                                                   HorizontalAlignment="Center"
+                                                   FontWeight="SemiBold"
+                                                   FontSize="12">
+                                            <TextBlock.Text>
+                                                <MultiBinding Converter="{StaticResource DifferenceConverter}">
+                                                    <Binding Path="DifferenceQuantity" />
+                                                    <Binding Path="AdjustmentType" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </Border>
+                                    <DataTemplate.Triggers>
+                                        <!-- زيادة: الكمية الفعلية أكبر من كمية النظام -->
+                                        <DataTrigger Binding="{Binding AdjustmentType}" Value="Increase">
+                                            <Setter TargetName="DiffBorder" Property="Background" Value="#D1FAE5"/>
+                                            <Setter TargetName="DiffText" Property="Foreground" Value="#059669"/>
+                                        </DataTrigger>
+                                        <!-- عجز: الكمية الفعلية أصغر من كمية النظام -->
+                                        <DataTrigger Binding="{Binding AdjustmentType}" Value="Decrease">
+                                            <Setter TargetName="DiffBorder" Property="Background" Value="#FEE2E2"/>
+                                            <Setter TargetName="DiffText" Property="Foreground" Value="#DC2626"/>
+                                        </DataTrigger>
+                                        <!-- مطابق: الكمية الفعلية تساوي كمية النظام -->
+                                        <DataTrigger Binding="{Binding DifferenceQuantity}" Value="0">
+                                            <Setter TargetName="DiffBorder" Property="Background" Value="#F1F5F9"/>
+                                            <Setter TargetName="DiffText" Property="Foreground" Value="#9CA3AF"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                        <!-- ✅ عمود سعر الوحدة -->
+                        <DataGridTextColumn Header="سعر الوحدة" Binding="{Binding UnitCost, StringFormat={}{0:N2}}" Width="100"/>
+
+                        <!-- ✅ عمود التكلفة -->
+                        <DataGridTextColumn Header="التكلفة" Binding="{Binding TotalCost, StringFormat={}{0:N2}}" Width="110"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+
+        <!-- ==================== أزرار التحكم ==================== -->
+        <Border Grid.Row="3" 
+                Background="#F8FAFC" 
+                BorderBrush="{StaticResource BorderLight}" 
+                BorderThickness="0,1,0,0"
+                Padding="20,15">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+
+                <!-- زر اعتماد -->
+                <Button x:Name="btnApprove" 
+                        Style="{StaticResource SuccessButton}"
+                        Content="اعتماد"
+                        Width="140"
+                        Height="42"
+                        Margin="0,0,16,0"
+                        Click="BtnApprove_Click"/>
+
+                <!-- زر رفض -->
+                <Button x:Name="btnReject" 
+                        Style="{StaticResource DangerButton}"
+                        Content="رفض"
+                        Width="130"
+                        Height="42"
+                        Margin="0,0,16,0"
+                        Click="BtnReject_Click"/>
+
+                <!-- زر إغلاق -->
+                <Button x:Name="btnClose" 
+                        Style="{StaticResource SecondaryButton}"
+                        Content="إغلاق"
+                        Width="120"
+                        Height="42"
+                        Click="BtnClose_Click"/>
+
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

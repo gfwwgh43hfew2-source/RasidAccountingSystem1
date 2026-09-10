@@ -1,0 +1,570 @@
+﻿<UserControl x:Class="RasidAccountingSystem.Views.ProfitLossView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             Background="#F5F7FA"
+             FlowDirection="RightToLeft">
+
+    <UserControl.Resources>
+        <!-- الألوان الأساسية -->
+        <SolidColorBrush x:Key="PrimaryColor" Color="#6366F1"/>
+        <SolidColorBrush x:Key="PrimaryDark" Color="#4F46E5"/>
+        <SolidColorBrush x:Key="PrimarySoft" Color="#EEF2FF"/>
+        <SolidColorBrush x:Key="SuccessColor" Color="#10B981"/>
+        <SolidColorBrush x:Key="DangerColor" Color="#EF4444"/>
+        <SolidColorBrush x:Key="WarningColor" Color="#F59E0B"/>
+        <SolidColorBrush x:Key="InfoColor" Color="#3B82F6"/>
+        <SolidColorBrush x:Key="TextPrimaryColor" Color="#1F2937"/>
+        <SolidColorBrush x:Key="TextSecondaryColor" Color="#6B7280"/>
+        <SolidColorBrush x:Key="BorderLightColor" Color="#E5E7EB"/>
+        <SolidColorBrush x:Key="BackgroundGrayColor" Color="#F8FAFC"/>
+        <SolidColorBrush x:Key="SurfaceColor" Color="#FFFFFF"/>
+
+        <!-- الظلال -->
+        <DropShadowEffect x:Key="ShadowSm" 
+                          BlurRadius="6" 
+                          ShadowDepth="1" 
+                          Opacity="0.06" 
+                          Direction="270"/>
+
+        <!-- أنماط الأزرار -->
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Padding" Value="15,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource PrimaryDark}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SecondaryButton" TargetType="Button">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Padding" Value="15,0"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="{StaticResource PrimarySoft}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ExcelButtonStyle" TargetType="Button">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#1E7E41"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Width" Value="90"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="📊" FontSize="12" Margin="0,0,6,0"/>
+                                <TextBlock Text="Excel" FontSize="11"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#166534"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="PrintButtonStyle" TargetType="Button">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="#1E4F7A"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="34"/>
+            <Setter Property="Width" Value="90"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="🖨️" FontSize="12" Margin="0,0,6,0"/>
+                                <TextBlock Text="طباعة" FontSize="11"/>
+                            </StackPanel>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#143D5E"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- نمط رأس الجدول -->
+        <Style x:Key="DataGridHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="{StaticResource PrimarySoft}"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryColor}"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLightColor}"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+            <Setter Property="Height" Value="42"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="FontFamily" Value="Cairo"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLightColor}"/>
+            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Height" Value="38"/>
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Setter Property="Background" Value="White"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource PrimarySoft}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- شريط العنوان والأزرار -->
+        <Border Grid.Row="0"
+                Background="White"
+                CornerRadius="8"
+                Padding="12,10"
+                Margin="0,0,0,8"
+                BorderBrush="{StaticResource BorderLightColor}"
+                BorderThickness="1"
+                Effect="{StaticResource ShadowSm}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="📈" FontSize="18" Margin="0,0,8,0"/>
+                    <TextBlock Text="قائمة الأرباح والخسائر"
+                               FontSize="14"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource PrimaryColor}"
+                               FontFamily="Cairo"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <ComboBox x:Name="cmbPeriodType" 
+                              Width="90" 
+                              Height="30" 
+                              Margin="0,0,8,0">
+                        <ComboBoxItem Content="شهري" IsSelected="True"/>
+                        <ComboBoxItem Content="ربع سنوي"/>
+                        <ComboBoxItem Content="نصف سنوي"/>
+                        <ComboBoxItem Content="سنوي"/>
+                    </ComboBox>
+
+                    <DatePicker x:Name="dtpStartDate" 
+                                Width="110" 
+                                Height="30" 
+                                Margin="0,0,8,0"/>
+
+                    <TextBlock Text="إلى" 
+                               FontSize="11" 
+                               VerticalAlignment="Center" 
+                               Margin="0,0,8,0"
+                               FontFamily="Cairo"/>
+
+                    <DatePicker x:Name="dtpEndDate" 
+                                Width="110" 
+                                Height="30" 
+                                Margin="0,0,8,0"/>
+
+                    <Button x:Name="btnShowReport"
+                            Content="عرض التقرير"
+                            Style="{StaticResource PrimaryButton}"
+                            Margin="0,0,8,0"
+                            Width="90"
+                            Height="30"/>
+
+                    <Button x:Name="btnExportExcel"
+                            Content="📊 Excel"
+                            Style="{StaticResource ExcelButtonStyle}"
+                            Margin="0,0,8,0"/>
+
+                    <Button x:Name="btnPrint"
+                            Content="🖨️ طباعة"
+                            Style="{StaticResource PrintButtonStyle}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- منطقة التقرير الرئيسية -->
+        <ScrollViewer Grid.Row="1" 
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Auto">
+            <Border Background="White"
+                    CornerRadius="8"
+                    BorderBrush="{StaticResource BorderLightColor}"
+                    BorderThickness="1"
+                    Effect="{StaticResource ShadowSm}"
+                    Padding="15">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- عنوان التقرير -->
+                    <Border Grid.Row="0" Margin="0,0,0,15">
+                        <StackPanel>
+                            <TextBlock x:Name="lblReportTitle" 
+                                       Text="قائمة الأرباح والخسائر"
+                                       FontSize="16" 
+                                       FontWeight="Bold" 
+                                       Foreground="{StaticResource PrimaryColor}"
+                                       FontFamily="Cairo"
+                                       HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="lblPeriod"
+                                       Text=""
+                                       FontSize="11"
+                                       Foreground="{StaticResource TextSecondaryColor}"
+                                       FontFamily="Cairo"
+                                       HorizontalAlignment="Center"
+                                       Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- ==================== الإيرادات (Revenue) ==================== -->
+                    <Border Grid.Row="1" 
+                            Background="{StaticResource PrimarySoft}"
+                            Padding="10,6"
+                            Margin="0,4,0,4"
+                            CornerRadius="5">
+                        <TextBlock Text="الإيرادات (المبيعات)"
+                                   FontSize="13"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource PrimaryColor}"
+                                   FontFamily="Cairo"/>
+                    </Border>
+
+                    <!-- إجمالي المبيعات -->
+                    <Border Grid.Row="2" 
+                            Background="White"
+                            Padding="10,6"
+                            Margin="0,2,0,2"
+                            BorderBrush="{StaticResource BorderLightColor}"
+                            BorderThickness="0,0,0,1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="إجمالي المبيعات"
+                                       FontSize="12"
+                                       FontFamily="Cairo"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock x:Name="lblTotalSales" 
+                                       Grid.Column="1"
+                                       Text="0 ر.س"
+                                       FontSize="12"
+                                       FontWeight="SemiBold"
+                                       Foreground="{StaticResource SuccessColor}"
+                                       FontFamily="Cairo"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- خصم المسموحات -->
+                    <Border Grid.Row="3" 
+                            Background="White"
+                            Padding="10,6"
+                            Margin="0,2,0,2"
+                            BorderBrush="{StaticResource BorderLightColor}"
+                            BorderThickness="0,0,0,1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="(-) خصم المسموحات"
+                                       FontSize="12"
+                                       FontFamily="Cairo"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock x:Name="lblSalesDiscount" 
+                                       Grid.Column="1"
+                                       Text="0 ر.س"
+                                       FontSize="12"
+                                       FontWeight="SemiBold"
+                                       Foreground="{StaticResource DangerColor}"
+                                       FontFamily="Cairo"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- صافي المبيعات -->
+                    <Border Grid.Row="4" 
+                            Background="{StaticResource BackgroundGrayColor}"
+                            Padding="10,6"
+                            Margin="0,4,0,8"
+                            CornerRadius="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="صافي المبيعات"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       FontFamily="Cairo"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock x:Name="lblNetSales" 
+                                       Grid.Column="1"
+                                       Text="0 ر.س"
+                                       FontSize="13"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource SuccessColor}"
+                                       FontFamily="Cairo"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- ==================== تكلفة المبيعات (Cost of Sales) ==================== -->
+                    <Border Grid.Row="5" 
+                            Background="{StaticResource PrimarySoft}"
+                            Padding="10,6"
+                            Margin="0,4,0,4"
+                            CornerRadius="5">
+                        <TextBlock Text="تكلفة المبيعات"
+                                   FontSize="13"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource PrimaryColor}"
+                                   FontFamily="Cairo"/>
+                    </Border>
+
+                    <!-- تكلفة المبيعات -->
+                    <Border Grid.Row="6" 
+                            Background="White"
+                            Padding="10,6"
+                            Margin="0,2,0,2"
+                            BorderBrush="{StaticResource BorderLightColor}"
+                            BorderThickness="0,0,0,1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="تكلفة المبيعات"
+                                       FontSize="12"
+                                       FontFamily="Cairo"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock x:Name="lblCostOfSales" 
+                                       Grid.Column="1"
+                                       Text="0 ر.س"
+                                       FontSize="12"
+                                       FontWeight="SemiBold"
+                                       Foreground="{StaticResource DangerColor}"
+                                       FontFamily="Cairo"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- ==================== مجمل الربح ==================== -->
+                    <Border Grid.Row="7" 
+                            Background="{StaticResource PrimarySoft}"
+                            Padding="10,8"
+                            Margin="0,8,0,8"
+                            CornerRadius="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="مجمل الربح"
+                                       FontSize="13"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource PrimaryColor}"
+                                       FontFamily="Cairo"/>
+                            <TextBlock x:Name="lblGrossProfit" 
+                                       Grid.Column="1"
+                                       Text="0 ر.س"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource InfoColor}"
+                                       FontFamily="Cairo"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- ==================== المصروفات (Expenses) ==================== -->
+                    <Border Grid.Row="8" 
+                            Background="{StaticResource PrimarySoft}"
+                            Padding="10,6"
+                            Margin="0,4,0,4"
+                            CornerRadius="5">
+                        <TextBlock Text="المصروفات التشغيلية"
+                                   FontSize="13"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource PrimaryColor}"
+                                   FontFamily="Cairo"/>
+                    </Border>
+
+                    <!-- جدول المصروفات - حل بسيط بدون التصاق -->
+                    <DataGrid x:Name="dgExpenses" 
+                              Grid.Row="9"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              HeadersVisibility="Column"
+                              Margin="0,5,0,10"
+                              RowHeight="35"
+                              Background="White"
+                              BorderBrush="#E5E7EB"
+                              BorderThickness="1"
+                              ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="البيان" 
+                                                Binding="{Binding ExpenseName}" 
+                                                Width="300">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Right"/>
+                                        <Setter Property="Padding" Value="10,0"/>
+                                        <Setter Property="FontSize" Value="12"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="المبلغ" 
+                                                Binding="{Binding FormattedAmount}" 
+                                                Width="150">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="Foreground" Value="#EF4444"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                        <Setter Property="FontSize" Value="12"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <!-- إجمالي المصروفات -->
+                    <Border Grid.Row="10" 
+                            Background="{StaticResource BackgroundGrayColor}"
+                            Padding="10,6"
+                            Margin="0,4,0,8"
+                            CornerRadius="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="إجمالي المصروفات"
+                                       FontSize="12"
+                                       FontWeight="Bold"
+                                       FontFamily="Cairo"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock x:Name="lblTotalExpenses" 
+                                       Grid.Column="1"
+                                       Text="0 ر.س"
+                                       FontSize="13"
+                                       FontWeight="Bold"
+                                       Foreground="{StaticResource DangerColor}"
+                                       FontFamily="Cairo"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- ==================== صافي الربح / الخسارة ==================== -->
+                    <Border Grid.Row="11" 
+                            Background="{StaticResource PrimaryColor}"
+                            Padding="12,10"
+                            Margin="0,8,0,0"
+                            CornerRadius="6">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="lblNetProfitTitle" 
+                                       Text="صافي الربح"
+                                       FontSize="14"
+                                       FontWeight="Bold"
+                                       Foreground="White"
+                                       FontFamily="Cairo"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock x:Name="lblNetProfit" 
+                                       Grid.Column="1"
+                                       Text="0 ر.س"
+                                       FontSize="16"
+                                       FontWeight="Bold"
+                                       Foreground="White"
+                                       FontFamily="Cairo"/>
+                        </Grid>
+                    </Border>
+
+                </Grid>
+            </Border>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
