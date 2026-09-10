@@ -30,11 +30,10 @@ namespace RasidAccountingSystem.Views
 
         private void OnSidebarSectionSelected(string sectionName)
         {
-            // إخفاء الثلاث شاشات الأساسية أولًا، ثم إظهار المطلوب منها بس.
-            // [WORKSHOP TASK 3] "العملاء" بقى ليها شاشة حقيقية (Placeholder)
-            // بدل ما تدخل في المسار العام لرسالة "لسه مش جاهزة".
+            // إخفاء كل الشاشات الأساسية أولًا، ثم إظهار المطلوب منها بس.
             DashboardView.Visibility = Visibility.Collapsed;
             CustomersView.Visibility = Visibility.Collapsed;
+            CarsView.Visibility = Visibility.Collapsed;
             NotReadyView.Visibility = Visibility.Collapsed;
 
             if (sectionName == "الرئيسية")
@@ -44,6 +43,10 @@ namespace RasidAccountingSystem.Views
             else if (sectionName == "العملاء")
             {
                 CustomersView.Visibility = Visibility.Visible;
+            }
+            else if (sectionName == "السيارات")
+            {
+                CarsView.Visibility = Visibility.Visible;
             }
             else
             {

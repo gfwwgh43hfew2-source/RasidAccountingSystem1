@@ -1,0 +1,207 @@
+<UserControl x:Class="RasidAccountingSystem.Views.WorkshopCarsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             FlowDirection="RightToLeft"
+             d:DesignWidth="1100" d:DesignHeight="700">
+
+    <!--
+        ==========================================================================
+        WorkshopCarsView.xaml — شاشة "السيارات" الحقيقية (المهمة 4)
+        ==========================================================================
+        نفس أسلوب WorkshopCustomersView.xaml بالظبط (المهمة 3): بلاطات
+        إحصائية + جدول بسيط مبني يدويًا (Border + Grid)، وكل البيانات هنا
+        Placeholder ثابت بدون أي اتصال بقاعدة بيانات بعد. الربط الفعلي
+        بـDatabaseService/جدول السيارات هيتم في خطوة لاحقة منفصلة (نفس
+        فكرة المهمة 13 في الداشبورد).
+    -->
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/WorkshopTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- نمط رأس عمود في جدول السيارات -->
+            <Style x:Key="CarColHeaderStyle" TargetType="TextBlock" BasedOn="{StaticResource TextCaptionStyle}">
+                <Setter Property="FontWeight" Value="SemiBold"/>
+            </Style>
+
+            <!-- نمط خلية بيانات عادية في جدول السيارات -->
+            <Style x:Key="CarCellStyle" TargetType="TextBlock" BasedOn="{StaticResource TextBodyStyle}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24">
+
+            <TextBlock Text="السيارات" Style="{StaticResource TextH2Style}" Margin="0,0,0,4"/>
+            <TextBlock Text="بيانات تجريبية للمعاينة فقط — سيتم ربطها بقاعدة البيانات الفعلية في خطوة تالية"
+                       Style="{StaticResource TextMutedStyle}" Margin="0,0,0,16"/>
+
+            <!-- ===== بلاطات إحصائية سريعة، بنفس أسلوب Dashboard وWorkshopCustomersView ===== -->
+            <Grid Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource StatTileStyle}">
+                    <DockPanel LastChildFill="True">
+                        <Border DockPanel.Dock="Right" Width="3" CornerRadius="2" Margin="0,0,14,0"
+                                Background="{StaticResource AccentBrush}"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="إجمالي السيارات المسجلة" Style="{StaticResource TextMutedStyle}"/>
+                            <TextBlock Text="34" Style="{StaticResource TextDisplayStyle}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+
+                <Border Grid.Column="2" Style="{StaticResource StatTileStyle}">
+                    <DockPanel LastChildFill="True">
+                        <Border DockPanel.Dock="Right" Width="3" CornerRadius="2" Margin="0,0,14,0"
+                                Background="{StaticResource StatusInProgressBrush}"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="داخل الورشة الآن" Style="{StaticResource TextMutedStyle}"/>
+                            <TextBlock Text="7" Style="{StaticResource TextDisplayStyle}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+
+                <Border Grid.Column="4" Style="{StaticResource StatTileStyle}">
+                    <DockPanel LastChildFill="True">
+                        <Border DockPanel.Dock="Right" Width="3" CornerRadius="2" Margin="0,0,14,0"
+                                Background="{StaticResource StatusReadyBrush}"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="جاهزة للتسليم" Style="{StaticResource TextMutedStyle}"/>
+                            <TextBlock Text="2" Style="{StaticResource TextDisplayStyle}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+            </Grid>
+
+            <!-- ===== زرار إضافة سيارة (شكلي بدون منطق حقيقي بعد) ===== -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,10">
+                <Button Content="+ تسجيل سيارة جديدة" Style="{StaticResource PrimaryButtonStyle}"/>
+            </StackPanel>
+
+            <!-- ===== جدول السيارات (بيانات Placeholder ثابتة) ===== -->
+            <TextBlock Text="قائمة السيارات" Style="{StaticResource SectionLabelStyle}" Margin="0,0,0,10"/>
+
+            <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush2}"
+                    BorderThickness="1" CornerRadius="{StaticResource RadiusMedium}">
+                <StackPanel>
+
+                    <!-- رأس الجدول -->
+                    <Grid Margin="20,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.2*"/>
+                            <ColumnDefinition Width="1.6*"/>
+                            <ColumnDefinition Width="1.6*"/>
+                            <ColumnDefinition Width="1.6*"/>
+                            <ColumnDefinition Width="1.2*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="رقم اللوحة" Style="{StaticResource CarColHeaderStyle}"/>
+                        <TextBlock Grid.Column="1" Text="الموديل" Style="{StaticResource CarColHeaderStyle}"/>
+                        <TextBlock Grid.Column="2" Text="اسم المالك" Style="{StaticResource CarColHeaderStyle}"/>
+                        <TextBlock Grid.Column="3" Text="تاريخ الدخول" Style="{StaticResource CarColHeaderStyle}"/>
+                        <TextBlock Grid.Column="4" Text="الحالة" Style="{StaticResource CarColHeaderStyle}"/>
+                    </Grid>
+                    <Border Height="1" Background="{StaticResource BorderBrush2}"/>
+
+                    <!-- صف 1 -->
+                    <Border Background="{StaticResource SurfaceBrush}">
+                        <Grid Margin="20,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="1.6*"/>
+                                <ColumnDefinition Width="1.6*"/>
+                                <ColumnDefinition Width="1.6*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="ن ط ح 1234" Style="{StaticResource CarCellStyle}"/>
+                            <TextBlock Grid.Column="1" Text="تويوتا كورولا 2021" Style="{StaticResource CarCellStyle}"/>
+                            <TextBlock Grid.Column="2" Text="أحمد محمود السيد" Style="{StaticResource CarCellStyle}"/>
+                            <TextBlock Grid.Column="3" Text="2026-09-05" Style="{StaticResource CarCellStyle}" Foreground="{StaticResource TextMutedBrush}"/>
+                            <Border Grid.Column="4" Style="{StaticResource StatusBadgeBaseStyle}" Background="{StaticResource InfoSoftBrush}" HorizontalAlignment="Left">
+                                <TextBlock Text="قيد الفحص" Style="{StaticResource StatusBadgeTextStyle}" Foreground="{StaticResource StatusInspectionBrush}"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <Border Height="1" Background="{StaticResource BorderBrush2}"/>
+
+                    <!-- صف 2 -->
+                    <Border Background="{StaticResource SurfaceAltBrush}">
+                        <Grid Margin="20,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="1.6*"/>
+                                <ColumnDefinition Width="1.6*"/>
+                                <ColumnDefinition Width="1.6*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="أ ب د 5678" Style="{StaticResource CarCellStyle}"/>
+                            <TextBlock Grid.Column="1" Text="هيونداي إلنترا 2019" Style="{StaticResource CarCellStyle}"/>
+                            <TextBlock Grid.Column="2" Text="منى عبد الرحمن" Style="{StaticResource CarCellStyle}"/>
+                            <TextBlock Grid.Column="3" Text="2026-09-06" Style="{StaticResource CarCellStyle}" Foreground="{StaticResource TextMutedBrush}"/>
+                            <Border Grid.Column="4" Style="{StaticResource StatusBadgeBaseStyle}" Background="#EDE9FE" HorizontalAlignment="Left">
+                                <TextBlock Text="قيد التنفيذ" Style="{StaticResource StatusBadgeTextStyle}" Foreground="{StaticResource StatusInProgressBrush}"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <Border Height="1" Background="{StaticResource BorderBrush2}"/>
+
+                    <!-- صف 3 -->
+                    <Border Background="{StaticResource SurfaceBrush}">
+                        <Grid Margin="20,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="1.6*"/>
+                                <ColumnDefinition Width="1.6*"/>
+                                <ColumnDefinition Width="1.6*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="ق ل م 9012" Style="{StaticResource CarCellStyle}"/>
+                            <TextBlock Grid.Column="1" Text="نيسان صني 2020" Style="{StaticResource CarCellStyle}"/>
+                            <TextBlock Grid.Column="2" Text="كريم إبراهيم فتحي" Style="{StaticResource CarCellStyle}"/>
+                            <TextBlock Grid.Column="3" Text="2026-09-03" Style="{StaticResource CarCellStyle}" Foreground="{StaticResource TextMutedBrush}"/>
+                            <Border Grid.Column="4" Style="{StaticResource StatusBadgeBaseStyle}" Background="{StaticResource WarningSoftBrush}" HorizontalAlignment="Left">
+                                <TextBlock Text="منتظرة قطع غيار" Style="{StaticResource StatusBadgeTextStyle}" Foreground="{StaticResource StatusWaitingPartsBrush}"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <Border Height="1" Background="{StaticResource BorderBrush2}"/>
+
+                    <!-- صف 4 -->
+                    <Border Background="{StaticResource SurfaceAltBrush}">
+                        <Grid Margin="20,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="1.6*"/>
+                                <ColumnDefinition Width="1.6*"/>
+                                <ColumnDefinition Width="1.6*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="ه و ز 3456" Style="{StaticResource CarCellStyle}"/>
+                            <TextBlock Grid.Column="1" Text="كيا سيراتو 2022" Style="{StaticResource CarCellStyle}"/>
+                            <TextBlock Grid.Column="2" Text="سارة وليد حسن" Style="{StaticResource CarCellStyle}"/>
+                            <TextBlock Grid.Column="3" Text="2026-09-01" Style="{StaticResource CarCellStyle}" Foreground="{StaticResource TextMutedBrush}"/>
+                            <Border Grid.Column="4" Style="{StaticResource StatusBadgeBaseStyle}" Background="{StaticResource SuccessSoftBrush}" HorizontalAlignment="Left">
+                                <TextBlock Text="جاهزة للتسليم" Style="{StaticResource StatusBadgeTextStyle}" Foreground="{StaticResource StatusReadyBrush}"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
