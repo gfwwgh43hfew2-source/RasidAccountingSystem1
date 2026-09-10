@@ -1,0 +1,301 @@
+<UserControl x:Class="RasidAccountingSystem.Views.WorkshopWorkOrdersView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             FlowDirection="RightToLeft"
+             d:DesignWidth="1100" d:DesignHeight="760">
+
+    <!--
+        ==========================================================================
+        WorkshopWorkOrdersView.xaml — شاشة "أوامر الشغل" الحقيقية (المهمة 5)
+        ==========================================================================
+        نفس أسلوب WorkshopCustomersView.xaml وWorkshopCarsView.xaml (المهمتين
+        3 و4): بلاطات إحصائية + جدول بسيط مبني يدويًا (Border + Grid)، وكل
+        البيانات هنا Placeholder ثابت بدون أي اتصال بقاعدة بيانات بعد.
+
+        الإضافة الجديدة هنا: استخدام مجموعة شارات الحالة الملوّنة الكاملة
+        الموجودة بالفعل في WorkshopTheme.xaml (StatusNew/StatusInspection/
+        StatusInProgress/StatusWaitingParts/StatusReady/StatusDelivered/
+        StatusCancelled) — ده أول مكان في المشروع بيستخدمها كلها مع بعض،
+        بما إن دورة حياة أمر الشغل هي اللي بتمر فعليًا بكل المراحل دي.
+    -->
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/WorkshopTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="WOColHeaderStyle" TargetType="TextBlock" BasedOn="{StaticResource TextCaptionStyle}">
+                <Setter Property="FontWeight" Value="SemiBold"/>
+            </Style>
+
+            <Style x:Key="WOCellStyle" TargetType="TextBlock" BasedOn="{StaticResource TextBodyStyle}">
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24">
+
+            <TextBlock Text="أوامر الشغل" Style="{StaticResource TextH2Style}" Margin="0,0,0,4"/>
+            <TextBlock Text="بيانات تجريبية للمعاينة فقط — سيتم ربطها بقاعدة البيانات الفعلية في خطوة تالية"
+                       Style="{StaticResource TextMutedStyle}" Margin="0,0,0,16"/>
+
+            <!-- ===== بلاطات إحصائية سريعة ===== -->
+            <Grid Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Style="{StaticResource StatTileStyle}">
+                    <DockPanel LastChildFill="True">
+                        <Border DockPanel.Dock="Right" Width="3" CornerRadius="2" Margin="0,0,14,0"
+                                Background="{StaticResource AccentBrush}"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="أوامر مفتوحة" Style="{StaticResource TextMutedStyle}"/>
+                            <TextBlock Text="9" Style="{StaticResource TextDisplayStyle}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+
+                <Border Grid.Column="2" Style="{StaticResource StatTileStyle}">
+                    <DockPanel LastChildFill="True">
+                        <Border DockPanel.Dock="Right" Width="3" CornerRadius="2" Margin="0,0,14,0"
+                                Background="{StaticResource StatusWaitingPartsBrush}"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="منتظرة قطع غيار" Style="{StaticResource TextMutedStyle}"/>
+                            <TextBlock Text="4" Style="{StaticResource TextDisplayStyle}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+
+                <Border Grid.Column="4" Style="{StaticResource StatTileStyle}">
+                    <DockPanel LastChildFill="True">
+                        <Border DockPanel.Dock="Right" Width="3" CornerRadius="2" Margin="0,0,14,0"
+                                Background="{StaticResource StatusReadyBrush}"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="جاهزة للتسليم" Style="{StaticResource TextMutedStyle}"/>
+                            <TextBlock Text="2" Style="{StaticResource TextDisplayStyle}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+
+                <Border Grid.Column="6" Style="{StaticResource StatTileStyle}">
+                    <DockPanel LastChildFill="True">
+                        <Border DockPanel.Dock="Right" Width="3" CornerRadius="2" Margin="0,0,14,0"
+                                Background="{StaticResource SuccessBrush}"/>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="مكتملة اليوم" Style="{StaticResource TextMutedStyle}"/>
+                            <TextBlock Text="5" Style="{StaticResource TextDisplayStyle}" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+            </Grid>
+
+            <!-- ===== زرار إنشاء أمر شغل جديد (شكلي بدون منطق حقيقي بعد) ===== -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,10">
+                <Button Content="+ أمر شغل جديد" Style="{StaticResource PrimaryButtonStyle}"/>
+            </StackPanel>
+
+            <!-- ===== جدول أوامر الشغل (بيانات Placeholder ثابتة) ===== -->
+            <TextBlock Text="قائمة أوامر الشغل" Style="{StaticResource SectionLabelStyle}" Margin="0,0,0,10"/>
+
+            <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush2}"
+                    BorderThickness="1" CornerRadius="{StaticResource RadiusMedium}">
+                <StackPanel>
+
+                    <!-- رأس الجدول -->
+                    <Grid Margin="20,14">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.9*"/>
+                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition Width="1.2*"/>
+                            <ColumnDefinition Width="1.6*"/>
+                            <ColumnDefinition Width="1.2*"/>
+                            <ColumnDefinition Width="1.3*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="رقم الأمر" Style="{StaticResource WOColHeaderStyle}"/>
+                        <TextBlock Grid.Column="1" Text="السيارة" Style="{StaticResource WOColHeaderStyle}"/>
+                        <TextBlock Grid.Column="2" Text="العميل" Style="{StaticResource WOColHeaderStyle}"/>
+                        <TextBlock Grid.Column="3" Text="الفني المسؤول" Style="{StaticResource WOColHeaderStyle}"/>
+                        <TextBlock Grid.Column="4" Text="تاريخ الفتح" Style="{StaticResource WOColHeaderStyle}"/>
+                        <TextBlock Grid.Column="5" Text="الحالة" Style="{StaticResource WOColHeaderStyle}"/>
+                    </Grid>
+                    <Border Height="1" Background="{StaticResource BorderBrush2}"/>
+
+                    <!-- صف 1 — جديد -->
+                    <Border Background="{StaticResource SurfaceBrush}">
+                        <Grid Margin="20,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.9*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="1.6*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="1.3*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="#1042" Style="{StaticResource WOCellStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="1" Text="ه و ز 3456 — كيا سيراتو" Style="{StaticResource WOCellStyle}"/>
+                            <TextBlock Grid.Column="2" Text="سارة وليد حسن" Style="{StaticResource WOCellStyle}"/>
+                            <TextBlock Grid.Column="3" Text="لسه مالوش فني" Style="{StaticResource WOCellStyle}" Foreground="{StaticResource TextMutedBrush}"/>
+                            <TextBlock Grid.Column="4" Text="2026-09-10" Style="{StaticResource WOCellStyle}" Foreground="{StaticResource TextMutedBrush}"/>
+                            <Border Grid.Column="5" Style="{StaticResource StatusBadgeBaseStyle}" Background="#EEF0F2" HorizontalAlignment="Left">
+                                <TextBlock Text="جديد" Style="{StaticResource StatusBadgeTextStyle}" Foreground="{StaticResource StatusNewBrush}"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <Border Height="1" Background="{StaticResource BorderBrush2}"/>
+
+                    <!-- صف 2 — قيد الفحص -->
+                    <Border Background="{StaticResource SurfaceAltBrush}">
+                        <Grid Margin="20,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.9*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="1.6*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="1.3*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="#1041" Style="{StaticResource WOCellStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="1" Text="ن ط ح 1234 — تويوتا كورولا" Style="{StaticResource WOCellStyle}"/>
+                            <TextBlock Grid.Column="2" Text="أحمد محمود السيد" Style="{StaticResource WOCellStyle}"/>
+                            <TextBlock Grid.Column="3" Text="محمد الطاهر" Style="{StaticResource WOCellStyle}"/>
+                            <TextBlock Grid.Column="4" Text="2026-09-09" Style="{StaticResource WOCellStyle}" Foreground="{StaticResource TextMutedBrush}"/>
+                            <Border Grid.Column="5" Style="{StaticResource StatusBadgeBaseStyle}" Background="{StaticResource InfoSoftBrush}" HorizontalAlignment="Left">
+                                <TextBlock Text="قيد الفحص" Style="{StaticResource StatusBadgeTextStyle}" Foreground="{StaticResource StatusInspectionBrush}"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <Border Height="1" Background="{StaticResource BorderBrush2}"/>
+
+                    <!-- صف 3 — قيد التنفيذ -->
+                    <Border Background="{StaticResource SurfaceBrush}">
+                        <Grid Margin="20,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.9*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="1.6*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="1.3*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="#1038" Style="{StaticResource WOCellStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="1" Text="أ ب د 5678 — هيونداي إلنترا" Style="{StaticResource WOCellStyle}"/>
+                            <TextBlock Grid.Column="2" Text="منى عبد الرحمن" Style="{StaticResource WOCellStyle}"/>
+                            <TextBlock Grid.Column="3" Text="خالد سمير" Style="{StaticResource WOCellStyle}"/>
+                            <TextBlock Grid.Column="4" Text="2026-09-06" Style="{StaticResource WOCellStyle}" Foreground="{StaticResource TextMutedBrush}"/>
+                            <Border Grid.Column="5" Style="{StaticResource StatusBadgeBaseStyle}" Background="#EDE9FE" HorizontalAlignment="Left">
+                                <TextBlock Text="قيد التنفيذ" Style="{StaticResource StatusBadgeTextStyle}" Foreground="{StaticResource StatusInProgressBrush}"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <Border Height="1" Background="{StaticResource BorderBrush2}"/>
+
+                    <!-- صف 4 — منتظر قطع غيار -->
+                    <Border Background="{StaticResource SurfaceAltBrush}">
+                        <Grid Margin="20,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.9*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="1.6*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="1.3*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="#1035" Style="{StaticResource WOCellStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="1" Text="ق ل م 9012 — نيسان صني" Style="{StaticResource WOCellStyle}"/>
+                            <TextBlock Grid.Column="2" Text="كريم إبراهيم فتحي" Style="{StaticResource WOCellStyle}"/>
+                            <TextBlock Grid.Column="3" Text="محمد الطاهر" Style="{StaticResource WOCellStyle}"/>
+                            <TextBlock Grid.Column="4" Text="2026-09-03" Style="{StaticResource WOCellStyle}" Foreground="{StaticResource TextMutedBrush}"/>
+                            <Border Grid.Column="5" Style="{StaticResource StatusBadgeBaseStyle}" Background="{StaticResource WarningSoftBrush}" HorizontalAlignment="Left">
+                                <TextBlock Text="منتظر قطع غيار" Style="{StaticResource StatusBadgeTextStyle}" Foreground="{StaticResource StatusWaitingPartsBrush}"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <Border Height="1" Background="{StaticResource BorderBrush2}"/>
+
+                    <!-- صف 5 — جاهز للتسليم -->
+                    <Border Background="{StaticResource SurfaceBrush}">
+                        <Grid Margin="20,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.9*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="1.6*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="1.3*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="#1030" Style="{StaticResource WOCellStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="1" Text="ه و ز 3456 — كيا سيراتو" Style="{StaticResource WOCellStyle}"/>
+                            <TextBlock Grid.Column="2" Text="سارة وليد حسن" Style="{StaticResource WOCellStyle}"/>
+                            <TextBlock Grid.Column="3" Text="أحمد رزق" Style="{StaticResource WOCellStyle}"/>
+                            <TextBlock Grid.Column="4" Text="2026-09-01" Style="{StaticResource WOCellStyle}" Foreground="{StaticResource TextMutedBrush}"/>
+                            <Border Grid.Column="5" Style="{StaticResource StatusBadgeBaseStyle}" Background="{StaticResource SuccessSoftBrush}" HorizontalAlignment="Left">
+                                <TextBlock Text="جاهز للتسليم" Style="{StaticResource StatusBadgeTextStyle}" Foreground="{StaticResource StatusReadyBrush}"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <Border Height="1" Background="{StaticResource BorderBrush2}"/>
+
+                    <!-- صف 6 — تم التسليم -->
+                    <Border Background="{StaticResource SurfaceAltBrush}">
+                        <Grid Margin="20,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.9*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="1.6*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="1.3*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="#1027" Style="{StaticResource WOCellStyle}" FontWeight="SemiBold"/>
+                            <TextBlock Grid.Column="1" Text="أ ب د 5678 — هيونداي إلنترا" Style="{StaticResource WOCellStyle}"/>
+                            <TextBlock Grid.Column="2" Text="منى عبد الرحمن" Style="{StaticResource WOCellStyle}"/>
+                            <TextBlock Grid.Column="3" Text="خالد سمير" Style="{StaticResource WOCellStyle}"/>
+                            <TextBlock Grid.Column="4" Text="2026-08-29" Style="{StaticResource WOCellStyle}" Foreground="{StaticResource TextMutedBrush}"/>
+                            <Border Grid.Column="5" Style="{StaticResource StatusBadgeBaseStyle}" Background="#E7F7EC" HorizontalAlignment="Left">
+                                <TextBlock Text="تم التسليم" Style="{StaticResource StatusBadgeTextStyle}" Foreground="{StaticResource StatusDeliveredBrush}"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                    <Border Height="1" Background="{StaticResource BorderBrush2}"/>
+
+                    <!-- صف 7 — ملغي -->
+                    <Border Background="{StaticResource SurfaceBrush}">
+                        <Grid Margin="20,14">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.9*"/>
+                                <ColumnDefinition Width="1.5*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="1.6*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="1.3*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="#1019" Style="{StaticResource WOCellStyle}" FontWeight="SemiBold" Foreground="{StaticResource TextMutedBrush}"/>
+                            <TextBlock Grid.Column="1" Text="ق ل م 9012 — نيسان صني" Style="{StaticResource WOCellStyle}" Foreground="{StaticResource TextMutedBrush}"/>
+                            <TextBlock Grid.Column="2" Text="كريم إبراهيم فتحي" Style="{StaticResource WOCellStyle}" Foreground="{StaticResource TextMutedBrush}"/>
+                            <TextBlock Grid.Column="3" Text="—" Style="{StaticResource WOCellStyle}" Foreground="{StaticResource TextMutedBrush}"/>
+                            <TextBlock Grid.Column="4" Text="2026-08-20" Style="{StaticResource WOCellStyle}" Foreground="{StaticResource TextMutedBrush}"/>
+                            <Border Grid.Column="5" Style="{StaticResource StatusBadgeBaseStyle}" Background="{StaticResource DangerSoftBrush}" HorizontalAlignment="Left">
+                                <TextBlock Text="ملغي" Style="{StaticResource StatusBadgeTextStyle}" Foreground="{StaticResource StatusCancelledBrush}"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

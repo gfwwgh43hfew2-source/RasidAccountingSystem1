@@ -34,6 +34,7 @@ namespace RasidAccountingSystem.Views
             DashboardView.Visibility = Visibility.Collapsed;
             CustomersView.Visibility = Visibility.Collapsed;
             CarsView.Visibility = Visibility.Collapsed;
+            WorkOrdersView.Visibility = Visibility.Collapsed;
             NotReadyView.Visibility = Visibility.Collapsed;
 
             if (sectionName == "الرئيسية")
@@ -47,6 +48,10 @@ namespace RasidAccountingSystem.Views
             else if (sectionName == "السيارات")
             {
                 CarsView.Visibility = Visibility.Visible;
+            }
+            else if (sectionName == "أوامر الشغل")
+            {
+                WorkOrdersView.Visibility = Visibility.Visible;
             }
             else
             {
