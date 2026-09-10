@@ -99,13 +99,15 @@
                         <TextBlock Text="مرحبًا، أحمد" Style="{StaticResource TextCaptionStyle}"/>
                     </StackPanel>
 
-                    <!-- البحث السريع (منتصف الهيدر) -->
+                    <!-- البحث السريع (منتصف الهيدر) — حدّ واضح + أيقونة بلون التمييز بدل شريط مسطّح بلا هوية -->
                     <Border Grid.Column="1" Background="{StaticResource AppBackgroundBrush}"
+                            BorderBrush="{StaticResource BorderBrush2}" BorderThickness="{StaticResource BorderThin}"
                             CornerRadius="{StaticResource RadiusMedium}"
                             Height="42" MaxWidth="460" Margin="32,0"
                             HorizontalAlignment="Stretch">
                         <DockPanel Margin="14,0" LastChildFill="True">
-                            <TextBlock Text="&#xE721;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" DockPanel.Dock="Right" VerticalAlignment="Center" Margin="0,0,0,0"/>
+                            <TextBlock Text="&#xE721;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets"
+                                       Foreground="{StaticResource AccentBrush}" DockPanel.Dock="Right" VerticalAlignment="Center"/>
                             <TextBlock Text="ابحث برقم الهاتف، رقم اللوحة، أو اسم العميل..."
                                        Style="{StaticResource TextMutedStyle}"
                                        VerticalAlignment="Center" Margin="10,0,0,0"/>
@@ -140,94 +142,88 @@
                     <TextBlock Text="أرقام تجريبية للمعاينة فقط — سيتم ربطها بقاعدة البيانات الفعلية في خطوة تالية"
                                Style="{StaticResource TextMutedStyle}" Margin="0,0,0,16"/>
 
-                    <!-- ===== الحالة التشغيلية الآن (الأهم في يوم الورشة — عنصر واحد بارز) ===== -->
-                    <Grid Margin="0,0,0,24">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1.4*"/>
-                            <ColumnDefinition Width="16"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="16"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                    <!--
+                        ===== لوحة العمليات الآن — شريط داكن متصل واحد بدل 5 صناديق منفصلة =====
+                        قرار تصميم (رد على ملاحظة "الشكل بدائي/شكل قوالب"): الأرقام الخمسة اللي
+                        كانت متوزّعة على كارت بطل + 4 بلاطات منفصلة في قسمين مختلفين من الشاشة
+                        اتلمّت في لوحة واحدة متصلة بخلفية داكنة موحّدة، مقسّمة بفواصل رأسية رفيعة
+                        بدل حدود صناديق منفصلة. الرقم الأهم تشغيليًا ("سيارات داخل الورشة الآن")
+                        أكبر خط ووحيد اللي تحته توزيع فرعي بالنقاط، والباقي أرقام مساندة بنفس
+                        الارتفاع لكن خط أصغر — تسلسل هرمي حقيقي واحد بدل تكرار نفس الحجم 5 مرات.
+                    -->
+                    <TextBlock Text="العمليات الآن" Style="{StaticResource SectionLabelStyle}" Margin="0,0,0,10"/>
+                    <Border Background="{StaticResource PrimaryDarkBrush}" CornerRadius="{StaticResource RadiusLarge}"
+                            Effect="{StaticResource ElevatedShadowEffect}" Margin="0,0,0,24">
+                        <Grid Margin="26,20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.3*"/>
+                                <ColumnDefinition Width="1"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="1"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="1"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="1"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                        <!-- الكارت البطل: عدد السيارات داخل الورشة + توزيعها على مراحل العمل -->
-                        <Border Grid.Column="0" Style="{StaticResource HeroMetricCardStyle}">
-                            <StackPanel>
+                            <!-- الرقم الأهم: سيارات داخل الورشة + توزيعها على مراحل العمل -->
+                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
                                 <TextBlock Text="سيارات داخل الورشة الآن" Foreground="#9AA0A8"
                                            FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeSmall}"/>
                                 <TextBlock Text="7" Foreground="White"
                                            FontFamily="{StaticResource FontFamilyBase}"
-                                           FontSize="46" FontWeight="Bold" Margin="0,2,0,14"/>
+                                           FontSize="42" FontWeight="Bold" Margin="0,2,0,10"/>
                                 <StackPanel Orientation="Horizontal">
                                     <Ellipse Width="7" Height="7" Fill="{StaticResource StatusInspectionBrush}" VerticalAlignment="Center"/>
                                     <TextBlock Text="فحص · 2" Foreground="#C9CDD3" VerticalAlignment="Center"
-                                               FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeCaption}" Margin="6,0,16,0"/>
+                                               FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeCaption}" Margin="6,0,14,0"/>
                                     <Ellipse Width="7" Height="7" Fill="{StaticResource StatusInProgressBrush}" VerticalAlignment="Center"/>
                                     <TextBlock Text="تنفيذ · 3" Foreground="#C9CDD3" VerticalAlignment="Center"
-                                               FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeCaption}" Margin="6,0,16,0"/>
+                                               FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeCaption}" Margin="6,0,14,0"/>
                                     <Ellipse Width="7" Height="7" Fill="{StaticResource StatusReadyBrush}" VerticalAlignment="Center"/>
                                     <TextBlock Text="جاهز · 2" Foreground="#C9CDD3" VerticalAlignment="Center"
                                                FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeCaption}" Margin="6,0,0,0"/>
                                 </StackPanel>
                             </StackPanel>
-                        </Border>
 
-                        <!-- بلاطة: مسلَّمة اليوم -->
-                        <Border Grid.Column="2" Style="{StaticResource StatTileStyle}">
-                            <DockPanel LastChildFill="True">
-                                <Border DockPanel.Dock="Right" Width="3" CornerRadius="2" Margin="0,0,14,0"
-                                        Background="{StaticResource SuccessBrush}"/>
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="مسلَّمة اليوم" Style="{StaticResource TextMutedStyle}"/>
-                                    <TextBlock Text="3" Style="{StaticResource TextDisplayStyle}" Margin="0,2,0,0"/>
-                                </StackPanel>
-                            </DockPanel>
-                        </Border>
+                            <Border Grid.Column="1" Background="#33FFFFFF" Margin="0,4"/>
 
-                        <!-- بلاطة: منتظرة قطع غيار -->
-                        <Border Grid.Column="4" Style="{StaticResource StatTileStyle}">
-                            <DockPanel LastChildFill="True">
-                                <Border DockPanel.Dock="Right" Width="3" CornerRadius="2" Margin="0,0,14,0"
-                                        Background="{StaticResource StatusWaitingPartsBrush}"/>
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="منتظرة قطع غيار" Style="{StaticResource TextMutedStyle}"/>
-                                    <TextBlock Text="4" Style="{StaticResource TextDisplayStyle}" Margin="0,2,0,0"/>
-                                </StackPanel>
-                            </DockPanel>
-                        </Border>
-                    </Grid>
+                            <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                <TextBlock Text="منتظرة قطع غيار" Foreground="#9AA0A8"
+                                           FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeCaption}"/>
+                                <TextBlock Text="4" Foreground="{StaticResource AccentBrush}"
+                                           FontFamily="{StaticResource FontFamilyBase}" FontSize="26" FontWeight="Bold" Margin="0,2,0,0"/>
+                            </StackPanel>
 
-                    <!-- ===== أوامر الشغل اليوم ===== -->
-                    <TextBlock Text="أوامر الشغل اليوم" Style="{StaticResource SectionLabelStyle}" Margin="0,0,0,10"/>
-                    <Grid Margin="0,0,0,24">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="16"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
+                            <Border Grid.Column="3" Background="#33FFFFFF" Margin="0,4"/>
 
-                        <Border Grid.Column="0" Style="{StaticResource StatTileStyle}">
-                            <DockPanel LastChildFill="True">
-                                <Border DockPanel.Dock="Right" Width="3" CornerRadius="2" Margin="0,0,14,0"
-                                        Background="{StaticResource AccentBrush}"/>
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="أوامر شغل مفتوحة" Style="{StaticResource TextMutedStyle}"/>
-                                    <TextBlock Text="9" Style="{StaticResource TextDisplayStyle}" Margin="0,2,0,0"/>
-                                </StackPanel>
-                            </DockPanel>
-                        </Border>
+                            <StackPanel Grid.Column="4" VerticalAlignment="Center">
+                                <TextBlock Text="مسلَّمة اليوم" Foreground="#9AA0A8"
+                                           FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeCaption}"/>
+                                <TextBlock Text="3" Foreground="White"
+                                           FontFamily="{StaticResource FontFamilyBase}" FontSize="26" FontWeight="Bold" Margin="0,2,0,0"/>
+                            </StackPanel>
 
-                        <Border Grid.Column="2" Style="{StaticResource StatTileStyle}">
-                            <DockPanel LastChildFill="True">
-                                <Border DockPanel.Dock="Right" Width="3" CornerRadius="2" Margin="0,0,14,0"
-                                        Background="{StaticResource SuccessBrush}"/>
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="أوامر شغل مكتملة اليوم" Style="{StaticResource TextMutedStyle}"/>
-                                    <TextBlock Text="5" Style="{StaticResource TextDisplayStyle}" Margin="0,2,0,0"/>
-                                </StackPanel>
-                            </DockPanel>
-                        </Border>
-                    </Grid>
+                            <Border Grid.Column="5" Background="#33FFFFFF" Margin="0,4"/>
+
+                            <StackPanel Grid.Column="6" VerticalAlignment="Center">
+                                <TextBlock Text="أوامر شغل مفتوحة" Foreground="#9AA0A8"
+                                           FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeCaption}"/>
+                                <TextBlock Text="9" Foreground="White"
+                                           FontFamily="{StaticResource FontFamilyBase}" FontSize="26" FontWeight="Bold" Margin="0,2,0,0"/>
+                            </StackPanel>
+
+                            <Border Grid.Column="7" Background="#33FFFFFF" Margin="0,4"/>
+
+                            <StackPanel Grid.Column="8" VerticalAlignment="Center">
+                                <TextBlock Text="أوامر مكتملة اليوم" Foreground="#9AA0A8"
+                                           FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeCaption}"/>
+                                <TextBlock Text="5" Foreground="{StaticResource StatusDeliveredBrush}"
+                                           FontFamily="{StaticResource FontFamilyBase}" FontSize="26" FontWeight="Bold" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
 
                     <!-- ===== الملخص المالي لليوم — شكل كشف حساب مصغّر بدل 4 كروت متطابقة ===== -->
                     <TextBlock Text="الملخص المالي لليوم" Style="{StaticResource SectionLabelStyle}" Margin="0,0,0,10"/>
@@ -271,29 +267,34 @@
                         </Grid>
                     </Border>
 
-                    <!-- ===== تنبيهات — شارات مضغوطة بدل كروت كاملة لكل تنبيه ===== -->
+                    <!--
+                        ===== تنبيهات — كارت واحد بصفوف بدل شارات عايمة منفصلة =====
+                        قرار تصميم: الشكل القديم (بالونات Pill منفصلة عايمة) ملوش أي إطار
+                        بصري يجمعها، فبتحس إنها عناصر زايدة اتحطت في الآخر. الشكل الجديد
+                        كارت واحد بحدود، كل تنبيه صف بشريط لون رفيع على الجنب (بنفس منطق
+                        StatTileStyle) بدل بالونة مستقلة، والفاصل بينهم خط رفيع مشترك.
+                    -->
                     <TextBlock Text="تنبيهات" Style="{StaticResource SectionLabelStyle}" Margin="0,0,0,10"/>
-                    <StackPanel Orientation="Horizontal">
-                        <Border Background="{StaticResource WarningSoftBrush}" CornerRadius="{StaticResource RadiusPill}"
-                                Padding="14,8" Margin="0,0,10,0">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE7BA;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="13"
-                                           Foreground="{StaticResource WarningBrush}" VerticalAlignment="Center"/>
-                                <TextBlock Text="3 أصناف مخزون منخفضة" Foreground="{StaticResource WarningBrush}"
-                                           FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeSmall}"
-                                           FontWeight="SemiBold" Margin="8,0,0,0" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Border>
-                        <Border Background="{StaticResource InfoSoftBrush}" CornerRadius="{StaticResource RadiusPill}" Padding="14,8">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="&#xE787;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="13"
-                                           Foreground="{StaticResource InfoBrush}" VerticalAlignment="Center"/>
-                                <TextBlock Text="موعدان قادمان" Foreground="{StaticResource InfoBrush}"
-                                           FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeSmall}"
-                                           FontWeight="SemiBold" Margin="8,0,0,0" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Border>
-                    </StackPanel>
+                    <Border Background="{StaticResource SurfaceBrush}" BorderBrush="{StaticResource BorderBrush2}"
+                            BorderThickness="{StaticResource BorderThin}" CornerRadius="{StaticResource RadiusMedium}">
+                        <StackPanel>
+                            <DockPanel Margin="18,14">
+                                <Border DockPanel.Dock="Right" Width="3" CornerRadius="2" Margin="0,0,14,0"
+                                        Background="{StaticResource WarningBrush}"/>
+                                <TextBlock Text="&#xE7BA;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="15"
+                                           Foreground="{StaticResource WarningBrush}" VerticalAlignment="Center" DockPanel.Dock="Right" Margin="0,0,10,0"/>
+                                <TextBlock Text="3 أصناف مخزون منخفضة — راجع قسم المخزن" Style="{StaticResource TextBodyStyle}" VerticalAlignment="Center"/>
+                            </DockPanel>
+                            <Border Height="1" Background="{StaticResource BorderBrush2}"/>
+                            <DockPanel Margin="18,14">
+                                <Border DockPanel.Dock="Right" Width="3" CornerRadius="2" Margin="0,0,14,0"
+                                        Background="{StaticResource InfoBrush}"/>
+                                <TextBlock Text="&#xE787;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="15"
+                                           Foreground="{StaticResource InfoBrush}" VerticalAlignment="Center" DockPanel.Dock="Right" Margin="0,0,10,0"/>
+                                <TextBlock Text="موعدان قادمان اليوم" Style="{StaticResource TextBodyStyle}" VerticalAlignment="Center"/>
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
                 </StackPanel>
             </ScrollViewer>
 
