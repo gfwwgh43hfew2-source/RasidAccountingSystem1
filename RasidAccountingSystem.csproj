@@ -216,6 +216,9 @@
     <Compile Include="Views\WorkshopWorkOrdersView.xaml.cs">
       <DependentUpon>WorkshopWorkOrdersView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\WorkshopCarIntakeView.xaml.cs">
+      <DependentUpon>WorkshopCarIntakeView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\EmployeesView.xaml.cs">
       <DependentUpon>EmployeesView.xaml</DependentUpon>
     </Compile>
@@ -384,6 +387,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\WorkshopWorkOrdersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WorkshopCarIntakeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -306,6 +306,9 @@
             <!-- ===================== شاشة "أوامر الشغل" الحقيقية (المهمة 5) ===================== -->
             <views:WorkshopWorkOrdersView x:Name="WorkOrdersView" Grid.Row="1" Visibility="Collapsed"/>
 
+            <!-- ===================== شاشة "استلام سيارة" الحقيقية (المهمة 6) ===================== -->
+            <views:WorkshopCarIntakeView x:Name="CarIntakeView" Grid.Row="1" Visibility="Collapsed"/>
+
             <!-- تظهر بدل الـDashboard لما تُضغط أي قسم لسه مالوش شاشة حقيقية مبنية -->
             <Border x:Name="NotReadyView" Grid.Row="1" Background="{StaticResource AppBackgroundBrush}" Visibility="Collapsed">
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">

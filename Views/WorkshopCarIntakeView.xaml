@@ -1,0 +1,385 @@
+<UserControl x:Class="RasidAccountingSystem.Views.WorkshopCarIntakeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             FlowDirection="RightToLeft"
+             d:DesignWidth="1100" d:DesignHeight="760">
+
+    <!--
+        ==========================================================================
+        WorkshopCarIntakeView.xaml — شاشة "استلام سيارة" (المهمة 6)
+        ==========================================================================
+        قرار تصميم مقصود (رد على ملاحظة "شكل الشاشات واضح إنه AI"):
+        الشاشات التلاتة قبل دي (العملاء/السيارات/أوامر الشغل) كلها بتكرر نفس
+        قالب "3 بلاطات إحصائية متطابقة بشريط لون" — وده بالظبط نوع التكرار
+        اللي WorkshopTheme.xaml نفسه بيحذّر منه في تعليق قسم Dashboard.
+        الشاشة دي مالهاش أرقام إحصائية أصلًا (فورم إدخال، مش تقرير)، فبدل ما
+        نقلّد نفس القالب، الشكل هنا مبني على الحاجة الحقيقية اللي أي استاذ
+        استقبال في ورشة بيتعامل معها فعليًا: "إيصال استلام" ورقي — رقم إيصال
+        + تاريخ في هيدر داكن، خط تقطيع (Tear Line)، رقم لوحة بشكل شبيه
+        بلوحة السيارة الفعلية، عداد كيلومترات بشكل "عداد" حقيقي، مقياس بنزين
+        كأجزاء بصرية بدل progress bar جاهز، وخانة توقيعين في الأسفل زي إيصال
+        الاستلام الورقي المعتاد. العنصر البصري "البطل" الوحيد اللي عليه ظل
+        هو كارت الإيصال نفسه ككل (مش كل عنصر جواه) بنفس مبدأ الملف الأساسي.
+
+        بيانات الفورم هنا شكلية بالكامل (بدون حفظ فعلي أو اتصال بقاعدة
+        بيانات) — الهدف إثبات اللغة البصرية فقط، مطابقةً لبقية شاشات هذه
+        المرحلة. الربط بـCustomerService/CarService الفعليين هيتم لاحقًا.
+    -->
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Styles/WorkshopTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- تسمية حقل إدخال -->
+            <Style x:Key="FieldLabelStyle" TargetType="TextBlock" BasedOn="{StaticResource TextCaptionStyle}">
+                <Setter Property="Margin" Value="2,0,0,4"/>
+            </Style>
+
+            <!-- إطار حقل إدخال عادي (يحتوي TextBox شفاف جواه) -->
+            <Style x:Key="FieldBoxStyle" TargetType="Border">
+                <Setter Property="Background" Value="{StaticResource SurfaceBrush}"/>
+                <Setter Property="BorderBrush" Value="{StaticResource BorderBrush2}"/>
+                <Setter Property="BorderThickness" Value="{StaticResource BorderThin}"/>
+                <Setter Property="CornerRadius" Value="{StaticResource RadiusMedium}"/>
+            </Style>
+
+            <!-- TextBox شفاف يعيش جوا FieldBoxStyle -->
+            <Style x:Key="FieldInputStyle" TargetType="TextBox">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="12,9"/>
+                <Setter Property="FontFamily" Value="{StaticResource FontFamilyBase}"/>
+                <Setter Property="FontSize" Value="{StaticResource FontSizeBody}"/>
+                <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
+            </Style>
+
+            <!-- خيار حالة فحص (سليم/خدش/تلف) — RadioButton بشكل شريحة بدل الدائرة الافتراضية -->
+            <Style x:Key="ConditionOptionBaseStyle" TargetType="RadioButton">
+                <Setter Property="FontFamily" Value="{StaticResource FontFamilyBase}"/>
+                <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}"/>
+                <Setter Property="FontWeight" Value="SemiBold"/>
+                <Setter Property="Padding" Value="10,6"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Foreground" Value="{StaticResource TextMutedBrush}"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Border x:Name="OptBd" Background="{StaticResource SurfaceAltBrush}"
+                                    BorderBrush="{StaticResource BorderBrush2}" BorderThickness="1"
+                                    CornerRadius="{StaticResource RadiusSmall}" Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style x:Key="ConditionOkStyle" TargetType="RadioButton" BasedOn="{StaticResource ConditionOptionBaseStyle}">
+                <Style.Triggers>
+                    <Trigger Property="IsChecked" Value="True">
+                        <Setter Property="Foreground" Value="{StaticResource SuccessBrush}"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="RadioButton">
+                                    <Border Background="{StaticResource SuccessSoftBrush}" BorderBrush="{StaticResource SuccessBrush}"
+                                            BorderThickness="1" CornerRadius="{StaticResource RadiusSmall}" Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" TextElement.Foreground="{StaticResource SuccessBrush}"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="ConditionScratchStyle" TargetType="RadioButton" BasedOn="{StaticResource ConditionOptionBaseStyle}">
+                <Style.Triggers>
+                    <Trigger Property="IsChecked" Value="True">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="RadioButton">
+                                    <Border Background="{StaticResource WarningSoftBrush}" BorderBrush="{StaticResource WarningBrush}"
+                                            BorderThickness="1" CornerRadius="{StaticResource RadiusSmall}" Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" TextElement.Foreground="{StaticResource WarningBrush}"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="ConditionDamageStyle" TargetType="RadioButton" BasedOn="{StaticResource ConditionOptionBaseStyle}">
+                <Style.Triggers>
+                    <Trigger Property="IsChecked" Value="True">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="RadioButton">
+                                    <Border Background="{StaticResource DangerSoftBrush}" BorderBrush="{StaticResource DangerBrush}"
+                                            BorderThickness="1" CornerRadius="{StaticResource RadiusSmall}" Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" TextElement.Foreground="{StaticResource DangerBrush}"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="24" MaxWidth="980" HorizontalAlignment="Stretch">
+
+            <TextBlock Text="استلام سيارة" Style="{StaticResource TextH2Style}" Margin="0,0,0,4"/>
+            <TextBlock Text="نموذج استلام أوّلي — بيانات تجريبية للمعاينة فقط، بدون حفظ فعلي بعد"
+                       Style="{StaticResource TextMutedStyle}" Margin="0,0,0,20"/>
+
+            <!-- ===== كارت الإيصال — العنصر البصري "البطل" الوحيد في الشاشة ===== -->
+            <Border Background="{StaticResource SurfaceBrush}" CornerRadius="{StaticResource RadiusLarge}"
+                    Effect="{StaticResource ElevatedShadowEffect}" ClipToBounds="False">
+                <StackPanel>
+
+                    <!-- هيدر الإيصال الداكن -->
+                    <Border Background="{StaticResource PrimaryDarkBrush}"
+                            CornerRadius="{StaticResource RadiusLarge}" Padding="0">
+                        <Border.Clip>
+                            <RectangleGeometry Rect="0,0,932,64" RadiusX="14" RadiusY="14"/>
+                        </Border.Clip>
+                        <Grid Margin="24,0" Height="64">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                <TextBlock Text="إيصال استلام سيارة" Foreground="White"
+                                           FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeH3}" FontWeight="SemiBold"/>
+                                <TextBlock Text="رقم الإيصال: WS-0001 (تجريبي)" Foreground="#A9AFB8"
+                                           FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeCaption}" Margin="0,2,0,0"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                <TextBlock Text="تاريخ الاستلام" Foreground="#A9AFB8"
+                                           FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeCaption}" HorizontalAlignment="Left"/>
+                                <TextBlock Text="-- / -- / ----" Foreground="White"
+                                           FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeBody}" FontWeight="SemiBold"
+                                           HorizontalAlignment="Left" Margin="0,2,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- خط تقطيع الإيصال -->
+                    <Grid Height="1" Margin="0,0,0,0">
+                        <Line X1="0" Y1="0" X2="932" Y2="0" Stroke="{StaticResource BorderStrongBrush}"
+                              StrokeThickness="1" StrokeDashArray="4,3" Stretch="Fill" HorizontalAlignment="Stretch"/>
+                    </Grid>
+
+                    <!-- محتوى الإيصال -->
+                    <Grid Margin="24,22,24,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.15*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- ===== العمود الأيمن: بيانات السيارة والعميل ===== -->
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="بيانات السيارة والعميل" Style="{StaticResource SectionLabelStyle}" Margin="0,0,0,12"/>
+
+                            <!-- رقم اللوحة بشكل شبيه بلوحة السيارة الفعلية -->
+                            <TextBlock Text="رقم اللوحة" Style="{StaticResource FieldLabelStyle}"/>
+                            <Border Background="{StaticResource PrimaryDarkBrush}" BorderBrush="{StaticResource AccentBrush}"
+                                    BorderThickness="2" CornerRadius="{StaticResource RadiusSmall}" Margin="0,0,0,16">
+                                <TextBox Text="أ ب ج 1234" Background="Transparent" BorderThickness="0"
+                                         Foreground="White" FontFamily="{StaticResource FontFamilyBase}" FontSize="20" FontWeight="Bold"
+                                         TextAlignment="Center" Padding="10,10" CaretBrush="White"/>
+                            </Border>
+
+                            <Grid Margin="0,0,0,16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="اسم العميل" Style="{StaticResource FieldLabelStyle}"/>
+                                    <Border Style="{StaticResource FieldBoxStyle}">
+                                        <TextBox Text="أحمد محمود السيد" Style="{StaticResource FieldInputStyle}"/>
+                                    </Border>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="رقم الهاتف" Style="{StaticResource FieldLabelStyle}"/>
+                                    <Border Style="{StaticResource FieldBoxStyle}">
+                                        <TextBox Text="01012345678" Style="{StaticResource FieldInputStyle}"/>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+
+                            <Grid Margin="0,0,0,16">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="الموديل والسنة" Style="{StaticResource FieldLabelStyle}"/>
+                                    <Border Style="{StaticResource FieldBoxStyle}">
+                                        <TextBox Text="هيونداي إلنترا 2021" Style="{StaticResource FieldInputStyle}"/>
+                                    </Border>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="اللون" Style="{StaticResource FieldLabelStyle}"/>
+                                    <Border Style="{StaticResource FieldBoxStyle}">
+                                        <TextBox Text="فضي" Style="{StaticResource FieldInputStyle}"/>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- عداد الكيلومترات بشكل عداد حقيقي -->
+                            <TextBlock Text="عداد الكيلومترات" Style="{StaticResource FieldLabelStyle}"/>
+                            <Border Background="{StaticResource PrimaryDarkerBrush}" CornerRadius="{StaticResource RadiusSmall}" Margin="0,0,0,16">
+                                <DockPanel Margin="12,8">
+                                    <TextBlock Text="كم" Foreground="#A9AFB8" DockPanel.Dock="Left" VerticalAlignment="Center"
+                                               FontFamily="{StaticResource FontFamilyBase}" FontSize="{StaticResource FontSizeSmall}" Margin="6,0,0,0"/>
+                                    <TextBox Text="045230" Background="Transparent" BorderThickness="0" Foreground="#FFD9C7"
+                                             FontFamily="Consolas" FontSize="18" FontWeight="Bold" CaretBrush="White"
+                                             HorizontalAlignment="Stretch"/>
+                                </DockPanel>
+                            </Border>
+
+                            <!-- مقياس البنزين كأجزاء بصرية بدل progress bar جاهز -->
+                            <TextBlock Text="مستوى الوقود عند الاستلام" Style="{StaticResource FieldLabelStyle}"/>
+                            <DockPanel Margin="0,0,0,4">
+                                <TextBlock Text="E" DockPanel.Dock="Right" Style="{StaticResource TextCaptionStyle}" Margin="8,0,0,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="F" DockPanel.Dock="Left" Style="{StaticResource TextCaptionStyle}" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="4"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="4"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="4"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="4"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" Height="18" CornerRadius="4,0,0,4" Background="{StaticResource AccentBrush}"/>
+                                    <Border Grid.Column="2" Height="18" Background="{StaticResource AccentBrush}"/>
+                                    <Border Grid.Column="4" Height="18" Background="{StaticResource AccentBrush}"/>
+                                    <Border Grid.Column="6" Height="18" CornerRadius="0" Background="{StaticResource BorderBrush2}"/>
+                                    <Border Grid.Column="8" Height="18" CornerRadius="0,4,4,0" Background="{StaticResource BorderBrush2}"/>
+                                </Grid>
+                            </DockPanel>
+                            <TextBlock Text="حوالي 3 من 5" Style="{StaticResource TextCaptionStyle}" Margin="0,4,0,0"/>
+                        </StackPanel>
+
+                        <!-- ===== العمود الأيسر: فحص الحالة الخارجية ===== -->
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="فحص الحالة الخارجية" Style="{StaticResource SectionLabelStyle}" Margin="0,0,0,12"/>
+
+                            <!-- صف: الأمام -->
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="الأمام" Style="{StaticResource TextBodyStyle}" VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <RadioButton GroupName="Front" Content="سليم" Style="{StaticResource ConditionOkStyle}" IsChecked="True" Margin="0,0,6,0"/>
+                                    <RadioButton GroupName="Front" Content="خدش" Style="{StaticResource ConditionScratchStyle}" Margin="0,0,6,0"/>
+                                    <RadioButton GroupName="Front" Content="تلف" Style="{StaticResource ConditionDamageStyle}"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- صف: الخلف -->
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="الخلف" Style="{StaticResource TextBodyStyle}" VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <RadioButton GroupName="Back" Content="سليم" Style="{StaticResource ConditionOkStyle}" IsChecked="True" Margin="0,0,6,0"/>
+                                    <RadioButton GroupName="Back" Content="خدش" Style="{StaticResource ConditionScratchStyle}" Margin="0,0,6,0"/>
+                                    <RadioButton GroupName="Back" Content="تلف" Style="{StaticResource ConditionDamageStyle}"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- صف: الجانب الأيمن -->
+                            <Grid Margin="0,0,0,12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="اليمين" Style="{StaticResource TextBodyStyle}" VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <RadioButton GroupName="Right" Content="سليم" Style="{StaticResource ConditionOkStyle}" IsChecked="True" Margin="0,0,6,0"/>
+                                    <RadioButton GroupName="Right" Content="خدش" Style="{StaticResource ConditionScratchStyle}" Margin="0,0,6,0"/>
+                                    <RadioButton GroupName="Right" Content="تلف" Style="{StaticResource ConditionDamageStyle}"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- صف: الجانب الأيسر -->
+                            <Grid Margin="0,0,0,18">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="70"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="الشمال" Style="{StaticResource TextBodyStyle}" VerticalAlignment="Center"/>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <RadioButton GroupName="Left" Content="سليم" Style="{StaticResource ConditionOkStyle}" IsChecked="True" Margin="0,0,6,0"/>
+                                    <RadioButton GroupName="Left" Content="خدش" Style="{StaticResource ConditionScratchStyle}" Margin="0,0,6,0"/>
+                                    <RadioButton GroupName="Left" Content="تلف" Style="{StaticResource ConditionDamageStyle}"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <TextBlock Text="سبب الزيارة / طلب العميل" Style="{StaticResource FieldLabelStyle}"/>
+                            <Border Style="{StaticResource FieldBoxStyle}">
+                                <TextBox Text="صوت غريب من المكينة عند التشغيل البارد، والعميل طالب فحص الفرامل كمان."
+                                         Style="{StaticResource FieldInputStyle}" TextWrapping="Wrap" AcceptsReturn="True" Height="76"
+                                         VerticalContentAlignment="Top"/>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- خط تقطيع قبل كعب الإيصال (توقيعات) -->
+                    <Grid Height="1" Margin="0,22,0,0">
+                        <Line X1="0" Y1="0" X2="932" Y2="0" Stroke="{StaticResource BorderStrongBrush}"
+                              StrokeThickness="1" StrokeDashArray="4,3" Stretch="Fill" HorizontalAlignment="Stretch"/>
+                    </Grid>
+
+                    <!-- كعب الإيصال: خانتا توقيع، زي أي إيصال ورقي فعلي -->
+                    <Border Background="{StaticResource SurfaceAltBrush}" CornerRadius="0,0,14,14">
+                        <Grid Margin="24,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="24"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <TextBlock Text="توقيع العميل" Style="{StaticResource TextCaptionStyle}" Margin="0,0,0,20"/>
+                                <Border Height="1" Background="{StaticResource BorderStrongBrush}"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="2">
+                                <TextBlock Text="توقيع المستقبل بالورشة" Style="{StaticResource TextCaptionStyle}" Margin="0,0,0,20"/>
+                                <Border Height="1" Background="{StaticResource BorderStrongBrush}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                </StackPanel>
+            </Border>
+
+            <!-- ===== شريط الإجراءات ===== -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,18,0,4">
+                <Button Content="حفظ استلام السيارة" Style="{StaticResource PrimaryButtonStyle}" Margin="0,0,10,0"/>
+                <Button Content="إلغاء" Style="{StaticResource SecondaryButtonStyle}"/>
+            </StackPanel>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
