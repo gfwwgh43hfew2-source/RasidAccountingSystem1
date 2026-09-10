@@ -52,11 +52,15 @@ WorkshopTheme.xaml. App.xaml الإنتاجي لن يتم لمسه في أي خ�
 -------------------------------------------------------------------
 آخر توقف (حدِّث السطرين دول بعد كل مهمة)
 -------------------------------------------------------------------
-آخر مهمة اتنفذت بالكامل: #1 — تجهيز الأرضية وتوثيق قرار العزل عن الإنتاج
-حالة المشروع: WPFUI_INTEGRATION_CHECKLIST.txt (هذا الملف) مبني. لسه
-مفيش أي كود بيعتمد فعليًا على WPF-UI. المهمة الجاية: #2 — تركيب الحزمة
-يدويًا من جهاز المستخدم (تعليمات مفصّلة تحت)، ثم دمج الـResourceDictionary
-جوا WorkshopMainWindow.xaml وتفعيل ThemeManager عليها بس.
+آخر مهمة اتنفذت بالكامل: #2 — دمج ResourceDictionary بتاع WPF-UI جوا
+WorkshopMainWindow.xaml.Resources فقط، وتفعيل ApplicationThemeManager
+على النافذة دي بس (المستخدم أكّد تركيب الحزمة يدويًا على جهازه في
+Visual Studio). حالة المشروع: WorkshopMainWindow.xaml وWorkshopMainWindow.xaml.cs
+بيعتمدوا فعليًا على WPF-UI دلوقتي (ThemesDictionary Theme="Light" +
+ControlsDictionary + ApplicationThemeManager.Apply(this))، بدون لمس
+أي عنصر تاني في الملفين ولا في أي ملف تاني. المهمة الجاية: #3 —
+استبدال WorkshopSidebar.xaml اليدوي بـNavigationView من WPF-UI
+(محتاجة موافقة صريحة قبل التنفيذ حسب تعليمات هذا الملف).
 
 -------------------------------------------------------------------
 المهام القادمة (بالترتيب — واحدة بس في كل جلسة، وبموافقة صريحة قبل كل واحدة)
@@ -64,7 +68,7 @@ WorkshopTheme.xaml. App.xaml الإنتاجي لن يتم لمسه في أي خ�
 [x] 1. تجهيز الأرضية: إنشاء ملف الخطة ده + توثيق قرار عزل WPF-UI عن
        App.xaml الإنتاجي + توضيح قيد الإنترنت في بيئة التنفيذ.
 
-[ ] 2. تركيب الحزمة (خطوة يدوية من المستخدم على جهازه، موثّقة تفصيليًا
+[x] 2. تركيب الحزمة (خطوة يدوية من المستخدم على جهازه، موثّقة تفصيليًا
        تحت) → بعد التأكيد، دمج ResourceDictionary بتاع WPF-UI جوا
        WorkshopMainWindow.xaml.Resources فقط (مش App.xaml)، وتفعيل
        ApplicationThemeManager على النافذة دي بس. بدون استبدال أي
@@ -108,3 +112,17 @@ WorkshopTheme.xaml. App.xaml الإنتاجي لن يتم لمسه في أي خ�
   محافظة على عزل الشاشات التجريبية عن الإنتاج، بنفس منطق WorkshopTheme.xaml
   الموجود أصلًا. لسه مفيش أي كود XAML بيعتمد على الحزمة فعليًا —
   التركيب نفسه محتاج يحصل من جهاز المستخدم (قيد إنترنت في بيئة التنفيذ).
+
+- المهمة 2 (تم): بعد تأكيد المستخدم تركيب حزمة WPF-UI يدويًا في
+  Visual Studio، في WorkshopMainWindow.xaml أضفت
+  xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml" وضفت
+  <ui:ThemesDictionary Theme="Light"/> و<ui:ControlsDictionary/> جوا
+  Window.Resources.MergedDictionaries بعد WorkshopTheme.xaml الموجود
+  أصلًا (بدون حذف أو تعديل أي حاجة فيه). في WorkshopMainWindow.xaml.cs
+  ضفت using Wpf.Ui.Appearance; ونديت ApplicationThemeManager.Apply(this)
+  فورًا بعد InitializeComponent(). مفيش أي عنصر تاني اتلمس — الـSidebar،
+  الهيدر، الداشبورد كلهم زي ما هم بالظبط. اخترت ثيم "Light" مبدئيًا بس
+  لإثبات إن المكتبة شغالة. تحقق: طابقت الأسلوب مع توثيق WPF-UI الرسمي
+  (wpfui.lepo.co/documentation) قبل التنفيذ — مش تشغيل فعلي في
+  Visual Studio (بيئة التنفيذ هنا معزولة). التعديل اتعمل مباشرة على
+  نسخة الريبو المستنسخة (git clone) وتم رفعه (git push) لفرع master.

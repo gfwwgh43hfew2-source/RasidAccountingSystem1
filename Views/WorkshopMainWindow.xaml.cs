@@ -1,4 +1,5 @@
 using System.Windows;
+using Wpf.Ui.Appearance;
 
 namespace RasidAccountingSystem.Views
 {
@@ -17,6 +18,13 @@ namespace RasidAccountingSystem.Views
         public WorkshopMainWindow()
         {
             InitializeComponent();
+
+            // [WPF-UI Integration — مهمة 2] App.xaml الإنتاجي مفيهوش دمج
+            // WPF-UI (بقرار مقصود، راجع WPFUI_INTEGRATION_CHECKLIST.txt)،
+            // فلازم نستدعي Apply هنا يدويًا عشان موارد الثيم (ThemesDictionary/
+            // ControlsDictionary) تتفعّل فعليًا على النافذة دي بس.
+            ApplicationThemeManager.Apply(this);
+
             Sidebar.SectionSelected += OnSidebarSectionSelected;
         }
 

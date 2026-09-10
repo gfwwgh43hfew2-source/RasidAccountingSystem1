@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:views="clr-namespace:RasidAccountingSystem.Views"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         Title="الورشة"
         Height="820" Width="1400"
         WindowStartupLocation="CenterScreen"
@@ -26,6 +27,18 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Styles/WorkshopTheme.xaml"/>
+
+                <!--
+                    [WPF-UI Integration — مهمة 2] دمج مكتبة WPF-UI هنا فقط
+                    (جوا هذه النافذة التجريبية)، بدون لمس App.xaml الإنتاجي.
+                    ThemesDictionary + ControlsDictionary هما الحد الأدنى
+                    المطلوب حسب توثيق المكتبة الرسمي (wpfui.lepo.co) عشان
+                    أي عنصر WPF-UI (زي NavigationView المتخطط ليه في مهمة 3)
+                    يشتغل صح. ثيم "Light" مبدئي بس لإثبات إن المكتبة محمّلة —
+                    قابل للتغيير بسهولة لاحقًا.
+                -->
+                <ui:ThemesDictionary Theme="Light"/>
+                <ui:ControlsDictionary/>
             </ResourceDictionary.MergedDictionaries>
 
             <!-- زرار أيقونة دائري بسيط للهيدر (إشعارات/إعدادات) -->
